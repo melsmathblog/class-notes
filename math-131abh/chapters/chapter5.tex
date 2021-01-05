@@ -1,0 +1,526 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+\externaldocument{chapter4}
+
+\begin{document}
+
+\section{Metric space topology}
+
+Metric space topology was tough to understand at first (since it was presented fairly abstractly in my class), so I'll be trying to make it as easy to follow as I can. The general structure of the section will be the following: first we consider some idea in $\R$, then we consider it in general. Let's start.
+
+\subsection{Metric spaces}
+
+\subsubsection*{Basics}
+
+What is a metric space? Its definition comes in two parts: 1) what a metric is; and 2) what a space is. A \textit{metric} is a particular kind of function that measures the distance between two points. For example, a function that measures the distance from one part to another part of your town would be a metric (we'll get to exactly why later). A \textit{space} is just another term for a set, basically. Now let's get into more precise definitions for these (I think we've been handwavey enough). We'll first start with what a metric is exactly.
+\begin{defn}[Metric]
+    Let $X$ be a set. A function $d \colon X \x X \to \R$ is said to be a metric if and only if for all points $x,y,z \in X$ $d$ satisfies the following conditions:
+        \begin{enumerate}[\normalfont(i)]
+            \item $d(x,y) = 0$ if and only if $x=y$;
+            \item $d(x,y) = d(y,x)$;
+            \item $d(x,y) \leq d(x,z) + d(z,y)$.
+        \end{enumerate}
+\end{defn}
+The conditions, in order, are called: `Identity of Indiscernables' (kind of a lame name imo), `Symmetry', and `Triangle Inequality.' There's another `hidden' condition, however: the value of a metric is always nonnegative. Why is this not on our list? Because we can derive this! We'll present this as a fact.
+\begin{fact}[Nonnegativity of metrics]
+    Let $d$ be a metric on a set $X$ and let $x,y \in X$. Then, $d(x,y) \geq 0$.
+\end{fact}
+\begin{pf}
+    Consider $d(x,x)$. It follows that
+        \begin{align*}
+            0 &= d(x,x) \tag{by Identity of Indiscernables} \\
+                &\leq d(x,y) + d(y,x) \tag{by Triangle Inequality} \\
+                &= d(x,y) + d(x,y) \tag{by Symmetry} \\
+                &= 2 d(x,y) \\
+            \implies 0 &\leq d(x,y).
+        \end{align*}
+    Thus $d(x,y)$ is nonnegative.
+\end{pf}
+Why can't distances be negative, however? Intuitively, I mean. Well, if we're measuring the distance from my house to your house (and our distance does not have a direction associated with it (\textbf{REMEMBER}: the output of a metric is a number, \textbf{not} a vector)), I can only be say 1 mile away as $-1$ mile away would have little meaning.
+
+Do we have an example of a metric? Yes!
+\begin{ex}[Euclidean Metric on $\R$]
+    Let $x,y \in \R$. Then $d \colon \R \x \R \to \R$ defined by $d(x,y) = |x-y|$ is a metric.
+\end{ex}
+We have a ton more, also. For example, the Euclidean Metric on $\R^n$ is also a metric.
+\begin{ex}[Euclidean Metric on $\R^n$]
+    Let $\vec x, \vec y \in \R^n$. Then $d \colon \R^n \x \R^n \to \R$ defined by
+        \[
+            d(\vec x, \vec y) = \sqrt{\sum_{j=1}^{n} (x_j-y_j)^2}
+        \]
+    is a metric.
+\end{ex}
+
+Before we prove that this is a metric, we will need to introduce an inequality that will be of great use to us: the Cauchy-Schwarz Inequality.
+
+\begin{thm}[Cauchy-Schwarz Inequality]
+    Let $\vec x, \vec y \in \R^n$. Then, $| \vec x \cdot \vec y| \leq \| \vec x \| \| \vec y \|$ where $\cdot$ is the usual dot product on $\R^n$.
+\end{thm}
+\begin{pf}
+    Let $\lam = \frac{\vec x \cdot \vec y}{\vec y \cdot \vec y}$. Consider $(\vec x - \lam \vec y) \cdot (\vec x - \lam \vec y)$. It follows that
+        \begin{align*}
+            0 \leq (\vec x - \lam \vec y) \cdot (\vec x - \lam \vec y) &= \| \vec x \|^2 - 2 \lam (\vec x \cdot \vec y) + \lam^2 \| \vec y \|^2 \\
+            0 &\leq \| \vec x \|^2 - 2 \frac{\vec x \cdot \vec y}{\vec y \cdot \vec y} (\vec x \cdot \vec y) + \left( \frac{\vec x \cdot \vec y}{\vec y \cdot \vec y} \right)^2 \| \vec y \|^2 \\
+            0 &\leq \| \vec x \|^2 - \frac{(\vec x \cdot \vec y)^2}{\| \vec y\|^2} \\
+            \frac{(\vec x \cdot \vec y)^2}{\| \vec y\|^2} &\leq \| \vec x \|^2 \\
+            (\vec x \cdot \vec y)^2 &\leq \| \vec x\|^2 \| \vec y \|^2 \\
+            | \vec x \cdot \vec y| &\leq \| \vec x \| \| \vec y \|.
+        \end{align*}
+    This completes the proof.
+\end{pf}
+
+Now we can get to the actual proof of the Euclidean metric being a metric.
+\begin{pf}
+    Recall from the definition of a metric that we must verify that the Euclidean metric satisfies the Identity of Indiscernables, symmetry, and the triangle inequality.
+
+    First the indiscernables. ($\Rightarrow$) Suppose $d(\vec x, \vec y) = 0$. It follows that each term of the sum must then also be 0, meaning that each component must be equal and hence $\vec x = \vec y$. ($\Leftarrow$) Suppose $\vec x = \vec y$. It is then clear that $d( \vec x, \vec y ) = 0$.
+
+    Now symmetry. By the properties of squares, we know that $(x_i-y_i)^2 = (y_i-x_i)^2$, so $d(\vec x, \vec y) = d( \vec y, \vec x)$.
+
+    Finally, the triangle inequality. Consider the Cauchy-Schwarz Inequality. It follows that
+        \begin{align*}
+            \vec x \cdot \vec y &\leq \| \vec x\| \| \vec y\| \\
+            \implies \|\vec x \|^2 + 2 (\vec x \cdot \vec y) + \| \vec y \|^2 &\leq \|\vec x \|^2 + 2 \| \vec x\| \| \vec y\| + \| \vec y \|^2 \\
+            \implies \| \vec x + \vec y \|^2 &\leq ( \| \vec x \| + \| \vec y \|)^2 \\
+            \implies \| \vec x + \vec y \| &\leq \| \vec x \| + \| \vec y \|.
+        \end{align*}
+
+    Thus the Euclidean metric is indeed a metric.
+\end{pf}
+
+Here's another neat metric on $\R^2$.
+\begin{ex}[Taxicab/Manhattan Metric]
+    Define $d \colon \R^2 \x \R^2 \to \R$ by
+        \[
+            d((x_1,y_1), (x_2,y_2)) = |x_1-x_2| + |y_1-y_2|.
+        \]
+\end{ex}
+Figure \ref{fig:euclideanvstaxicab} should illustrate the difference between Euclidean and Taxicab metrics.
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {euclideanvstaxicab.pdf_tex}}
+    \caption{Comparison of the Euclidean and Taxicab metrics. The red path is the Euclidean distance and the blue path is the taxicab distance. \textbf{FINISH this figure}}
+    \label{fig:euclideanvstaxicab}
+\end{figure}
+
+
+
+Now that we know what metrics are, we can talk about \textit{metric spaces} pretty easily.
+\begin{defn}[Metric space]
+    A \textit{metric space} is a set with a metric defined on it.
+\end{defn}
+\begin{nota}
+    A metric space $X$ with the metric $d$ is denoted $(X,d)$ or simply $X$ if the metric is unambiguous.
+\end{nota}
+We've actually already been talking about metric spaces! Whenever we've mentioned a metric, we've always had a corresponding set (out of necessity). So, here are some examples of metric spaces:
+\begin{ex}
+    Examples of metric spaces.
+        \begin{enumerate}[(a)]
+            \item $\R$ with the Euclidean metric;
+            \item $\R^n$ with the Euclidean metric;
+            \item $\R^2$ (or $\R^n$) with the Taxicab metric.
+        \end{enumerate}
+\end{ex}
+
+
+\subsubsection**{Less basic examples of metric spaces}
+
+Following from the very general definition of metric spaces, there are tons of examples of metric spaces! We're going to go through a few of them.
+
+\begin{ex}
+    $\ell_2$ is the set of real sequences $(x_n)$ such that $ \sum_{j=1}^{\infty} |x_j|^2$ is finite. When equipped with the metric $d \colon \ell_2 \x \ell_2 \to \R$ defined by
+        \[
+            d((x_n),(y_n)) = \sqrt{\sum_{j=1}^{\infty} |x_j-y_j|^2},
+        \]
+    $(\ell_2, d)$ is a metric space.
+\end{ex}
+
+\begin{ex}
+    $C([0,1])$ is the set of all continuous functions from $[0,1]$ to $\R$. When combined with the metric $d \colon C([0,1]) \x C([0,1]) \to \R$ defined by
+        \[
+            d(f,g) = \sup \set{|f(x)-g(x)| : x \in [0,1]}
+        \]
+    $(C([0,1]),d)$ is a metric space.
+\end{ex}
+
+\begin{ex}[Sup-norm metric]
+    $\R^2$ with $d(\vec x, \vec y) \coloneqq \sup \set{|x_i-y_i| : i=1,2}$ is a metric space.
+\end{ex}
+
+
+\subsubsection*{Some translating}
+
+We've developed quite of a lot of machinery so far in the previous sections of these notes. In particular, we've talked about convergence, Cauchy sequences, continuity, and uniform continuity, but we've only defined it for the case of $\R$. In this section we will define them for general metric spaces. :)
+
+Will defining things in more generality change any of the ideas, though? Not at all! In fact, our reference to $\R$ is indeed a special case of the general definition, so everything should seem fairly similar and need little explanation, so let's get right into it.
+
+\begin{defn}[Convergence in general metric spaces]
+    Let $(x_n)$ be a sequence in a metric space $(X,d)$. $(x_n)$ converges to $x_0 \in X$ if and only if for all $\e > 0$ there exists an integer $N$ such that $n \geq N$ implies $d(x_n,x) < \e$. This is denoted $\lim x_n = x$ or $(x_n) \to x$.
+\end{defn}
+
+Comparing this to Definition \ref{defn:convergence in R} and we say that they are almost the same! The only difference is what we write for the metric. Very cool. All other definitions we will introduce will follow this same pattern.
+
+\begin{defn}[Cauchiness in general metric spaces]
+    Let $(x_n)$ be a sequence in a metric space $(X,d)$. $(x_n)$ is a Cauchy sequence if and only if for all $\e > 0$ there exists an integer $N$ such that $i,j \geq N$ implies $d(x_i,x_j) < \e$.
+\end{defn}
+
+\begin{defn}[Continuity in general metric spaces]
+    Let $(X,d_x)$ and $(Y,d_y)$ be metric spaces and let $f \colon (X,d_x) \to (Y,d_y)$ be a function. Then, $f$ is continuous at a point $c \in X$ if and only if for all $\e > 0$ there exists a $\delta > 0$ such that $d_y(f(x),f(c)) < \e$ if $d_x(x,c) < \delta$.
+\end{defn}
+
+\begin{defn}[Uniform Continuity in general metric spaces]
+    Let $(X,d_x)$ and $(Y,d_y)$ be metric spaces and let $f \colon (X,d_x) \to (Y,d_y)$ be a function. $f$ is uniformly continuous (on $X$) if and only if, given an $\e > 0$, there is a $\delta > 0$ such that for all $x_1,x_2 \in X$, if $d_x(x_1,x_2) < \delta$, then $d_y(f(x_1),f(x_2)) < \e$.
+\end{defn}
+
+
+
+\subsection{Open sets}
+
+\subsubsection*{Basics}
+
+Before we get into the title of this section, we have to introduce a very important idea: the open ball (or neighborhood).
+\begin{defn}[Open ball]
+    Let $(X,d)$ be a metric space and suppose $x \in X$. Then, an \textit{open ball} around $x$ of radius $r$ is the set $\set{y \in X \mid d(x,y) < r}$ and is denoted $B_r^X(x)$ or $B_r(x)$ if the metric space the ball is in is unambiguous.
+\end{defn}
+Why do we call this an open ball? We'll get to the `open' part later, but we can answer the `ball' part now; in $\R^n$, it literally defines a ball lmao.
+
+There's one more definition before we get to the definition of open set: the interior point.
+\begin{defn}[Interior point]
+    A point $x \in E \subseteq X$ is an interior point of $E$ if and only if there exists an open ball around $x$ that is completely contained in $E$.
+\end{defn}
+We'll get to use this more later.
+
+Now we can get to the titular object of this section: the open set!
+\begin{defn}[Open set]
+    Let $(X,d)$ be a metric space. $U \subseteq X$ is open in if and only if for every $u \in U$, there exists an $r_u > 0$ such that $B_{r_u}(u) \subseteq U$.
+\end{defn}
+\begin{slogan}
+    Open $\iff$ around every point there is an open ball that is completely contained
+\end{slogan}
+
+Now let's do our first proof regarding open sets. Let's give reason to our name `open ball' from earlier. :)
+\begin{thm}[Open balls are open]{\label{thm:openballisopen}}
+    Let $(X,d)$ be a metric space, $x \in X$, and $r > 0$. Then, $B_r(x)$ is an open set.
+\end{thm}
+
+While looking through the following proof, please refer to Figure \ref{fig:openballisopen} to get a better idea of what we're doing (as the proof will likely be difficult to follow at first glance).
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{10cm}{!}{\filepath {openballisopen.pdf_tex}}
+    \caption{Diagram for the proof Theorem \ref{thm:openballisopen}}
+    \label{fig:openballisopen}
+\end{figure}
+
+\begin{pf}
+    Consider some $y \in B_r(x)$. Then consider the ball of radius $r-d(x,y)$ around $y$. Choose some $z$ in that ball. It follows that
+        \[
+            d(x,z) \leq d(x,y) + d(y,z) < d(x,y) + r - d(x,y) = r,
+        \]
+    so $z \in B_r(x)$ and $B_{r-d(x,y)}(y) \subseteq B_r(x)$. Thus $B_r(x)$ is open. This completes the proof.
+\end{pf}
+
+Open sets seem kind of abstract right? Or at least they did to me at first, so let's try to help with that. To that end, consider the following example of some more familiar open sets.
+\begin{ex}
+    Some open sets in Euclidean space.
+        \begin{enumerate}[(a)]
+            \item $(0,1) \subseteq \R$;
+            \item $\set{(x,y) \in \R^2 \mid x^2+y^2<1} \subseteq \R^2$;
+            \item $(0,1) \cup (2,3) \subseteq \R$.
+        \end{enumerate}
+\end{ex}
+\begin{rem}
+    I will not prove these but they should be similar to the proof of Theorem \ref{thm:openballisopen}.
+\end{rem}
+
+Now let's move on to some interesting properties of open sets.
+
+\subsubsection*{Relativity (of openness)}
+
+This will be a short section but an important one nonetheless. It's just a really important idea.
+\begin{fact}[Relativity of openness]
+    A set's openness is relative to the metric space it is in.
+\end{fact}
+
+Here an example with proof.
+\begin{ex}
+    $(0,1)$ is open as a subset of $\R$ but not open as a subset of $\R^2$.
+\end{ex}
+\begin{pf}
+    $(0,1)$ is clearly open in $\R$ as it is the ball of radius $1/2$ centered at $1/2$.
+
+    $(0,1)$ is not open as a subset of $\R^2$ (we treat $(0,1) \subseteq \R^2$ as $(0,1) \x \set 0 \subseteq \R^2$) as there exists a point of $(0,1) \subseteq \R^2$ that is not an interior point (take $(1/2,0)$ for example).
+
+    See Figure \ref{fig:01openinRbutnotinR2} for further explanation.
+\end{pf}
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {01openinRbutnotinR2.pdf_tex}}
+    \caption{The blue lines are the open balls in $\R$ and $\R^2$, respectively. Notice how the open ball in $\R^2$ is not completely contained in $\R$. This hopefully makes clear why $(0,1)$ is open in $\R$ but not $\R^2$.}
+    \label{fig:01openinRbutnotinR2}
+\end{figure}
+
+There's a little bit more to say, however.
+
+\begin{thm}{\label{thm:relativeopenness}}
+    Let $(X,d)$ be a metric space and let $Y \subseteq X$. $E \subseteq Y$ is open relative to $Y$ if and only if $E = Y \cap G$ for some open $G \subseteq X$.
+\end{thm}
+\begin{pf}
+($\Rightarrow$) Suppose $E$ is open relative to $Y$. Let $p \in E$. Let $r_p > 0$ be such that $B_{r_p}^Y(p) \subseteq E$. Define $G = \bigcup_{p \in E}^{} B_{r_p}^Y(p)$. Then $G$ is open in $X$. ($\subseteq$) It is clear that $E \subseteq G \cap Y$. ($\supseteq$) By construction, $B_{r_p}^Y(p) \cap Y \subseteq E$
+for all $p \in E$, so $G \cap Y \subseteq E$. It follows that $G \cap Y = E$.
+
+($\Leftarrow$) Suppose $E = Y \cap G$ for some open $G \subseteq X$. Since $G$ is open, for every $p \in E$, there exists a $B_p$ such that $B_p \subseteq G$. Then, $B_p \cap Y \subseteq E$ and $E$ is open relative to $Y$.
+\end{pf}
+
+\subsubsection*{Properties of open sets}
+
+Are there any sets that are always open? Yes, in fact! The empty set and the entire metric space are open.
+\begin{fact}{\label{fact: universal open sets}}
+    Let $(X,d)$ be a metric space. Then $X$ and $\es$ are open.
+\end{fact}
+\begin{pf}
+    $X$ is open as it is universe in which our (sub)sets are taken from. Hence, treating $X$ as a subset of itself, any ball around any point of $X$ must be contained in $X$ (since there are nothing `outside' of $X$).
+
+    $\es$ is vacuously open.
+\end{pf}
+
+
+The section will mainly be out the unions and intersections of open sets. We'll start with unions.
+
+\begin{thm}
+    For any collection $\set{U_\alpha}_{\alpha \in A}$ of open sets, $ \bigcup_{\alpha \in A}^{} U_\alpha$ is open.
+\end{thm}
+\begin{slogan}
+    Any union of open sets is open.
+\end{slogan}
+\begin{pf}
+    Suppose $u \in \bigcup_{\alpha \in A}^{} U_\alpha$. Then, by definition of union, there exists some $\beta \in A$ such that $u \in U_\beta$. Then there exists an open ball $B$ around $u$ that is completely contained in $U_\beta \subseteq  \bigcup_{\alpha \in A}^{} U_\alpha$.
+    Thus, $\bigcup_{\alpha \in A}^{} U_\alpha$ is open.
+\end{pf}
+
+Now to intersections.
+\begin{thm}
+    For any finite collection $U_1, \ldots, U_n$ of open sets, $\bigcap_{j=1}^{n} U_j$ is open.
+\end{thm}
+\begin{slogan}
+    The finite intersection of open sets is open.
+\end{slogan}
+\begin{pf}
+    Suppose $\bigcap_{j=1}^{n} U_j$ is empty. Then by Fact \ref{fact: universal open sets}, we know that this is open, so we may assume that the intersection is nonempty.
+
+    Suppose $u \in \bigcap_{j=1}^{n} U_j$. Then, for each $j=1,2,3,\ldots,n$, we have a corresponding radius $r_j$ such that $B_{r_j}(u) \subseteq U_j$ since $u \in U_j$ and $U_j$ is open. Taking $r = \min \set{r_j \mid j=1,2,3,\ldots,n}$, it is clear that $B_r(u) \subseteq U_j$ for
+    all $j=1,2,3,\ldots,n$, so $B_r(u) \subseteq \bigcap_{j=1}^{n} U_j$ and the intersection is open.
+\end{pf}
+
+Why isn't the infinite intersection open, however? Because of examples like this: $\bigcap_{n=1}^{\infty} (-1/n,1/n)$. The sets composing the intersection are open, but the intersection is equal to the singleton set 0, so infinite intersections are not, in general, open.
+
+
+
+
+\subsubsection*{Relation to continuous functions}
+
+Our idea of continuity actually has an equivalent formulation using open sets!
+\begin{thm}[Topological definition of continuity]
+    Let $(X,d_x)$ and $(Y,d_y)$ be metric spaces and let $f \colon (X,d_x) \to (Y,d_y)$ be a function. $f$ is continuous if and only if for every open set $V \subseteq Y$, $f^{-1}(V) \subseteq X$ is open (where $f^{-1}(V)$ is the preimage of $V$).
+\end{thm}
+\begin{slogan}
+    Continuous $\iff$ preimages preserve openness
+\end{slogan}
+Before we start the proof of this theorem, here's a little notational thing so we avoid ambiguity.
+\begin{pf}
+    ($\Rightarrow$) Suppose $f$ is continuous. We aim to show that $f^{-1}(V)$ is open. Suppose $f^{-1}(V)$ is empty. Then $f^{-1}(V)$ is open by Fact \ref{fact: universal open sets}, so we may assume that $f^{-1}(V)$ is nonempty. Choose a point $c \in f^{-1}(V)$. Notice that by the definition of preimages, $f(c) \in V$. By $V$'s openness, there exists an $\e > 0$
+    such that $B_\e^Y(f(c)) \subseteq V$. \textbf{finish}
+
+
+
+    We aim to find a $r > 0$ such that
+    $B_r^X(c) \subseteq f^{-1}(V)$ (where $B_r^X(c)$ is the $r$-ball around $c$ in $(X,d_x)$). Because $f(c) \in V$ (since $c \in f^{-1}(V)$) and by $V$'s openness, there exists an $\e > 0$ such that $B_\e^Y(f(c)) \subseteq V$. By $f$'s continuity, there exists a $\delta > 0$
+    such that $B_\delta^X(c) \subseteq f^{-1}(V)$ as $f(B_\delta^X(c)) \subseteq B_\e^Y(f(c))$.
+
+    ($\Leftarrow$) Suppose $f^{-1}(V)$ is open.
+\end{pf}
+
+
+
+
+\subsection{Closed sets}
+
+\subsubsection*{Basics}
+
+Closed sets, as you might expect, are the opposites of open sets (in some very precise sense), but this isn't immediately obvious from the definition I'm going to present to you. (We'll get to the more definition after). On that note, let's get into the preliminary ideas behind a closed set. \textbf{Rework. Finish}
+\begin{defn}[Limit point]
+    Let $(X,d)$ be a metric space. A point $x \in E \subseteq X$ is a limit point if and only if every ball around $x$ contains a point $y \neq x$ such that $y \in E$.
+\end{defn}
+Basically, a point is a limit point if and only if it is the limit of an eventually non-constant sequence.
+
+There's also the `opposite' of a limit point: an isolated point.
+\begin{defn}[Isolated point]
+    Let $(X,d)$ be a metric space. $x \in E \subseteq X$ is an isolated point if and only if it is not a limit point.
+\end{defn}
+\begin{rem}
+    In other words, a point is an isolated point if and only if there exists a ball around the point that only contains itself (considering only the subset the point is in).
+\end{rem}
+
+Figure \ref{fig:limitvsisolated} should hopefully make the difference between limit and isolated point more clear.
+\begin{figure}[ht]
+    \centering
+    \resizebox{15cm}{!}{\filepath {limitvsisolated.pdf_tex}}
+    \caption{Illustration of the difference between a limit point and an isolated point. $x$ is a limit point of $E$ and $z$ is an isolated point (and the only point) of $Z$. The blue circles are the balls around $x$ and $z$, respectively.}
+    \label{fig:limitvsisolated}
+\end{figure}
+
+Now we can get into what a closed set is.
+
+\begin{defn}[Closed set]
+    Let $(X,d)$ be a metric space. A set $E \subseteq X$ is closed if and only if $E$ contains all its limit points.
+\end{defn}
+\begin{slogan}
+    Closed $\iff$ contains all limit points
+\end{slogan}
+
+
+
+\subsubsection*{Relationship to open sets}
+
+There's another way to define closed sets using open sets! (We'll see this type of idea a lot because these are called \textit{topological properties}--topological properties are properties that can be defined using open sets.)
+
+\begin{thm}[Alternate definition of closed set]{\label{thm:Alternate definition of closed set}}
+    Let $(X,d)$ be a metric space. A set $E \subseteq X$ is closed if and only if its complement is open.
+\end{thm}
+\begin{slogan}
+    Closed $\iff$ complement is open
+\end{slogan}
+This is the very specific sense in which closed sets are the opposites of open sets! :) Very cool.
+\begin{pf}
+    ($\Rightarrow$) Suppose $E$ is closed and consider some $x \in X-E$ (where $X-E = X \sm E = E^c$). Because $E$ contains all its limit points (as $E$ is closed), $x$ is not a limit point of $E$, so there exists a ball $B$ centered at $x$ such that $B \cap E = \es$. Hence, by definition of complement (and because $B$ is nonempty since it contains $x$), $B \subseteq X-E$ and $x$ is an interior point of $X-E$. Since $x$ was arbitrary we now know that $X-E$ is open.
+
+    ($\Leftarrow$) Suppose $X-E$ is open. Suppose $x$ is a limit point of $E$. We aim to show that $x \in E$. Because $x$ is a limit point of $E$, every neighborhood of $x$ contains a point $y \neq x$ in $E$, so that $x$ is not an interior point of $X-E$. Since $X-E$ is open, we have that $x \in E$.
+\end{pf}
+
+\begin{coro}[Alternate definition of open set]
+    Let $(X,d)$ be a metric space. A set $E \subseteq X$ is open if and only if its complement is closed.
+\end{coro}
+\begin{slogan}
+    Open $\iff$ complement is closed.
+\end{slogan}
+
+Now we can more easily talk about some cool properties of closed sets!
+
+
+
+\subsubsection*{Relativity (again) (of closed sets)}
+
+Like the relativity of openness section, this section will be incredibly short. In fact, it's even shorter (since I won't prove my example).
+\begin{fact}[Relativity of closedness]
+    A set's closedness is relative to the metric space it is in.
+\end{fact}
+
+\begin{ex}
+    $(0,1)$ is closed as a subset of $(0,1)$ but not closed as a subset of $\R$.
+\end{ex}
+
+\subsubsection*{Cool properties}
+
+Similar to how we had some sets (the whole metric space and the empty set) that were always open, we have some sets that are always closed!
+\begin{fact}{\label{fact: universal closed sets}}
+    Let $(X,d)$ be a metric space. Then $X$ and $\es$ are closed.
+\end{fact}
+\begin{pf}
+    This is clear from Theorem \ref{thm:Alternate definition of closed set} since $X-X = \es$ and $X - \es = X$.
+\end{pf}
+
+The rest of this section will be about unions and intersections of closed sets.
+
+\begin{thm}{\label{thm:intersection of closed sets}}
+    For any collection $\set{C_\alpha}_{\alpha \in A}$ of closed sets, $\bigcap_{\alpha \in A}^{} C_\alpha$ is closed.
+\end{thm}
+\begin{slogan}
+    Any intersection of closed sets is closed.
+\end{slogan}
+\begin{pf}
+    Suppose that the intersection is empty. Then it is closed by Fact \ref{fact: universal closed sets}, so we may assume the intersection is nonempty. To show that the intersection of our closed sets is closed, it suffices to show that its complement is open. Using DeMorgan's Laws, we have that
+        \[
+            X - \bigcap_{\alpha \in A}^{} C_\alpha = \bigcup_{\alpha \in A}^{} (X-C_\alpha).
+        \]
+    Since each $C_\alpha$ is closed, we know that $X - C_\alpha$ is open, and hence the union of $X- C_\alpha$ is open. Thus, $\bigcap_{\alpha \in A}^{} C_\alpha$ is closed.
+\end{pf}
+
+\begin{thm}
+    For any finite collection $C_1, \ldots, C_n$ of closed sets, $\bigcup_{j=1}^{n} C_j$ is closed.
+\end{thm}
+\begin{slogan}
+    The finite union of closed sets is closed.
+\end{slogan}
+\begin{pf}
+    Similar to proof of Theorem \ref{thm:intersection of closed sets}.
+\end{pf}
+
+Why isn't any union of closed sets closed? Consider $\bigcup_{n=1}^{\infty} [-1+1/n,1-1/n]$. The union is equal to $(-1,1)$ which is not closed.
+
+\subsection{Interiors of sets}
+
+The interior of a set is just the set of interior points of a set. More formally:
+\begin{defn}[Interior of a set]
+    Let $(X,d)$ be a metric space and let $E \subseteq X$. The interior of $E$, denoted $E^\circ$, is the set of all interior points of $E$.
+\end{defn}
+
+There's actually another definition of this using the unions of open sets.
+\begin{thm}[Interior of a set (alternate)]
+    Let $(X,d)$ be a metric space and let $E \subseteq X$. $E^\circ$ is equal to the union of all open sets contained in $E$. Symbolically this is,
+        \[
+            E^\circ = \bigcup_{\substack{U \subseteq E \\ U \text{ open}}}^{} U.
+        \]
+
+\end{thm}
+\begin{pf}
+    ($\subseteq$) Suppose $x \in E^\circ$. Then $x$ is an interior point and thus there exists an open ball $B$ completely contained in $E$. Hence,
+        \[
+            B \in \bigcup_{\substack{U \subseteq E \\ U \text{ open}}}^{} U.
+        \]
+
+    ($\supseteq$) Suppose
+        \[
+            x \in \bigcup_{\substack{U \subseteq E \\ U \text{ open}}}^{} U.
+        \]
+    Then $x$ is in some open set $V$ contained $E$. Hence, there exists an open ball $B$ contained in $V$ that contains $x$. Hence, $x$ is an interior point of $E$ and thus $x \in E^\circ$.
+
+    This completes the proof.
+\end{pf}
+
+\textbf{FINISH}
+
+
+\subsection{Closures}
+
+\textbf{FINISH}
+
+
+
+\subsection{Homeomorphism}
+
+Homeomorphism means the spaces are the same in some specific sense. That specific sense is the following:
+\begin{defn}[Homeomorphism]
+    A metric space $(X,d_x)$ is \textit{homeomorphic} to a metric space $(Y,d_y)$ if and only if there exists a bijective bicontinuous function $f \colon X \to Y$ (i.e. both $f$ and $f^{-1}$ are continuous). Then the function $f$ is said to be a \textit{homeomorphism} between $X$ and $Y$.
+\end{defn}
+Remember how continuous function means `preimages preserve open sets?' Well, if both the function and its inverse are continuous, then that means both images and preimages preserve open sets. So if two metric spaces are homeomorphic, then there exists function under which the two metric spaces have the same open sets!; and if they have the same open sets, they are fundamentally the same as open sets define all topological properties! Very neat stuff.
+
+\subsection{Translating convergence}
+
+Now that we have an idea of how metric space topology works, we can translate convergence into a topological context.
+
+\begin{thm}[Topological definition of convergence]{\label{thm:topologicalconvergence}}
+    Let $(X,d)$ be a metric space. Let $(p_n)$ be a sequence in $X$ and let $p \in X$. $\lim p_n = p$ if and only if $B_\e(p)$ contains all but finitely many points $(p_n)$ for all $\e > 0$.
+\end{thm}
+\begin{pf}
+    ($\Rightarrow$) Let $\e > 0$ be arbitrary. Suppose $\lim p_n = p$. Then, there exists a positive integer $N$ such that $n \geq N$ implies that $d(p_n,p) < \eps$. This means that the $\e$-ball around $p$ contains all terms of $(p_n)$ with $n \geq N$. In other words, it contains all but $N-1$ terms of $(p_n)$.
+
+    ($\Leftarrow$) We will now prove the converse. Let $\e > 0$ be arbitrary. Suppose $B_\e(p)$ contains all but finitely many points of $(p_n)$. In other words, there exists some positive integer $N$ such that $n \geq N$ implies that $p_n \in B_\e(p)$, which means that $d(p_n,p) < \e$. This is precisely the definition of a sequence converging to a value. This completes the proof.
+\end{pf}
+
+\end{document}

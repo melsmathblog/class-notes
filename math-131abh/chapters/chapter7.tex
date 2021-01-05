@@ -1,0 +1,604 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+\externaldocument{chapter4}
+\externaldocument{chapter5}
+\externaldocument{chapter6}
+
+\begin{document}
+
+\section{Metric space topology (cont'd)}
+
+\subsection{Preliminary comment on compactness}
+
+There are two types of compactness that we will (spoiler!!!) show to be equivalent. Both are incredibly important and hopefully these sections help you get a better idea of what they are. We start with the one that was first shown to me in class.
+
+\subsection{Sequential compactness}
+
+\subsubsection*{Basics}
+
+We'll get right into it since the name isn't particularly insightful (besides it having to do with sequences) at this point.
+\begin{defn}[Sequential compactness]
+    Let $(X,d)$ be a metric space. $Y \subseteq X$ is \textit{sequentially comapct} if and only if every sequence in $Y$ has a subsequence that converges in $Y$.
+\end{defn}
+
+These seems kinda wild to me--this seems like a super strong property! Well, it actually is! But it does sound weird, for sure. However, we do have some examples (and we'll explain why).
+
+\begin{ex}{\label{ex: 01seqcompact}}
+    $[0,1]$ (with the Euclidean metric) is sequentially compact.
+\end{ex}
+\begin{pf}
+    Let $(x_n)$ be a sequence in $[0,1]$. Because $[0,1]$ is bounded, $(x_n)$ must also be bounded, so by Bolzano-Weierstrass we know that $(x_n)$ has a convergent subsequence $(x_{n_k})$. Because $[0,1]$ is closed, the limit of this subsequence must be in $[0,1]$. Thus $[0,1]$ is sequentially compact.
+\end{pf}
+\begin{rem}
+    This is easily generalizable to intervals $[a,b]$.
+\end{rem}
+The remark for Example \ref{ex: 01seqcompact} hints that a whole class of subsets of $\R$ that are sequentially compact. What ties all of these subsets together? Closed and boundedness! In fact, this is known as \textit{Heine-Borel Theorem}, which we'll eventually.
+
+Consider this example, also.
+\begin{ex}
+    $[0,1] \subseteq \R$ (with the Euclidean mertic) is sequentially compact.
+\end{ex}
+\begin{pf}
+    Do it yourself.
+\end{pf}
+Huh???????? Everything else we've talked about has been relative. Is this not also? In fact, no! Sequential compactness is not relative!!!! If something is sequentially compact with regard to some superset, then its sequentially compact relative to any superset (that contains it, obviously). This leads us to the following fact (which we will not prove yet).
+\begin{fact}
+    $(X,d)$ be a metric space and let $K \subset Y \subset X$. $K$ is sequentially compact in $Y$ if and only if $K$ is sequentially compact in $X$.
+\end{fact}
+
+
+
+\subsubsection*{Neat properties}
+
+Let's start off with some basic sounding stuff: what subsets of sequentiall compact spaces are sequentially compact?
+\begin{thm}
+    Let $(X,d)$ be a sequentially compact metric space and let $Y \subseteq X$. If $Y$ is closed, then $Y$ is sequentially compact.
+\end{thm}
+\begin{pf}
+    Let $(y_n)$ be a sequence in $Y$. Because $(y_n)$ is also a sequence in $X$, there exists a subsequence $(y_{n_k})$ that converges to $y \in X$. Because $Y$ is closed, $y \in Y$. Thus $Y$ is sequentially compact.
+\end{pf}
+
+Here's a less basic result: sequential compactness implies closed and bounded. We'll start off with closed first, however.
+\begin{thm}{\label{thm:seqcompactisclosed}}
+    Let $(X,d)$ be a metric space and suppose $Y \subseteq X$. If $Y$ is sequentially compact, then $Y$ is closed.
+\end{thm}
+For the following proof, referring to Figure \ref{fig:seqcompactisclosed} could aid in understanding.
+\begin{pf}
+    Suppose towards a contradiction that that $Y$ is not closed (i.e. $X-Y$ is not open). Then there exists some point $a \in X-Y$ such that for all $\e > 0$, $B_\e(a) \not \subseteq X-Y$. Now, let $\delta > 0$. Then there exists a point $b \in Y$ such that $b \in B_\delta(a)$ (otherwise $B_\delta(a)$ would be a subset of $X-Y$). This property tells us that there are infinitely many points of $Y$ inside any $\delta$-ball around $a$. This will be shown.
+
+    Suppose towards a contradiction that there are only finitely many points of $Y$, in particular $N$-many points, in $B_\delta(a)$. Then, choose $\delta' = \frac{1}{2} \min \set{d(p_1,a), \ldots, d(p_N,a)}$ (where $p_1, \ldots, p_N$ are the points in $B_\delta(a)$). Then, because any ball of any radius around $a$ must contain a point of $Y$ within it (otherwise the ball would be completely contained in $X-Y$ which would contradict the property of our chosen $a$), there exists a point $p_{N+1} \in B_{\delta'}(a) \subsetneq B_\delta(a)$, meaning that there are $N+1$ points in $B_\delta(a)$
+    which is a contradiction. Hence, any $\delta$-ball around $a$ contains infinitely many points of $Y$.
+
+    Now we may define a sequence $(y_n)$. Define it by the following:
+        \begin{enumerate}[(i)]
+            \item $y_1$ is some point in $Y$;
+            \item $y_n$ ($n > 1$) in some point in $B_{d(y_{n-1},a)}(a)$ also in $Y$.
+        \end{enumerate}
+    Thus, for any $\gamma > 0$, $B_\gamma(a)$ contains all but finitely many terms of $(y_n)$. Then, by Theorem \ref{thm:topologicalconvergence}, $\lim y_n = a$ and hence any subsequence of $(y_n)$ converges to $a$ but $a \not \in Y$, contradicting the sequential compactness of $Y$. Thus $Y$ is closed.
+\end{pf}
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {seqcompactisclosed.pdf_tex}}
+    \caption{Diagram for the proof of Theorem \ref{thm:seqcompactisclosed}.}
+    \label{fig:seqcompactisclosed}
+\end{figure}
+
+
+\begin{thm}{\label{thm:seqcompactisbounded}}
+    Let $(X,d)$ be a metric space and suppose $Y \subseteq X$. If $Y$ is sequentially compact, then $Y$ is bounded.
+\end{thm}
+\begin{pf}
+    Suppose towards a contradiction that $Y$ is not bounded. Define a sequence $(y_n)$ as follows:
+        \begin{enumerate}[(i)]
+            \item $y_1$ is some point in $Y$;
+            \item $y_n$  ($n > 1$) is some point in $Y$ with the property that $d(y_n,y_m) > 1$ for all integers $1 \leq m < n$.
+        \end{enumerate}
+    First we must show that the terms of $(y_n)$ ($n > 1$) exists in $Y$. Because $Y$ is unbounded, we may get arbitrarily far from each $y_i$ ($1 \leq i <n$). Now take the open ball around each of these $y_i$ with radius $1$. Then, there exists points outside of the union of these balls because otherwise $Y$ would be bounded (as we could take a ball that contains all these balls, bounding $Y$). Thus the terms of the sequence $(y_n)$ exist.
+
+    We know that the terms are always a distance 1 apart from one another, so this property holds for subsequences also. Thus no subsequence is Cauchy, so no subsequence converges, contradicting sequential compactness. Thus $Y$ is bounded.
+\end{pf}
+
+
+\subsubsection*{Functions on sequentially compact sets}
+
+There are some cool properties of functions on compact sets! Let's start with functions \textit{preserving} sequential compactness. Very cool stuff. B)
+
+\begin{thm}[Preservation of sequential compactness]{\label{thm:contpreserveseqcomp}}
+    Let $(X,d_x)$ and $(Y,d_y)$ be metric spaces and suppose $f \colon X \to Y$ is a continuous function. If $(X,d_x)$ is compact, then $f(X)$ is compact.
+\end{thm}
+\begin{slogan}
+    Continuous image of a sequentially compact metric space is compact.
+\end{slogan}
+\begin{pf}
+    Suppose $(y_n)$ is a sequence in $f(X)$. Thus, for each $(y_n)$, there exists a $x_n \in X$ such that $f(x_n) = y_n$. Because $X$ is sequentially compact, there then exists a convergent subsequence of $(x_n)$, $(x_{n_k})$, that converges to $x \in X$. Then, by $f$'s continuity and definition of $(x_n)$, we get that $\lim f(x_{n_k}) = \lim y_{n_k} = f(x) \in f(X)$. We have now exhibited a convergent subsequence of $(y_n)$ and $f(X)$ is sequentially compact.
+\end{pf}
+
+We can now talk about the \textit{Extreme Value Theorem}! Very, very cool stuff. But before we do, we have to talk about a compact subset of $\R$ containing its supremum and infimum.
+
+\begin{lem}{\label{lem:seqcompcontainssup}}
+    Let $E$ be a sequentially compact subset of $\R$. Then $E$ contains its supremum and infimum.
+\end{lem}
+\begin{pf}
+    We will only prove this for supremums as the proof for infimums is similar.
+
+    Suppose $E$ is finite. Then the supremum is contained in $E$, so we may assume that $E$ is infinite. By Theorems \ref{thm:seqcompactisclosed} and \ref{thm:seqcompactisbounded}, we know that $E$ is both closed and bounded. Thus $\sup E = s$ exists. By Theorem \ref{lem:alt def for LUB}, we can construct a sequence $(x_n)$ such that $s-1/n < x_n$
+    for $x_n \in E$. Thus, $s-x_n < 1/n$ and $|s-x_n| < 1/n$ and $(x_n)$ converges to $s$ by the Archimedean Property. Thus $s$ is a limit of $E$ and by $E$'s closedness is contained in $E$.
+\end{pf}
+
+
+\begin{thm}[Extreme Value Theorem (EVT)]{\label{thm:evt}}
+    Let $(X,d)$ be a metric space and let $f \colon (X,d) \to \R$ (with the Euclidean metric) be continuous. Then, $f$ attains its maximum and minimum.
+\end{thm}
+\begin{slogan}
+    Continuous function into $\R$ $\implies$ attains max and min
+\end{slogan}
+\begin{pf}
+    We know by Theorem \ref{thm:contpreserveseqcomp} that $f(X) \subseteq \R$ is sequentially compact. Then by Lemma \ref{lem:seqcompcontainssup}, we know that $M = \inf f(X) \in f(X)$, so there exists an $x_M \in X$ such that $f(x_M) = M$. Thus $f$ attains its maximum value.
+
+    The proof for minimum is very similar.
+\end{pf}
+
+
+Now let's move on to the other type of compactness: covering compactness.
+
+
+
+\subsection{Covering compactness}
+
+\subsubsection*{Basics}
+
+\begin{defn}[Covering compactness]
+    Let $(X,d)$ be a metric space and let $\set{U_\alpha}_{\alpha \in A}$ be a collection of open sets in $(X,d)$. $(X,d)$ is covering compact if and only if, if $\bigcup_{\alpha \in A}^{} U_\alpha \supseteq X$, then there exists a finite subcollection of $\set{U_\alpha}_{\alpha \in A}$, $U_{\alpha_1}, \ldots, U_{\alpha_n}$ such that $\bigcup_{j=1}^{n} U_{\alpha_j} \supseteq X$.
+\end{defn}
+\begin{slogan}
+    Covering compact $\iff$ every open cover has a finite subcover
+\end{slogan}
+
+Here's an example of a covering compact set.
+\begin{ex}
+    The set $A = \set 0 \cup \set{1/n \mid n=1,2,3,\ldots}$ (with the Euclidean metric) is covering compact.
+\end{ex}
+\begin{pf}
+    First notice that $0$ is the only limit point of $A$. Now, consider any open cover of $A$. Choose a cover that contains 0. By the topological definition of convergence, this contains all but finitely many $1/n$ elements of the set. Say $\set 0 \cup \set{1/n \mid n=m,m+1,m+2,\ldots}$ are covered by this open set. Choose an open set that contains $1/n$ for each $n=1,2,3,\ldots,m-1$. We have exhibited a finite subcover and $A$ is compact.
+\end{pf}
+
+\begin{ex}
+    The set $A = \set 0 \cup \set{1/n \mid n=1,2,3,\ldots} \subseteq \R$ (with the Euclidean metric) is covering compact.
+\end{ex}
+\begin{pf}
+    Again, I leave it to you.
+\end{pf}
+Like with sequential compactness, this covering compactness seems to be independent of the set the set we're focused on is nestled in. Indeed, covering compactness is also independent of the superset its contained in.
+\begin{thm}
+    Let $(X,d)$ be a metric space and let $K \subset Y \subset X$. $K$ is covering compact in $Y$ if and only if $K$ is compact covering in $X$.
+\end{thm}
+\begin{pf}
+    \textbf{FINISH}
+\end{pf}
+\begin{rem}
+    From this, it actually makes sense to talk about compact sets without invoking the metric space containing it! Very interesting stuff.
+\end{rem}
+
+\subsubsection*{Cool properties}
+
+\begin{thm}
+    If $\set{K_\alpha}_{\alpha \in A}$ is a collection of covering compact subsets of a metric space $(X,d)$ such that the intersection of every finite subcollection of $\set{K_\alpha}_{\alpha \in A}$, then $\bigcap_{\alpha \in A}^{} K_\alpha$ is nonempty.
+\end{thm}
+\begin{pf}
+    Suppose towards a contradiction that $\bigcap_{\alpha \in A}^{} K_\alpha$ is empty. Fix $K \in \set{K_\alpha}_{\alpha \in A}$ and define $G_\alpha = X-K_\alpha$. Since the intersection is empty, no point of $K$ is in every $\set{K_\alpha}_{\alpha \in A} - \set K$. Then $\bigcup_{\alpha \in A}^{} G_\alpha$
+    is an open cover of $K$. Since $K$ is compact, there exists a finite subcollection $G_{\alpha_1}, \ldots, G_{\alpha_n}$ that covers $K$ (i.e. $K \subseteq G_{\alpha_1} \cup \cdots \cup G_{\alpha_n} = X-(K_{\alpha_1} \cap \cdots \cap K_{\alpha_n})$). However, then
+    $K \cap K_{\alpha_1} \cap \cdots \cap K_{\alpha_n}$ is empty, contradicting our hypothesis. This completes the proof.
+\end{pf}
+
+\begin{coro}[Generalized Nested Interval Property]
+    If $\set{K_n}_{n=1}^\infty$ is a collection of covering compact sets with the property that $K_n \supseteq K_{n+1}$ (for all $n=1,2,3,\ldots$), then $\bigcap_{n=1}^{\infty} K_n$ is nonempty.
+\end{coro}
+\begin{slogan}
+    The intersection nonempty nested compact sets is nonempty
+\end{slogan}
+
+
+\begin{thm}
+    Let $(X,d)$ be a metric space and let $K$ be a covering compact subset of $X$. Then $K$ is bounded.
+\end{thm}
+\begin{slogan}
+    Any covering compact set is bounded.
+\end{slogan}
+\begin{pf}
+    It is clear that the set $\set{B_1(x)}_{x \in K}$ is an open cover of $K$. Since $K$ is covering compact, there exists a finite subcollection of 1-balls (say $n$ many balls that covers $K$. Then, clearly, the $n+1$ ball centered around any point of $K$ covers $K$ and $K$ is bounded.
+\end{pf}
+
+\begin{thm}
+    Let $(X,d)$ be a metric space and let $K$ be a covering compact subset of $X$. Then $K$ is closed.
+\end{thm}
+\begin{slogan}
+    Any covering compact set is closed.
+\end{slogan}
+\begin{pf}
+    Suppose towards the contraposition that $K$ is not closed. We aim to show that $K$ is then not compact.
+
+    Since $K$ is not closed, there exists a point $p \in \clos K - K$. Let $U_n \coloneqq \set{x \in X \mid d(x,p) > 1/n}$. Then, $\bigcup_{n=1}^{\infty} U_n$ is an open cover of $K$, but any finite subcollection with largest index $m$ would not include $\set{x \in X \mid d(x,p) \leq 1/m}$ whose intersection with $K$ is nonempty by definition of limit point (since $p$ is a limit point), so no finite subcollection can cover $K$. Thus $K$ is not compact and the proof is complete.
+\end{pf}
+
+Now let's move on to an idea that shouldn't feel so crazy anymore: the equivalence of covering and sequential compactness.
+
+\subsection{Equivalence of covering and sequential compactness, and Heine-Borel Theorem}
+
+\begin{thm}[Equivalence of covering and sequential compactness]
+    Let $(X,d)$ be a metric space and let $K \subseteq X$. Then, $K$ is covering compact if and only if $K$ is sequentially compact.
+\end{thm}
+\begin{slogan}
+    Covering compact $\iff$ sequentially compact
+\end{slogan}
+\begin{pf}
+    ($\Rightarrow$) Let $(a_n)$ be a sequence in $K$. Suppose $(a_n)$ is eventually constant (i.e. there are only finitely many distinct terms), then $(a_n)$ converges to that constant term and is necessarily in $K$. We may now assume that $(a_n)$ has infinitely many distinct terms.
+
+    Consider $A \coloneqq \set{a_n \mid n=1,2,3,\ldots}$. Since we have assumed that $(a_n)$ has infinitely many distinct terms, $A$ is infinite. It suffices to show that $A$ has a limit point in $K$. Suppose towards the contraposition that this is not the case. Then each $p \in K$ would have an open ball $B_p$ around $p$ that contains at most one point of $A$ (one point if $p \in A$).  Then $\set{B_p \mid p \in K}$ forms an open cover of $A$ but no finite subcollection covers $A$ as if it did, $A$ would have a limit point in $K$ which would contradict our assumption. Thus this cover cannot have a finite subcover of $K$. Thus $K$ is not compact. This completes this direction.
+
+    ($\Leftarrow$) Suppose $K$ is sequentially compact. \textbf{FINISH}
+\end{pf}
+
+Because we have shown that sequential compactness and covering compactness are the same thing, we will now refer to them as just \textit{compactness}.
+
+Now let's get to Heine-Borel Theorem.
+
+\begin{thm}[Heine-Borel Theorem]
+    Let $K \subseteq \R^n$ (with the Euclidean metric). $K$ is sequentially compact if and only if $K$ is closed (in $\R^n$) and bounded.
+\end{thm}
+\begin{slogan}
+    (In $\R^n$) Sequentially compact $\iff$ closed and bounded
+\end{slogan}
+
+Before we do the proof, we need a lemma.
+
+\begin{thm}[Bolzano-Weierstrass Theorem in Euclidean space]{\label{thm:generalBW}}
+    Let $(\vec a_n)$ be a sequence in $\R^n$ (with the Euclidean metric). Then, if $(\vec a_n)$ is bounded, $(\vec a_n)$ has a convergent subsequence.
+\end{thm}
+\begin{pf}
+    We will proceed by induction on the dimension of $\R$. We know that the base case holds by Bolzano-Weierstrass Theorem. Suppose the statement holds for $R^n$. We will show that the property holds for $\R^{n+1}$.
+    Since $(\vec a_n)$ is a sequence in $\R^{n+1}$, we may rewrite this as $(\vec x_n, y_n)$ where $(\vec x_n)$ is a sequence in $\R^n$. Because this sequence is bounded in $\R^n$, it must be bounded in each component sequence as otherwise the sequence would not be bounded. Now, by hypothesis, we know that there is a convergent subsequence $(\vec x_{n_k})$. Now, consider $(\vec a_{n_k})$. Because $(\vec a_{n_k})$ is still bounded, and we know there is a convergent subsequence of
+    $(y_{n_k})$, $(y_{n_{k_\ell}})$. It follows that $(\vec a_{n_{k_\ell}})$ converges. This completes the proof.
+\end{pf}
+
+
+
+Now let's move on to the proof of Heine-Borel.
+\begin{pf}
+    ($\Leftarrow$) Let $(\vec a_n)$ be a sequence in $K$. Because $K$ is bounded, it follows from Lemma \ref{thm:generalBW} that $(\vec a_n)$ has a convergent subsequence $(\vec a_{n_k})$. Because $K$ is closed, this limit must be in $K$. Thus $K$ is sequentially compact.
+
+    ($\Rightarrow$) Suppose $Y$ is (sequentially) compact. It follows from Theorems \ref{thm:seqcompactisclosed} and \ref{thm:seqcompactisbounded} that $Y$ is closed and bounded.
+
+    This completes the proof.
+\end{pf}
+
+
+\subsection{Closing remark on compactness}
+
+In general, when people say compactness, they mean covering compactness, so there is often no need to specify what type of compactness you're talking about, but if you're going to use sequential compactness, put `sequential' in parentheses or something. Also, a big takeaway from the idea of compactness (particularly covering compactness) is that the sets are, in fact, `compact' in some specific sense. The set is small in that even open cover has a finite subcover. Compactness is sort of like the best thing after finiteness. Now let's move on to other cool stuff.
+
+
+
+
+
+
+
+
+
+
+\subsection{Dense sets, Separability, and Bases}
+
+\subsubsection*{Dense set}
+
+\begin{defn}[Dense set]
+    Let $(X,d)$ be a metric space. A set $Y$ is \textit{dense} in $X$ if and only if $\clos Y = X$. In other words, $Y$ is dense in $X$ if and only if every point of $X$ is a point of $Y$ or a limit point of $Y$. In other words, $Y \subseteq X$ is dense in $X$ if and only if if $G \subseteq X$ is open, then $G \cap Y$ is nonempty.
+\end{defn}
+
+Do we have any examples of dense sets? Yup!
+\begin{ex}
+    $\Q$ is dense in $\R$.
+\end{ex}
+
+Now let's move on to the more interesting idea of separability.
+
+
+
+
+
+
+
+
+
+\subsubsection*{Separability}
+
+\begin{defn}[Separable]
+    Let $(X,d)$ be a metric space. $X$ is separable if and only if there exists a countable dense subset of $X$.
+\end{defn}
+
+Our example from density actually works here!
+\begin{ex}
+    $\R$ is separable as $\clos \Q = \R$ and $\Q$ is countable.
+\end{ex}
+
+This also gives us the following example.
+\begin{ex}
+    $\R^n$ is separable with countable dense subset $\Q^n$.
+\end{ex}
+
+There is also a relation to compactness here.
+\begin{thm}
+    If a metric space $(X,d)$ is compact, then $(X,d)$ is separable.
+\end{thm}
+\begin{pf}
+    Consider $\mathcal B_n \coloneqq \set{B_{1/n}(x) \mid x \in X}$. Each $B_n$ is an open cover of $X$, so it admits a finite subcover $B_n'$. Name the set of the centers of the balls in $B_n'$ $C_n$. Then $\bigcup_{n=1}^{\infty} C_n$ is a countable dense subset of $X$.
+\end{pf}
+
+There is another.
+\begin{thm}
+    Suppose $(X,d)$ is separable and $X =  \bigcup_{\lam \in \Lam} U_\lam$, $U_\lam$ open. Show
+        \[
+            X = \bigcup_{j=1}^\infty U_{\lam_j}
+        \]
+    for some $\lam_1, \lam_2, \ldots \in \Lam$.
+\end{thm}
+\begin{slogan}
+    Separable $\implies$ every cover has a countable subcover
+\end{slogan}
+\begin{pf}
+    Let $S$ be a countable dense subset of $X$. It follows from the construction in Lemma 7.2. that $\mathcal B \coloneqq \set{B_q(s) \mid s \in S \land q \in \Q^+}$ is a countable base for $X$. Then because $ \bigcup_{\lam \in \Lam}^{} U_{\lam}$ is open, it is the union of a countable subcollection of $\mathcal B$, say $\mathcal B' \coloneqq \set{B_1, B_2, B_3, \ldots}$.
+
+    Now, for each $B_i \in \mathcal B'$, choose a $U_{\lam_i} \in \set{U_\lam}_{\lam \in \Lam}$ such that $B_i \subseteq U_{\lam_i}$. Then our subcollection of $\set{U_\lam}_{\lam \in \Lam}$ is clearly countable and
+    $ \bigcup_{j=1}^{\infty} U_{\lam_j} \supseteq \bigcup_{j=1}^{\infty} B_j = \bigcup_{\lam \in \Lam}^{} U_\lam = X$, so $\set{U_{\lam_j}}_{j \geq 1}$ is a countable subcover of $X$.
+\end{pf}
+
+
+
+
+
+
+\subsubsection*{Bases}
+
+\textbf{FINISH} write something about vector spaces or smth
+
+\begin{defn}[Base of a metric space]
+    A collection $\set{V_\alpha}$ of open subsets of $X$ is said to be a \textit{base} for $X$ if and only if the following is true: For every $x \in X$ and every open set $G \subseteq X$ such that $x \in G$, we have $x \in V_\alpha \subseteq G$ for some $\alpha$. In other words, every open set in $X$ is the union of a subcollection of $\set{V_\alpha}$.
+\end{defn}
+
+There is a very cool connection between countable bases and separability: they are equivalent!
+
+\begin{thm}{\label{thm:sepiffcountbase}}
+    Let $(X,d)$ be a metric space. $X$ is separable if and only if it has a countable base.
+\end{thm}
+\begin{slogan}
+    Separable $\iff$ has a countable base
+\end{slogan}
+\begin{pf}
+    Let $(X,d)$ be a metric space.
+
+    ($\Rightarrow$) Suppose $(X,d)$ is separable with a countable dense subset $S$. Let $\mathcal B \coloneqq \set{B_q(s) \mid s \in S \land q \in \Q^+}$. We will show that $\mathcal B$ is a countable base for $X$. To that end, suppose $x \in X$ and let $G$ be an open subset that contains $x$. Because $G$ is open, there exists an $r > 0$ such that $B_r(x) \subseteq G$. Because $S$ is dense in $X$,
+    $B_{r/2}(x)$ intersects nontrivially with $S$, so there exists a $t \in S$ such that $t \in B_{r/2}(x)$. Now, choose a rational $d(x,t) < p < r/2$. Notice that then $x \in B_p(t)$. Now, choose some $u \in B_{p}(t)$. It follows that
+        \[
+            d(x,u) \leq d(x,t) + d(t,u) < \frac{r}{2} + p < \frac{r}{2} + \frac{r}{2} = r.
+        \]
+    Thus, $u \in B_r(x)$. We now have that $x \in B_{p}(t) \subseteq B_r(x) \subseteq G$. Since $B_p(t) \in \mathcal B$, $\mathcal B$ is a base of $(X,d)$.
+
+    We will now show that $\mathcal B$ is a countable. Let $f \colon \mathcal B \to \Q \x S$ be defined by $B_q(s) \mapsto (q,s)$. $f$ is clearly a bijection, so $\# \mathcal B = \# (\Q \x S)$. Now, since $S$ is countable, there exists a bijection $g$ from $S$ to $\Q$.
+    Thus, define $h \colon \Q \x S \to \Q \x \Q$ by $(q,s) \mapsto (q, g(s))$. This is clearly bijective, so we have that $\# \mathcal B = \# (\Q \x S) = \# (\Q \x \Q)$, so $\mathcal B$ is countable. This completes the proof.
+
+    ($\Leftarrow$) Suppose $(X,d)$ has a countable base $\set{V_n}_{n \geq 1}$. Now, let $x \in X$. Choose $p_n$ to be some point in $V_n$. Name this set of points $P$. $P$ is clearly countable. We will now show that $P$ is dense in $X$. Suppose $U$ is an open subset of $X$. Then there exists a subcollection $\set{V_{n_j}}$ such that $ \bigcup_{j=1}^{\infty} V_{n_j} = U$. Since $P \cap  \left( \bigcup_{j=1}^{\infty} V_{n_j} \right) \neq \es$,
+    $P \cap U \neq \es$, so $P$ is dense in $X$.
+\end{pf}
+
+We can also use bases to prove that the subset of a separable metric space is indeed separable!
+
+\begin{thm}
+    Let $(X,d)$ be a separable metric space. If $S \subseteq X$, then $S$ is also separable.
+\end{thm}
+\begin{slogan}
+    Separable $\implies$ subsets are separable
+\end{slogan}
+\begin{pf}
+    Let $Y$ be a countable dense subset of $X$. Then $\mathcal B \coloneqq \set{B_q(y) \mid y \in Y \land q \in \Q^+}$ forms a countable base of $X$ by the forward direction of Lemma \ref{thm:sepiffcountbase}. Let $\mathcal C \coloneqq \set{B \in \mathcal B \mid B \cap S \neq \es}$. $\mathcal C$ is clearly countable since $\mathcal B$ is countable. What remains to be shown is that $\mathcal C$ is a base for $S$.
+
+    Suppose $T \subseteq S$ is open. Suppose $t \in T$. Because $T$ is open, there exists a number $r > 0$ such that $B_r(t) \subseteq T$. Choose a rational number $0 < s <r$ (this exists since $\Q$ is dense in $\R$). Let $(y_n)$ be a sequence of points in $Y$ that have limit $t$ (this exists since $t \in X$ and $Y$ is dense in $X$). There then exists a point of the sequence $y_m \in B_{s/2}(t) \subseteq B_r(t)$. Then draw an $s/2$-ball around $y_m$ and choose a point $w$ within it.
+    It then suffices to show that $w \in B_r(t)$ since then we would have $w \in B_{s/2}(y_m) \subseteq B_r(t) \subseteq T$ which would then satisfy the definition of a base (since $B_{s/2}(y_m) \in \mathcal C$ by construction). Using the triangle inequality, we have that
+        \[
+            d(w,t) \leq d(w,y_m) + d(y_m,t) < s/2 + s/2 =s < r.
+        \]
+    Thus $w \in B_r(t)$ and the proof is complete.
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Totally boundedness}
+
+Before we define totally bounded, we need to define something else first.
+
+\begin{defn}
+    Let $(X,d)$ be a metric space. A set $S$ is said to be \textit{$\e$-dense in X} if and only if for all $x \in X$, there exists an $s \in S$ such that $d(x,s) < \e$.
+\end{defn}
+\begin{slogan}
+    $\e$-dense $\iff$ there exists finite collection of $\e$-balls in $X$ whose union contains $X$
+\end{slogan}
+
+Now we can talk about totally boundedness! :)
+
+\begin{defn}[Totally boundedness]
+    A metric space $(X,d)$ is \textit{totally bounded} if and only if for all $\e > 0$, there exists an $\e$-dense subset of $X$.
+\end{defn}
+
+There are some interesting connections to compactness here.
+\begin{thm}
+    Let $(X,d)$ be a metric space. If $(X,d)$ is compact, then $(X,d)$ is totally bounded.
+\end{thm}
+\begin{slogan}
+    Compact $\implies$ totally bounded
+\end{slogan}
+\begin{pf}
+    Let $\e > 0$. Consider the open cover $\set{B_\e(x)}_{x \in X}$. Because $X$ is compact, there is a finite subcover. Name the set of centers of these balls in the finite subcover $S$. Then $S$ is $\e$-dense in $X$ by construction.
+\end{pf}
+
+When does totally boundedness mean compact, however? When the space is also complete! But before we do that we need a lemma/theorem.
+\begin{lem}{\label{lem:totboundsubsets}}
+    Let $(X,d)$ be a metric space and let $S \subseteq X$. If $(X,d)$ is totally bounded, then $S$ is totally bounded.
+\end{lem}
+\begin{slogan}
+    Totally bounded $\implies$ subsets are totally bounded
+\end{slogan}
+\begin{pf}
+    Let $\e > 0$. Let $Y = \set{y_1, \ldots, y_n}$ be finite, $\e/2$-dense subset of $X$ (this exists because $X$ is totally bounded). Define $W = \set{w_1, \ldots, w_k} \subseteq Y$ to be the set of $y_j$'s such that $B_{\e/2}(y_j) \cap S \neq \es$. We will show that $ \bigcup_{j=1}^{k} B_\e(w_j) \supseteq S$. Suppose
+    $s \in S$. Then there exists a $y \in Y$ such that $s \in B_{\e/2}(y)$. Then there $w \in W$ such that $w \in B_{\e/2}(y)$. It then follows from the triangle inequality that
+    \[
+        d(w,s) \leq d(w,y) + d(y,s) < \frac{\e}{2} + \frac{\e}{2} = \e.
+    \]
+    Thus $s \in B_{\e}(w) \subseteq  \bigcup_{j=1}^{k} B_\e(w_j)$.
+\end{pf}
+
+Now we can move on to the main event! B)
+\begin{thm}
+    Let $(X,d)$ be a metric space. If $(X,d)$ is complete and totally bounded, then $(X,d)$ is compact.
+\end{thm}
+\begin{pf}
+    Suppose $(x_n)$ is a sequence in $(X,d)$. By Theorem \ref{lem:totboundsubsets}, $S = \set{x_n \mid n \in \Z^+} \subseteq X$ is totally bounded. Hence there exists a finite 1-dense subset $Y_1$ in $S$. Then, there exists a $y_1 \in Y_1$ such that closed 1-ball around $y_1$ has infinitely many points of $S$ (because if none of the closed 1-balls around points of $Y_1$ had infinitely many points, $S$ would be finite which would be a contradiction). Then by Theorem \ref{lem:totboundsubsets}, there exists a 1/2-dense subset $Y_2$ of $Y_1$ (since $Y_1$ is totally bounded). By a similar argument, there exists a $y_2 \in Y_2$
+   such that the closed 1/2-ball around $y_2$ contains infinitely many points of $Y_1 \subseteq S$. Similarly, there exists a 1/3-dense subset $Y_3$ of $Y_2$ and there exists a $y_3 \in Y_3$ such that the closed 1/3-ball around $y_3$ contains infinitely many points of $Y_2 \subseteq Y_1 \subseteq S$. Continuing this process, we get a subsequence $(y_n)$ of $(x_n)$.
+
+   We will now show that $(y_n)$ is Cauchy. Let $\e > 0$. Then there exists a positive integer $N$ such that $1/N < \e$ by the Archimedean Property. Take $i,j \geq N+1$. Suppose without loss of generality that $j \geq i$. Then by construction of $(y_n)$, we know that
+        \[
+            y_j \in \clos B_{\frac{1}{i}}(y_i) \implies d(y_i,y_j) \leq \frac{1}{i} \leq \frac{1}{N+1} < \frac{1}{N} < \e.
+        \]
+   Thus $(y_n)$ is Cauchy. Now, since $(y_n) \subseteq Y_1$ and $Y_1$ is closed (since any finite set is closed in any metric space), $Y_1$ is complete and so $(y_n)$ converges. Thus $(x_n)$ has a convergent subsequence and $(X,d)$ is (sequentially) compact.
+\end{pf}
+
+
+
+
+
+
+\subsection{-Connectedness}
+
+We call this section `-connectedness' because we actually have two types of connectedness to discuss: connectedness and path/arcwise-connectedness. We'll get to the former now.
+
+\subsubsection*{Connectedness}
+
+Connectedness means exactly what you think it means: (colloquially) a set is connected if it's, well, connected. What I mean by this is that if you think something looks connected, it probably is. But how do we turn this into a mathematical definition? It actually turns out we don't do this directly. Indeed, it is actually easier to define \textit{disconnectedness} in order to define \textit{connectedness}.
+
+\begin{defn}
+    A metric space $(X,d)$ is \textit{disconnected} if and only if there exists $A,B \subseteq X$ such that $A,B$ are nonempty, open, disjoint, and $A \cup B = X$.
+
+    A metric space $(X,d)$ is \textit{connected} if and only if it is not disconnected.
+
+    A subset $Y$ of a metric space $(X,d)$ is \textit{connected} if and only if $(Y,d|_{Y \x Y})$ is connected.
+\end{defn}
+
+
+Here's an example of a connected set.
+\begin{ex}
+    $[0,1]$ is connected.
+\end{ex}
+By virtue of the definition of connectedness, we actually have to do proof by contradiction most of the time.
+\begin{pf}
+    Suppose towards a contradiction that $[0,1]$ is disconnected. Then there exists $A,B \subseteq [0,1]$ such that $A,B$ are open, nonempty, disjoint, and $A \cup B = [0,1]$.
+
+    \textbf{FINISH}
+\end{pf}
+
+Here's an example of a disconnected set.
+\begin{ex}
+    $(0,1) \cup (2,3)$ is disconnected.
+\end{ex}
+\begin{pf}
+    Clear.
+\end{pf}
+
+
+\subsubsection*{Path-connectedness}
+
+Two points being path-connected means exaclty what you imagine it to mean (like with connectedness). More precisely this is:
+\begin{defn}[Path connectedness]
+    A metric space $(X,d)$ is \textit{path-connected} if and only if for all $x,y \in X$, there exists a continuous function $\gamma \colon [0,1] \to X$ such that $\gamma(0) = x_1$ and $\gamma(1)=y$.
+\end{defn}
+
+It seems (at least to me) clear that path-connectedness is a stronger condition than connectedness. This hunch turns out to be correct, however `proof by inspection' is not enough, so we'll actually go through this.
+
+\begin{thm}{\label{thm:pathconimpliescon}}
+    If a metric space $(X,d)$ is path-connected, then $(X,d)$ is connected.
+\end{thm}
+\begin{pf}
+    Suppose towards a contradiction that $(X,d)$ is not connected. Then there exists $A,B \subseteq X$ such that $A,B$ are open, nonempty, disjoint, and have union equal to $X$. Choose $a \in A$ and $b \in B$. We will show that there does not exist a path $\gamma$ from $a$ to $b$, contradicting $X$'s path-connectedness.
+
+    $\gamma^{-1}(A)$ and $\gamma^{-1}(B)$ are open since $\gamma$ is continuous. Regarding disjointness, we have that $\gamma^{-1}(A) \cap \gamma^{-1}(B) = \gamma^{-1}(A \cap B) = \gamma^{-1}(\es) = \es$. We also have that $\gamma^{-1}(A) \cup \gamma^{-1}(B) = \gamma^{-1}(A \cup B) = \gamma^{-1}(X) = [0,1]$.
+    Thus $[0,1]$ is disconnected which is a contradiction. This completes the proof.
+\end{pf}
+
+However, this does not go both ways! The topologists sine curve: $\set{\sin 1/x \mid x \in (0,1]} \cup \set 0$ is connected but not path connected. However, for open subsets in $\R^n$, this is true. We'll get to that now.
+
+
+
+\subsubsection*{Connectedness and Path-connectedness in $\R^n$}
+
+\begin{thm}{\label{thm:conimpliespathcon}}
+    Let $U \subseteq \R^n$ be open. Then, $U$ is connected if and only if it is path-connected.
+\end{thm}
+For the following proof, referring to Figure \ref{fig:conimpliespathcon}
+\begin{pf}
+    ($\Rightarrow$) Suppose $p \in U$. Let $S_p \coloneqq \set{u \in U \mid \exists \gamma \colon [0,1] \to U: \gamma(0) = p, \gamma(1) = u}$.
+
+    We will first show that $S_p$ is open. Suppose $q \in S_p$. Then there exists a number $r > 0$ such that $B_r(q) \subseteq U$. Let $s \in B_r(q)$. Let $\gamma' \colon [0,1] \to U$ be the straight line from $q$ to $s$. Now, let $\Gamma \colon [0,1] \to U$ be defined by
+        \[
+            t \mapsto
+                \begin{cases}
+                    \gamma(2t) & t \in \left[0,\frac{1}{2}\right); \\
+                    \gamma'(2t) & t \in \left[ \frac{1}{2}, 1\right].
+                \end{cases}
+        \]
+     Now we have a continuous path $\Gamma$ from $p$ to $s$. Thus $B_r(q) \subseteq S_p$ and $S_p$ is open.
+
+     We will now show that $S_p = U$. Suppose towards a contradiction that $U - S_p$ is nonempty. Then there exists a point $a \in U-S_p$. Let $r'>0$. Consider a point $b \in B_{r'}(a)$. Suppose towards a contradiction that $b \not \in B_{r'(a)}$. Then, $b \in S_p$. Then $a$ would be reachable from $b$ with a continuous path from the same argument in the previous paragraph, which would be a contradiction, so $b \in B_{r'}(a)$.
+     Thus, $U-S_p$ is open. Then, $U = S_p \cup (U-S_p)$ which means that $U$ is disconnected which is a contradiction. Therefore, $U-S_p = \es$ and $S_p = U$.
+
+     Hence, $U$ is path-connected.
+
+    ($\Leftarrow$) This direction follows from \ref{thm:pathconimpliescon}.
+
+    This completes the proof.
+\end{pf}
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {conimpliespathcon.pdf_tex}}
+    \caption{Diagram for the first part of the proof of Theorem \ref{thm:conimpliespathcon}.}
+    \label{fig:conimpliespathcon}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

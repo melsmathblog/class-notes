@@ -1,0 +1,130 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+\externaldocument{chapter4}
+\externaldocument{chapter5}
+
+\begin{document}
+
+\section{(Aside:) Completeness}
+
+\subsection{Basics}
+
+In the very first section (in the first paragraph, in fact!), we said the rationals are `incomplete.' We will now explain exactly what that meant.
+\begin{defn}[Completeness]
+    A metric space $(X,d)$ is complete if and only if every Cauchy sequence in $(X,d)$ converges in $(X,d)$.
+\end{defn}
+
+Do we have an example of a complete metric space? Indeed, we do!
+\begin{ex}
+    $\R$ with the Euclidean metric is complete.
+\end{ex}
+\begin{pf}
+    This is Theorem \ref{thm:completeness of R}.
+\end{pf}
+
+In fact, we have many more examples of complete metric spaces! Say $\ell_2$ or $C([0,1])$ (with the sup-norm metric), or even $\R^n$ (with the Euclidean metric) for any finite $n$! (We'll prove $\ell_2$, $C([0,1])$, and $\R^2$ is complete in the upcoming section.) Now to some examples.
+
+
+
+\subsection{Examples of cool complete metric spaces (with proof)}
+
+\begin{fact}
+    $\R^2$ with the Euclidean metric is complete.
+\end{fact}
+\begin{pf}
+    Let $\e > 0$. Suppose $(\vec a_n)$ is a Cauchy sequence. We may rewrite $(\vec a_n)$ as $((x_n, y_n))$. First we will show that both $(x_n)$ and $(y_n)$ are Cauchy in $\R$.
+
+    Because $(\vec a_n)$ is Cauchy, there exists an integer $N$ such that $d(\vec a_i, \vec a_j) = \sqrt{(x_i-x_j)^2+(y_i-y_j)^2} < \e$ if $i,j \geq N$. It follows that
+        \begin{align*}
+            |x_i-x_j| = \sqrt{(x_i-x_j)^2} \leq \sqrt{(x_i-x_j)^2+(y_i-y_j)^2} &< \e \\
+            |y_i-y_j| = \sqrt{(y_i-y_j)^2} \leq \sqrt{(x_i-x_j)^2+(y_i-y_j)^2} &< \e
+        \end{align*}
+    if $i,j \geq N$. Thus $(x_n)$ and $(y_n)$ are Cauchy in $\R$ (with the Euclidean metric), so they have limits $x$ and $y$, respectively. We claim that $\lim \vec a_n = (x,y)$.
+
+    Because $\lim x_n = x$, there exists an integer $N_1$ such that $n \geq N_1$ implies that $|x_n-x| < \e/\sqrt 2$. Similarly, there exists an $N_2$ such that $|y_n-y| < \e/\sqrt 2$ if $n \geq N_2$. Taking $n \geq \max \set{N_1, N_2}$, we get that
+        \begin{align*}
+            d(\vec a_n, \vec a) &= \sqrt{(x_n-x)^2 + (y_n-y)^2} \\
+                &= \sqrt{|x_n-x|^2+|y_n-y|^2} \\
+                &< \sqrt{ \left(\frac{\e}{\sqrt 2} \right)^2 + \left(\frac{\e}{\sqrt 2} \right)^2} \\
+                &= \sqrt{\frac{\e^2}{2} + \frac{\e^2}{2}} \\
+                &= \sqrt{\e^2} \\
+                &= \e.
+        \end{align*}
+     Hence $\lim \vec a_n = (x,y)$ and $\R^2$ (with the Euclidean metric is complete.)
+\end{pf}
+\begin{coro}
+    $\R^n$ with the Euclidean metric is complete.
+\end{coro}
+\begin{pf}
+    Mimic the proof for the completeness of $\R^2$.
+\end{pf}
+
+\begin{fact}
+    $\R^2$ with the Taxicab metric is complete.
+\end{fact}
+\begin{pf}
+    Mimic the proof of the completeness of $\R^2$.
+\end{pf}
+
+
+\begin{fact}
+    $\ell_2$ with the metric $d \colon \ell_2 \x \ell_2 \to \R$ defined by
+        \[
+            d((x_n),(y_n)) = \left( \sum_{n=1}^{\infty} |x_n-y_n|^2 \right)^{\frac{1}{2}}
+        \]
+    is complete.
+\end{fact}
+
+\begin{pf}
+    \textbf{FINISH}
+\end{pf}
+
+
+
+\begin{fact}
+    $C([0,1])$ with the metric $d \colon C([0,1]) \x C([0,1]) \to \R$ defined by
+        \[
+            d(f,g) = \sup \set{|f(x)-g(x)| : x \in [0,1]}
+        \]
+    is complete.
+\end{fact}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Let $(f_n)$ be a Cauchy sequence. Then there exists an integer $N$ such that $d(f_i,f_j) < \e/2$ if $i,j \geq N$. By the definition $d$ and supremum, we know that $|f_i(x)-f_j(x)| < \e/2 < \e$ and $(f_n(x))$ is a Cauchy sequence in $\R$ with the Euclidean metric for all $x \in [0,1]$.
+
+    Taking $i,j \geq N$ again and then taking $j \to \infty$, we get
+        \[
+            \sup_{y \in [0,1]} |f_i(y)-f_j(y)| < \frac{\e}{2} \to \sup_{y \in [0,1]}|f_i(y)-f_0(y)| \leq \frac{\e}{2} < \e.
+        \]
+    Thus, $d(f_i,f_0) < \e$ if $i \geq N$ and $\lim f_n =f_0$.
+
+    We must still show that $f_0 \in C([0,1])$ (i.e. we must show that $f_0$ is continuous). Let $c \in [0,1]$. Since $\lim f_n = f_0$, there exists an integer $N'$ such that for $|f_n(x)-f_0(x)| \leq d(f_n,f_0) < \e/3$ if $n \geq N'$ for all $x \in [0,1]$. Recall also that because $f_{N'}$ is continuous, there exists a $\delta > 0$ such that $|x-c| < \delta$
+    implies that $|f_{N'}-f_{N'}(c)| < \e/3$. Now taking $|x-c| < \delta$, it follows that
+        \[
+            |f_0(x)-f_0(c)| \leq |f_0(x) - f_{N'}(x)| + |f_{N'}(x)-f_{N'}(c)| + |f_{N'}(c)-f_0(c)| < \frac{\e}{3}+\frac{\e}{3}+\frac{\e}{3} = \e.
+        \]
+    Thus $f_0$ is continuous.
+
+    This completes the proof.
+\end{pf}
+\begin{rem}
+    The final inequality in the proof is called the ``Three Term Estimate." It's very important stuff. Don't forget it! We might make a section/bit on it. idk
+\end{rem}
+
+
+\subsection{Complete subspaces}
+
+When is the subset of a metric space complete? When it's closed!
+\begin{fact}
+    Let $(X,d)$ be a complete metric space and suppose $Y \subseteq X$. If $Y$ is closed in $X$, then $(Y, d|_{Y \x Y})$ is complete.
+\end{fact}
+\begin{pf}
+    Suppose $(x_n)$ is a Cauchy sequence in $Y$. Then $(x_n)$ converges to $x$ in $X$. $Y$ contains all its limit points because it is closed, so $x \in Y$. Thus $Y$ is complete.
+\end{pf}
+
+Now back to topology!
+
+\end{document}

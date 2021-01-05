@@ -1,0 +1,99 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\begin{document}
+
+\section{Real numbers and the least upper bound property}
+
+\subsection{Problems with the rationals and the need for the reals}
+
+Rational numbers are pretty cool. You can make them as small as you want, you can make them as close as you want to any other number (just add more digits or something. You figure it out lmfao). They seem just perfect! But, sadly, they are not. They definitely aren't. They are incomplete! (We'll explain precisely what this means later, but the idea is that) The set of rational numbers has holes! What do I mean by this? Well, there are \textit{irrational numbers}. Here's an example.
+
+\begin{ex}
+    $\sqrt{2}$ is an irrational number. In other words, it cannot be written as the ratio of two integers.
+\end{ex}
+\begin{pf}
+    Suppose towards a contradiction that $\sqrt 2$ is rational. Then there exists corpime integers $p$ and $q$ such that $p/q = \sqrt 2$. Squaring both sides and multiplying by $q^2$, we get that $p^2 = 2q^2$. Because the square of an odd integer is always odd, we know that $p$ must then be even, so there exists an integer $r$ such that $p=2r$. It follows that $4r^2=2q^2 \implies 2r^2 = q^2$. By the same reasoning, $q$ must then also be even, contradicting our assumed coprimeness of $p$ and $q$. Thus $\sqrt 2$ must be rational.
+\end{pf}
+We have now uncovered a `hole' in our set of rationals, so our rationals aren't `complete' in some sense. Are the real numbers complete, however? By construction yes, but we'll (maybe) get to that eventually.
+
+\subsection{Real numbers and the least upper bound property}
+
+How do we know that $\R$ doesn't have the same pitfalls as the rationals? Well, it's equipped with the \textit{least upper bound property} (or \textit{axiom of completeness}, depends on what you want to call it).
+    \begin{ax}[The least upper bound property]
+        Every nonempty set of real numbers that is bounded above has a least upper bound. \textbf{fix}
+    \end{ax}
+What does literally any of this mean? We'll get to that now.
+
+\begin{defn}[Upper and lower bounds]
+    A set $A \subseteq \R$ is \textit{bounded above} if there exists a number $u \in \R$ such that if $a \in A$, then $a \leq u$. $u$ is called an \textit{upper bound} for $A$.
+
+    Being bounded below and lower bounds are defined similarly.
+\end{defn}
+Now what does \textit{least upper bound} mean?
+\begin{defn}[Least upper and greatest lower bounds]
+    A real number $s$ is the \textit{least upper bound} or \textit{supremum}for a set $A \subseteq \R$ if and only if the following conditions are met:
+        \begin{enumerate}[(i)]
+            \item $s$ is an upper bound for $A$;
+            \item if $u$ is any upper bound for $A$, then $s \leq u$.
+        \end{enumerate}
+    $s$ is denoted as $\sup A$.
+
+    The \textit{greatest lower bound} or \textit{infimum} is defined similarly.
+\end{defn}
+
+Does this fill our hole from before, however? Well, consider the set $Q = \set{q \in \Q \mid q^2 < 2}$. Consider $Q$ as a subset of the reals, we get that $\sup Q = \sqrt 2$, so our hole is filled! Perfect.
+
+Here's another way to define least upper bound that seems almost too clear to be worth proving, but we'll do it for the sake thoroughness ig.
+
+\begin{lem}{\label{lem:alt def for LUB}}
+    Assume $s \in \R$ is an upper bound for a set $A \subseteq \R$. Then $s = \sup A$ if and only if for every $\e > 0$, there exists an element $a \in A$ such that $s-\e < a$. In other words, $s = \sup A$ if and only if any number smaller than $s$ is not an upper bound of $A$.
+\end{lem}
+\begin{pf}
+    Refer to Abbott's \textit{Understanding Analysis} Lemma 1.3.8. for proof. \textbf{PRove this. Try to keep this self-contained}
+\end{pf}
+
+Now let's move on to some consequences of the least upper bound property.
+
+\subsection{Consequences of the least upper bound property}
+
+There are two very, very, very, very important consequences of the least upper bound property: the \textit{Nested Interval Property} and the \textit{Archimedean Property}. We'll cover them in that order, also.
+\begin{thm}[Nested Interval Property]{\label{thm:nested interval}}
+    Assume for each $n=1,2,3,\ldots$, we are given a closed interval $I_n = [\ell_n, r_n]$. Suppose that for all $n$, $I_n \supseteq I_{n+1}$. Then the intersection of all $I_n$ is nonempty.
+\end{thm}
+
+\begin{slogan}
+    The intersection of nested closed intervals is nonempty.
+\end{slogan}
+
+Before we start the proof, looking at Figure \ref{fig:nested interval} may help you digest what the theorem is saying (it also may make following the proof easier).
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {nestedinterval.pdf_tex}}
+    \caption{Diagram of the nested intervals for Theorem \ref{thm:nested interval}}
+    \label{fig:nested interval}
+\end{figure}
+
+\begin{pf}
+    Let $L = \set{\ell_n \mid n=1,2,3,\ldots}$ and let $R = \set{r_n \mid n=1,2,3,\ldots}$. Let $s = \sup L$. By construction of the intervals, we know that each $r_n$ is an upper bound of $L$, so, by definition of least upper bound, we know that $s \leq r_n$ for all $n$. Thus for any $n$, we have that $\ell_n \leq s \leq r_n$. Thus, $s \in I_n$ for all $n$ and we have that the intersection is nonempty.
+\end{pf}
+
+This may not seem useful now, but it will be used later to do some pretty cool stuff.
+\begin{thm}[Archimedean Property]{\label{thm:Achimedean Property}}
+    Given any number $r \in \R$, there exists a positive integer $n$ such that $n > r$.
+\end{thm}
+\begin{slogan}
+    There is always a bigger integer.
+\end{slogan}
+
+\begin{pf}
+    Suppose towards a contradiction that $r > N$ for all positive integers $N$. Then $r$ is an upper bound for  $\Z^+$. Let $\ell$ be the least upper bound for $\Z^+$ (which exists by the least upper bound property). By Lemma \ref{lem:alt def for LUB}, $\ell-1$ is not an upper bound, so there exists an integer $n > \ell-1$, so $n+1 > \ell$. Because $n+1 \in \Z^+$, $\ell$ is not an upper bound for $\Z^+$ and we have a contradiction. This completes the proof.
+\end{pf}
+\begin{coro}
+    Given any real number $r > 0$, there exists a positive integer $n$ such that $1/n < r$.
+\end{coro}
+\begin{slogan}
+    There's always a smaller reciprocal of a positive integer.
+\end{slogan}
+
+\end{document}

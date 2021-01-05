@@ -1,0 +1,370 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+
+\begin{document}
+
+\section{Real sequences}
+
+\subsection{Basics}
+
+First we have to define what a sequence is. (It's pretty much what you expect it to be, except it must be infinite in a sense we are about to make precise.)
+\begin{defn}[Sequence]
+    Given a set $S$, a \textit{sequence} in $S$ is a function from $\Z^+$ to $S$. A sequence is commonly denoted as $(a_n)$ where $n$ is a positive integer and $a_n$ is the value of the sequence for that integer.
+\end{defn}
+\begin{rem}
+    A sequence in a particular set $S$ can be said to be an $S$ sequence. For example, a sequence in the reals or rationals is called a real sequence or a rational sequence, respectively.
+\end{rem}
+Here are a few examples of sequences.
+\begin{ex}
+    \begin{enumerate}[(a)]
+        \item $(\text{dog}, \text{cat}, \text{cat}, \text{cat}, \ldots)$ is a sequence on the set of $\set{\text{cat}, \text{dog}}$.
+        \item $(n)_{n=1}^\infty = (1,2,3,\ldots)$ is a sequence on the set of integers.
+        \item $(a_n)$ where $a_n = \sqrt 2 - 1/n$ for each positive integer $n$ is a sequence in the real numbers.
+        \item $(x_n)$ where $x_1 = \pi$ and $x_n = x_{n-1}+1$ is a sequence of real numbers.
+    \end{enumerate}
+\end{ex}
+
+Now here are two very important inequalities that will come up literally all the time.
+\begin{thm}[Triangle Inequality]
+    Let $a,b,c \in \R$. Then, $|a-b| \leq |a-c| + |c-b|$.
+\end{thm}
+\begin{pf}
+    We aim to show that $|a+b| \leq |a| + |b|$. It suffices to show this because, if this is true, then $|a-c + c-b| \leq |a-c| + |c-b|$, which is our intended triangle inequality.
+
+    Because of the definition of absolute value, we must consider the cases where $a+b > 0$ and $a+b \leq 0$.
+
+    Suppose $a+b > 0$. Then, $|a+b| = a+b \leq |a| + |b|$.
+
+    Suppose $a+b \leq 0$. Then, $|a+b| = -(a+b) = -a -b \leq |a| + |b|$.
+
+    This completes the proof.
+\end{pf}
+
+\begin{thm}[Reverse Triangle Inequality]
+    Let $a,b \in \R$. Then, $||a|-|b|| \leq |a-b|$.
+\end{thm}
+\begin{pf}
+    Consider $|a|$. It follows that
+        \[
+            |a| = |a-b+b| \leq |a-b| + |b| \implies |a|-|b| \leq |a-b|. \tag{1}
+        \]
+    Since $a$ was arbitrary, it follows that
+        \[
+            |b|-|a| \leq |b-a| = |a-b|. \tag{2}
+        \]
+    Combining (1) and (2) and noting the definition of absolute value, we get that
+        \[
+            ||a|-|b|| \leq |a-b|.
+        \]
+    This completes the proof.
+\end{pf}
+
+Now we can move on to more cool stuff. B) Note: For the rest of this section, we will only be speaking of real sequences.
+
+\subsection{Convergent and divergent sequences}
+
+\subsubsection*{Convergent sequences}
+
+Let's get right into it.
+\begin{defn}[Convergence]{\label{defn:convergence in R}}
+    A sequence $(x_n)$ (in $\R$) converges to a number $x \in \R$ if and only if for every $\e > 0$, there exists an integer $N$ such that $n \geq N$ implies $|x_n-x| < \e$. This is denoted $\lim x_n = x$ or $(x_n) \to x$.
+\end{defn}
+\begin{rem}
+    This is basically saying, a sequence converges to some number if it \textit{eventually} gets arbitrarily close to that number.
+\end{rem}
+
+Here are some examples of convergent sequences:
+\begin{ex}
+    \begin{enumerate}[(a)]
+        \item $(1/n)_{n=1}^\infty$ (converges to 0);
+        \item $(0,0,0,\ldots)$ (converges to 0);
+        \item $(a_n)$ where $a_n = 10^{99}$ if $n < 50,000$ and $a_n = 1/n$ otherwise (converges to 0).
+    \end{enumerate}
+\end{ex}
+\begin{rem}
+    (c)'s convergence from the example should really push the point that sequences converge based on their tails.
+\end{rem}
+
+How do we prove a sequence like (a) converges, however? Well, we'll do it as an example.
+\begin{ex}
+    $\lim (1/n) = 0$.
+\end{ex}
+\begin{pf}
+    To prove that the limit of the sequence $(1/n)_{n=1}^\infty$ is 0, we have to show that, as per the definition, that for any $\e > 0$, there exists an integer $N$ such that $n \geq N$ implies that $|1/n-0| < \e$. To this end, recall the Archimedean Property and notice that $|1/n-0| = 1/n$ since $1/n$ is positive for all positive integers $n$. It follows then by the Archimedean Property that there exists a positive integer $N$ such that $1/N < \e$. Taking $n \geq N$, we have that $|1/n-0| = 1/n < \e$. This completes the proof.
+\end{pf}
+
+One question you may (or may not) have is the following: are limits unique? What I mean by this is can you have a sequence that converges to two different numbers? This likely sounds odd because it is impossible! We will show this, but before we do we need a lemma.
+\begin{lem}{\label{lem:epsilon equality}}
+    Two real numbers are equal if and only if their difference may be made arbitrarily small. In other words, two real numbers $a,b$ are equal if and only if for every $\e > 0$, $|a-b| < \e$.
+\end{lem}
+\begin{pf}
+    Let $\e > 0$ be arbitrary.
+
+    ($\Rightarrow$) Suppose $a=b$. Then $|a-b| = 0 < \e$.
+
+    ($\Leftarrow$) Suppose $|a-b| < \e$. Suppose towards a contradiction that $a\neq b$. Then, clearly, $a-b \neq 0$ (because otherwise they would be equal), so $|a-b| > 0$. Thus, by hypothesis, we can make $|a-b| < |a-b|$ which is a contradiction. Thus $a=b$.
+\end{pf}
+
+\begin{thm}[Uniqueness of limits of convergent sequences]
+    The limit of a convergent sequence is unique.
+\end{thm}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Suppose we have a convergent sequence $(x_n)$ that converges to real numbers $a$ and $b$. It then follows that there exists integers $N_a$ and $N_b$ such that $n \geq N_a$ implies $|x_n-a| < \e/2$ and $n \geq N_b$ implies $|x_n-b| < \e/2$, respectively. Taking $n \geq \max\set{N_a, N_b}$ and summing these two inequalities we get that $|x_n-a| + |x_n-b| < \e$. It follows from triangle inequality then that
+        \[
+            |a-b| \leq |x_n-a| + |x_n-b| < \e \implies |a-b| < \e.
+        \]
+    It follows by Lemma \ref{lem:epsilon equality} that $a=b$. Thus the limit of a convergent sequence is unique.
+\end{pf}
+
+\subsubsection*{Divergent sequences}
+As you might suspect, divergence is the opposite of convergence. More precisely,
+\begin{defn}[Divergence of a sequence]
+    A sequence is \textit{divergent} if and only if it does not converge.
+\end{defn}
+Here are a few examples of divergent sequences:
+\begin{ex}
+    Some divergent sequences.
+    \begin{enumerate}[(a)]
+        \item $(0,1,0,1,0,1,\ldots)$;
+        \item $(a_n)$ where $a_n = 1/n$ for odd $n$ and $a_n = 1$ for even $n$;
+        \item $(\sin (n))_{n=1}^\infty$;
+        \item $(1,2,3,\ldots)$.
+    \end{enumerate}
+\end{ex}
+
+\subsection{Algebraic and order theorems for convergent sequences}
+
+Convergent sequences are very well behaved. Indeed, they behave pretty much exactly how you'd expect them to (i.e. they behave like numbers themselves when it comes to algebra operations). But before we get into the algebra, we first need a theorem that will prove to be helpful, but even before that we need another definition.
+
+\begin{defn}[Bounded sequence]
+    A sequence $(x_n)$ is bounded if and only if there exists a number $M > 0$ such that $|x_n| \leq M$ for all positive integer $n$.
+\end{defn}
+To make what this means more explicit, here's an example.
+\begin{ex}
+    Here are some examples of bounded sequences.
+        \begin{enumerate}[(a)]
+            \item $(1/n)_{n=1}^\infty$ is bounded by 1;
+            \item $(1,-1,1,-1,1,-1,\ldots)$ is bounded by 1;
+            \item $(\sin(n))$ is bounded by 1.
+        \end{enumerate}
+\end{ex}
+However, not all sequences are bounded! For example, $(1,2,3,\ldots)$.
+
+Now we can move on to our useful theorem.
+\begin{thm}{\label{thm:convergent means bounded}}
+    Every convergent sequence is bounded.
+\end{thm}
+\begin{slogan}
+    Convergent $\implies$ bounded.
+\end{slogan}
+\begin{pf}
+    Suppose $(x_n)$ is a sequence that converges to $x \in \R$. By definition of convergence, we know that there exists an integer $N$ such that $n \geq N$ implies that $|x_n - x| < 1$. It follows by reverse triangle inequality that $|x_n|-|x| < 1$, so $|x_n| < 1+ |x|$. Then, let $M = \max \set{|x_n| : n=1,2,3,\ldots, N-1} \cup \set{1+|x|}$. Clearly $M$ bounds $(x_n)$ and $(x_n)$ is bounded. This completes the proof.
+\end{pf}
+
+Now we can get into the algebra of limits.
+\begin{thm}[Algebraic Limit Theorem]
+    Let $\lim x_n = x$, $\lim y_n = y$, and $c \in \R$. Then,
+        \begin{enumerate}[\normalfont(i)]
+            \item $\lim (c x_n) = cx$;
+            \item $\lim(x_n + y_n) = x + y$;
+            \item $\lim(x_n y_n) = xy$;
+            \item $\lim(x_n/y_n) = x/y$ if $y \neq 0$.
+        \end{enumerate}
+\end{thm}
+
+\begin{pf}
+    Let $\e> 0$.
+    (i) If $c=0$, then we have the 0 sequence which clearly converges to 0, so we may assume that $c \neq 0$. Then, because $(x_n) \to x$, there exists an integer $N$ such that $n \geq N$ implies $|x_n-x| < \e/c$. It then follows that
+        \[
+            |cx_n-cx| = c|x_n-x| < c \cdot \frac{\e}{c} = \e.
+        \]
+    Thus $(cx_n) \to cx$.
+
+    (ii) Because $\lim x_n = x$ and $\lim y_n = y$, there exists integer $N_1, N_2$ such that $n \geq N_1$ implies $|x_n-x| < \e/2$ and $n \geq N_2$ implies $|y_n-y| < \e/2$, respectively. It then follows that
+        \[
+            |(x_n+y_n) - (x+y)| \leq |x_n-x| + |y_n-y| < \frac{\e}{2} + \frac{\e}{2} = \e.
+        \]
+    Thus $\lim(x_n + y_n) = x+y$.
+
+    (iii) Because $(y_n)$ is convergent, by Theorem \ref{thm:convergent means bounded}, $(y_n)$ is bounded. Let $Y > 0$ be a bound for $(y_n)$. Moreover, because $\lim x_n = x$ and $\lim y_n = y$, there exists an $N_1$ and $N_2$ such that $n\geq N_1$ implies $|x_n-x| < \e/(2Y)$ and $n \geq N_2$ implies
+    $|y_n-y| < \e/(2|x|)$, respectively. It then follows that
+        \begin{align*}
+            |x_ny_n - xy| &\leq |x_ny_n - x y_n | + |xy_n - xy| \\
+                &= |y_n| |x_n-x| + |x| |y_n-y| \\
+                &\leq Y|x_n-x| + |x| |y_n-y| \\
+                &< Y \cdot \frac{\e}{2Y} + |x| \cdot \frac{\e}{2|x|} = \frac{\e}{2} + \frac{\e }{2} = \e.
+        \end{align*}
+    Thus $\lim(x_n y_n) = xy$.
+
+    (iv) By (iii), it suffices to show that $(1/y_n) \to 1/y$ (assuming $y \neq 0$). We will prove this.
+
+    Because $(y_n) \to y$, we know that there exists an integer $N_1$ such that if $n \geq N_1$, $|y_n-y| < |y|/2$. From the reverse triangle inequality it follows that
+        \[
+            |y|-|y_n| \leq |y_n-y| < \frac{|y|}{2}\implies \frac{|y|}{2} < |y_n|.
+        \]
+    Now, because $(y_n) \to y$, there exists an integer $N_2$ such that $n \geq N_2$ implies that $|y_n-y| < \e |y|^2/2$. Taking $n \geq \max \set{N_1, N_2}$, it follows that
+        \[
+            \left| \frac{1}{y_n} - \frac{1}{y} \right| = \frac{|y-y_n|}{|y||y_n|} < \frac{\e|y|^2}{2} \cdot \frac{1}{|y| \frac{|y|}{2}} = \e.
+        \]
+    Thus, $\lim (1/y_n) = 1/y$ and the proof is complete.
+\end{pf}
+
+Now let's get to the other part of this section: order theorems.
+
+\begin{thm}[Order Limit Theorems]
+    Let $\lim x_n = x$ and $\lim y_n = y$.
+        \begin{enumerate}[\normalfont(i)]
+            \item If $x_n \geq 0$ for all positive integer $n$, then $x \geq 0$.
+            \item If $x_n \leq y_n$ for all positive integer $n$, then $x \leq y$.
+            \item If there exists a $c \in \R$ for which $c \leq y_n$ for all positive integer $n$, then $c \leq y$. Similarly, if $x_n \leq c$ for all positive integer $n$, then $x \leq c$.
+        \end{enumerate}
+\end{thm}
+\begin{pf}
+    (i) Suppose towards a contradiction that $x < 0$. Then, because $(x_n) \to x$, there exists an integer $N$ such that $n \geq N$ implies that $|x_n-x| < |x|=-x$. From the definition of absolute value it follows that $x < x_n - x < -x$, so $x_n < 0$ if $n \geq N$, which is a contradiction as $x_n \geq 0$ for all positive integer $n$. Thus, $x \geq 0$.
+
+    (ii) It follows from the Algebraic Limit Theorem that $\lim (y_n-x_n) = y-x$. Because $y_n-x_n\geq 0$, it follows from part (i) that $y-x \geq 0 \implies y \geq x$.
+
+    (iii) Take $x_n = c$ (or $b_n = c$) for all positive integer $n$, and apply (ii).
+\end{pf}
+
+\subsection{Monotone Convergence Theorem}
+
+We first have to define a few things about sequences before we can get into the name of this section.
+\begin{defn}
+    A sequence $(x_n)$ is \textit{increasing} if and only if $x_n \leq x_{n+1}$ for all positive integers. A sequence is \textit{decreasing} if and only if $x_n \geq x_{n+1}$ for all positive integers $n$. A sequence is \textit{monotone} if and only if it is either increasing or decreasing.
+\end{defn}
+
+With Theorem \ref{thm:convergent means bounded}, we showed that every convergent sequence is bounded, but does bounded imply convergent? In general, no. Take for example $(0,1,0,1,0,1,\ldots)$. This sequence is bounded by 1 but clearly not convergent. But what are some sufficient conditions for convergence given something is bounded? One of them is being monotone. Why? Well, if something is increasing yet bounded (above), then it must slow down or else it will exceed its bound, so then it must converge. This is the idea of the following very important theorem.
+
+\begin{thm}[Monotone Convergence Theorem]
+    Any bounded and monotone sequence converges.
+\end{thm}
+\begin{slogan}
+    Bounded \& monotone $\implies$ convergent
+\end{slogan}
+
+\begin{pf}
+    Let $(x_n)$ be monotone and bounded. In particular, suppose $(x_n)$ is increasing (the decreasing case is handled similarly). Because $(x_n)$ is bounded, $s \coloneqq \sup \set{x_n \mid n \in \Z^+}$ exists. We claim that $(x_n) \to s$.
+
+    Now, let $\e> 0$ be arbitrary. By Lemma \ref{lem:alt def for LUB}, we know that $s-\e$ is not an upper bound, so there exists an $x_N$ such that $s-\e < x_N$. Because $(x_n)$ is increasing, we know that for all $n \geq N$, $s-\e < x_N \leq x_n$. It then follows that
+        \[
+            s-\e < x_N \leq x_n \leq s < s+\e \implies s-\e < x_n < s+\e \implies |x_n-s| < \e,
+        \]
+    and $\lim x_n = s$. This completes the proof.
+\end{pf}
+
+Monotone Convergent Theorem will become invaluable once we begin to study series! Very cool stuff. B)
+
+\subsection{Subsequences}
+
+\subsubsection*{Basics}
+
+A subsequence is exactly what you imagine it to be: it's a subpart of our sequence, but it's a sequence on its own.
+\begin{defn}[Subsequence]
+    Let $(x_n)$ be a sequence of real numbers, and let $n_1 < n_2 <n_3 < \cdots$ be an increasing sequence of positive integers. Then the sequence $(x_{n_1}, x_{n_2}, x_{n_3}, \ldots)$ is called a \textit{subsequence} of $(x_n)$ and is denoted $(x_{n_k})$ where a positive integer $k$ indexes the subsequence.
+\end{defn}
+
+\begin{ex}
+    To get you situated, here's an example of a subsequence. If $(x_n) = (1,2,3,\ldots)$, then $(1,3,5,\ldots)$ and $(2,4,6,\ldots)$ are subsequences, but $(2,1,3,4,5,\ldots)$ is not a subsequence.
+\end{ex}
+
+Here's a neat fact about subsequences.
+\begin{fact}
+    Any subsequence of a convergent sequence converges to the same limit as the parent sequence.
+\end{fact}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Suppose $(x_n)$ converges to $x \in \R$. Let $(x_{n_k})$ be a subsequence. Because $(x_n)$ converges to $x$, there exists an integer $N$ such that $n \geq N$ implies that $|x_n - x| < \e$. Taking $n_k \geq k \geq N$, it follows that $|x_{n_k}-x| < \e$. Thus $(x_{n_k}) \to x$.
+\end{pf}
+
+Now we're prepared to talk about the big boy of subsequences: Bolzano Weierstrass Theorem.
+
+\subsubsection*{The Bolzano-Weierstrass Theorem}
+
+\begin{thm}[The Bolzano-Weierstrass Theorem]
+    Every bounded sequence has a convergent subsequence.
+\end{thm}
+\begin{slogan}
+    Bounded $\implies$ $\exists$ convergent subsequence
+\end{slogan}
+
+\begin{pf}
+    Let $(x_n)$ be a sequence bounded by some number $M > 0$. Then all points of the sequence are in the interval $[-M,M]$. Bisect this interval and two closed intervals: $[-M,0]$ and $[0,M]$. Now label the interval with infinitely many points in it $I_1$. We know that one of these two intervals must have infinitely many points as if neither of them did, the sequence would have only finitely many points, which would be a contradiction. Bisect $I_1$ once more into two closed intervals (where the midpoint is in both halves), and label the half with infinitely many terms of the sequence $I_2$. Now, the $I_{n+1}$ interval is the closed half of the interval $I_n$ that contains infinitely many points.
+
+    For our subsequence, choose $x_{n_1}$ to be a point in $I_1$. Then, choose $x_{n_2}$ to be a point in $I_2$ such that $n_2 > n_1$ (this exists since there are infinitely many points in $I_2$). In general, choose $x_{n_k}$ to be a point in the $I_k$ interval such that $n_k > n_{k-1}$.
+
+    By the Nested Interval Property, we know that there exists at least one point in the intersection of all the $I_1, I_2, I_3, \ldots$. Choose a point from the intersection and call it $x$. We claim that $(x_{n_k}) \to x$.
+
+    Now, let $\e > 0$ be arbitrary. By construction, the length of the interval $I_k$ is $M/2^{k-1}$, which converges to 0. Choose an integer $N$ such that $k \geq N$ implies that $M/2^{k-1} < \e$. Taking $k \geq N$, it follows that
+        \[
+            |x_{n_k}-x| \leq \frac{M}{2^{k-1}} < \e
+        \]
+    as $x_{n_k}$ and $x$ are both in $I_k$. Thus, $(x_{n_k}) \to x$.
+\end{pf}
+
+Figure \ref{fig:bolzano-weierstrass} may be helpful for understanding the proof of Bolzano-Weierstrass Theorem.
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {bolzano_weierstrass.pdf_tex}}
+    \caption{Diagram for the Bolzano-Weierstrass Theorem's proof}
+    \label{fig:bolzano-weierstrass}
+\end{figure}
+
+
+\subsection{Cauchy sequences}
+
+We'll go straight to the definition since the name isn't particularly insightful (it's just the name of some (very important) mathematician).
+\begin{defn}[Cauchy sequence]
+    A sequence $(x_n)$ a \textit{Cauchy sequence} if and only if, for every $\e > 0$, there exists an integer $N$ such that $|x_i-x_j| < \e$ if $i,j \geq N$.
+\end{defn}
+A sequence being Cauchy just means the terms eventually get close together.
+
+Cauchiness, at least to me, seems fairly close to convergence. The terms get close together, so they must get close to a single number, right? In general, no, but in $\R$, yes! We'll work towards showing this. At this moment, we can prove one direction: convergent implies Cauchy.
+\begin{thm}{\label{thm:convergent implies cauchy}}
+    Every convergent sequence is a Cauchy sequence
+\end{thm}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Suppose $(x_n)$ converges to $x$. By definition of convergence, we know that there exists an integer $N$ such that $n \geq N$ implies that $|x_n-x| < \e/2$. Taking $n,m \geq N$, it follows by triangle inequality that
+        \[
+            |x_n-x_m| \leq |x_n - x| + |x-x_m| < \frac{\e}{2} + \frac{\e}{2} = \e,
+        \]
+    so $(x_n)$ is Cauchy.
+\end{pf}
+
+How do we prove that Cauchy implies convergent, however? For that, we're going to need a lemma (since we're going to use Bolzano-Weierstrass).
+
+\begin{lem}{\label{lem:cauchy implies bounded}}
+    Cauchy sequences are bounded.
+\end{lem}
+\begin{pf}
+    Suppose $(x_n)$ is a Cauchy sequence. By definition of Cauchy, we know that there exists an integer $N$ such that $i,j \geq N$ implies that $|x_i-x_j| < 1$. It follows by reverse triangle inequality that
+        \[
+            |x_i|-|x_j| \leq |x_i-x_j| < 1 \implies |x_i| < 1 + |x_j|.
+        \]
+    Fixing $j$ to say $N$, we get that $|x_i| < 1+|x_N|$. It follows that
+        \[
+            \max \set{|x_1|, \ldots, |x_{N-1}|, 1+ |x_N|}
+        \]
+    is a bound for $(x_n)$.
+\end{pf}
+
+\begin{thm}[Completeness of $\R$]{\label{thm:completeness of R}}
+    A sequence converges if and only if it is a Cauchy sequence.
+\end{thm}
+\begin{slogan}
+    (In $\R$) Convergent $\iff$ Cauchy
+\end{slogan}
+\begin{pf}
+    ($\Rightarrow$) This direction is Theorem \ref{thm:convergent implies cauchy}.
+
+    ($\Leftarrow$) Suppose $(x_n)$ is Cauchy. By Lemma \ref{lem:cauchy implies bounded}, we know that $(x_n)$ is then bounded and then by Bolzano-Weierstrass we know that $(x_n)$ has a convergent subsequence $(x_{n_k})$. Let $(x_{n_k}) \to x$. We claim that $\lim x_n = x$.
+
+    Because $(x_n)$ is Cauchy, there exists an integer $N_1$ such that $i,j \geq N_1$ implies that $|x_i-x_j| < \e/2$. Because $(x_{n_k})$ converges to $x$, there exists an $N_2$ such that $k \geq N_2$ implies that $|x_{n_k} - x| < \e/2$. Taking $n,K \geq \max \set{N_1, N_2}$, we get that
+        \[
+            |x_n-x| \leq |x_n-x_{n_K}| + |x_{n_K} -x| < \frac{\e}{2} + \frac{\e}{2} = \e
+        \]
+    and $\lim x_n = x$. This completes the proof.
+\end{pf}
+
+\end{document}

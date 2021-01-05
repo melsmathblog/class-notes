@@ -1,0 +1,78 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+\externaldocument{chapter4}
+\externaldocument{chapter5}
+\externaldocument{chapter6}
+\externaldocument{chapter7}
+
+\begin{document}
+
+\section{Baire Category Theorem}
+
+The name of Baire Category Theorem (BCT) isn't particularly enlightening, so we'll just get into the statement of the theorem, though there are several statements so we'll go through them individually.
+
+\subsection{BCT I}
+
+\begin{thm}[BCT I]
+    Let $\set{U_n}_{n=1}^\infty$ be a sequence of dense open subsets of a complete metric space $(X,d)$. Then, $\bigcap_{n=1}^{\infty} U_n$ is also dense in $X$.
+\end{thm}
+\begin{pf}
+    \textbf{FINISH}
+\end{pf}
+
+I don't have any good examples of this particular thing being useful.
+
+\subsection{BCT II}
+
+We first need to define what a \textit{nowhere dense set} is before we get to the statement of BCT II.
+
+\begin{defn}[Nowhere dense set]
+    Let $(X,d)$ be a metric space. A subset $Y \subseteq X$ is \textit{nowhere dense} if and only if it has no interior points (i.e. $Y^\circ = \es$).
+\end{defn}
+
+\begin{thm}[BCT II]
+    Let $\set{E_n}_{n=1}^\infty$ be a sequence of nowhere dense subsets of a complete metric space $(X,d)$. Then, $\bigcup_{n=1}^{\infty} E_n$ has empty interior.
+\end{thm}
+\begin{pf}
+    Apply BCT I to the dense open sets $U_n = X - \clos E_n$.
+\end{pf}
+
+
+\subsection{BCT III}
+
+\begin{thm}[BCT III]
+    Any complete metric space is not the countable union of closed sets with empty interior.
+\end{thm}
+
+\begin{coro}[BCT IIIa]
+    Any complete metric space no isolated points is uncountable.
+\end{coro}
+
+Here's an application of BCT III:
+\begin{ex}
+    $\R^3$ is not the countable union of planes.
+\end{ex}
+\begin{pf}
+    By Baire Category Theorem, we know that because $\R^3$ is complete it cannot be the countable union of closed sets with empty interior. It suffices to show that each plane in $\R^3$ is closed and has an empty interior. Let $P$ be an arbitrary plane in $\R^3$.
+
+    First we will show that $P$ is closed. It suffices to show that $\R^3-P$ is open. Suppose we have a point $(x,y,z) \in \R^3$. Let $s$ be the minimal distance from $(x,y,z)$ to $P$. Then the ball $B_{s}((x,y,z)) \subseteq \R^3-P$. Thus $\R^3-P$ is open and $P$ is closed.
+
+    Now we will show that $P$ has empty interior. Suppose $P^\circ$ is nonempty. Then there exists a point $p \in P^\circ$ such that there exists a number $r > 0$ such that $B_r(p) \subseteq P^\circ$. However, a ball in $\R^3$ cannot be contained in $P$ since the ball expands in the direction normal to the plane. Thus $p \not \in P^\circ$. Thus $P^\circ = \es$.
+
+    This completes the proof.
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+\end{document}

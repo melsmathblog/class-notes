@@ -1,0 +1,142 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+
+\begin{document}
+
+\section{Series}
+
+\subsection{Basics}
+
+What does $\sum_{j=1}^{\infty} a_j = A$ (for some sequence $(a_n)$ and some number $A$) even mean? Well, in general, $\sum_{j=1}^{N} a_j = a_1 + \cdots + a_N$, so we're saying something like $a_1+ a_2 + a_3 + \cdots = A$. In particular, what we mean is the following: $\lim S_n = A$ where $S_n = \sum_{j=1}^{n} a_j$. So, because of this we can take a lot of my results from sequences and apply them to series!!! Super cool stuff right here! $:>$ But before we do that let's put we just said into an actual definition.
+\begin{defn}
+    Let $(a_n)$ be a sequence. Then,
+        \[
+            \sum_{j=m}^{n} a_j \coloneqq a_m + a_{m+1} + a_{m+2} + \cdots + a_n
+        \]
+    for $m \leq n$. With $(a_n)$ we associate the sequence $(S_n)$ where
+        \[
+            S_n \coloneqq \sum_{j=1}^{n} a_j.
+        \]
+    For $(S_n)$ we also use the symbolic expression
+        \[
+            a_1 + a_2 + a_3 + \cdots
+        \]
+    or
+        \[
+            \sum_{j=1}^{\infty} a_j. \tag{1}
+        \]
+    (1) is called an \textit{infinite series} or just \textit{series}. $(S_n)$ is called the \textit{sequence of partial sums of the series}. If $\lim S_n = S$, we say that the series converges and we write
+        \[
+            \sum_{j=1}^{\infty} a_j = S.
+        \]
+    $S$ is called the \textit{sum} of the series. If $(S_n)$ diverges, then the sum diverges.
+
+    When the bounds are unambiguous we simply write $\sum a_j$.
+\end{defn}
+
+The following is a direct translation from sequence results to series.
+\begin{thm}[Algebraic Limit Theorem for Series]
+    If $\sum_{j=1}^{\infty} a_j = A$ and $\sum_{j=1}^{\infty} b_j = B$, then
+        \begin{enumerate}[\normalfont(i)]
+            \item $\sum_{j=1}^{\infty} ca_j = cA$ for all $c \in \R$;
+            \item $\sum_{j=1}^{\infty} (a_j+b_j) = A+B$.
+        \end{enumerate}
+\end{thm}
+\begin{rem}
+    We won't talk about products of series just yet. ;)
+\end{rem}
+
+Remember Cauchy sequences? Well, because we can treat series like sequences (basically), it ends up being pretty improtant.
+
+\begin{thm}{\label{thm:cauchycritforseries}}
+    The series $\sum_{j=1}^{\infty} a_j$ converges if and only if for all $\e > 0$ there exists an integer $N$ such that whenever $n > m \geq N$ it follows that
+        \[
+            |a_{m+1}+a_{m+2}+a_{m+3}+\cdots+a_n| < \e.
+        \]
+\end{thm}
+\begin{pf}
+    Notice that the final line is equivalent to $|S_n-S_m| < \e$. Then also notice that the theorem is saying $(S_n)$ converges if and only if it is Cauchy, which is true by the completeness of $\R$.
+\end{pf}
+
+\begin{coro}
+    If $\sum_{j=1}^{\infty} a_j$ converges, then $\lim a_n = 0$.
+\end{coro}
+\begin{pf}
+    Consider the case of $n=m+1$ with regard to Theorem \ref{thm:cauchycritforseries}. We then get that $|a_n| < \e$ and $\lim a_n = 0$.
+\end{pf}
+However, is the converse of this corollary true? No!
+\begin{ex}[Harmonic series]
+    The Harmonic Series is $\sum_{n=1}^{\infty} 1/n$. $\lim (1/n) = 0$, but the sum does not converge! (We'll prove this soon.)
+\end{ex}
+
+\begin{ex}[Geometric Series]
+    A geometric is a series of the form $\sum_{j=0}^{n} a r^j$ for some common ratio (number) $r$. A geometric series converges if and only if $|r| < 1$. We leave this as an exercise as the identity $\sum_{j=0}^{n} a r^j = \frac{a(1-r^n)}{1-r}$ should be enough to do this. Should be pretty straight forward.
+\end{ex}
+
+
+
+
+\subsection{Tests for convergence}
+
+There are a ton of tests. Here are the main ones I know (not all were shown in class).
+
+\begin{thm}[Cauchy Condensation Test]
+    Suppose $(a_n)$ is decreasing and satisfies $a_n \geq 0$ for all $n$. Then, the series $\sum_{j=1}^{\infty} a_j$. Then the series $\sum_{j=1}^{\infty} a_j$ converges if and only if the series $\sum_{j=1}^{\infty} 2^ja_{2^j}$ converges.
+\end{thm}
+\begin{pf}
+    \textbf{finish}
+\end{pf}
+
+\begin{thm}[Harmonic Series Test]
+    The series $\sum_{n=1}^{\infty} 1/n^p$ converges if and only if $p > 1$.
+\end{thm}
+\begin{pf}
+    \textbf{FINISH}
+\end{pf}
+
+\begin{thm}[Comparison Test]
+    Suppose $(a_n)$ and $(b_n)$ satisfy $0 \leq a_n \leq b_n$ for all $n$. Then,
+        \begin{enumerate}[\normalfont(i)]
+            \item If $\sum_{j=1}^{\infty} b_j$ converges, then $\sum_{j=1}^{\infty} a_j$ converges;
+            \item If $\sum_{j=1}^{\infty} a_j$ diverges, then $\sum_{j=1}^{\infty} b_j$ diverges.
+        \end{enumerate}
+\end{thm}
+\begin{pf}
+    Let $\e > 0$ be arbitrary.
+
+    (i) Suppose $\sum_{j=1}^{\infty} b_j$ converges. From Theorem \ref{thm:cauchycritforseries}, there exists an integer $N$ such that $n > m \geq N$ such that $|b_{m+1}+\cdots+b_n| < \e$. Because $0 \leq a_n \leq b_n$ for all $n$, we have that
+        \[
+            |a_{m+1}+\cdots + a_n| \leq |b_{m+1}+\cdots+b_n| < \e.
+        \]
+    Thus $\sum_{j=1}^{\infty} a_j$ converges.
+
+    (ii) Similar argument to the proof of (i).
+\end{pf}
+
+\begin{thm}[Absolute Convergence Test]
+    If $\sum_{j=1}^{\infty} |a_j|$ converges, then $\sum_{j=1}^{\infty} a_j$ converges.
+\end{thm}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. It follows from Theorem \ref{thm:cauchycritforseries} that there exists an integer $N$ such that $n > m \geq N$ implies that $||a_{m+1}|+\cdots+|a_n|| = |a_{m+1}| + \cdots + |a_n|<\e$. It follows from Triangle Inequality that
+    $|a_{m+1} + \cdots + a_n | \leq |a_{m+1}| + \cdots + |a_n|<\e$, so $\sum_{j=1}^{\infty} a_j$ converges.
+\end{pf}
+
+Converse is not true however! $\sum_{j=1}^{\infty} (-1)^j/j$ converges but $\sum_{j=1}^{\infty} 1/j$ does not. But how do we know that $\sum_{j=1}^{\infty} (-1)^j/j$ converges? With the following test:
+
+\begin{thm}[Alternating Series Test]
+    Let $(a_n)$ be a seuqence satisfying,
+        \begin{enumerate}[\normalfont(i)]
+            \item $a_1 \geq a_2 \geq a_3 \geq \cdots \geq a_n \geq a_{n+1} \geq \cdots$ and
+            \item $\lim a_n = 0$.
+        \end{enumerate}
+    Then, the alternating series $\sum_{j=1}^{\infty} (-1)^ja_j$ converges.
+\end{thm}
+\begin{pf}
+    \textbf{ FINISH}
+\end{pf}
+
+
+\end{document}

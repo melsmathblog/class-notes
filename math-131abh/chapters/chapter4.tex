@@ -1,0 +1,159 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+
+\begin{document}
+
+\section{Functions on $\R$}
+
+\subsection{The functional limit}
+
+
+
+\subsection{Continuous functions}
+
+\subsubsection*{Basics}
+
+Continuous functions (as they were defined in your calculus class) are functions that can be drawn without lifting your pencil. How do we formalize this, however? We need something that encodes a lack of jumps, a lack of holes, a lack of \textit{discontinuities}, but how do we do this?
+
+\begin{tcolorbox}[colback=definitionBackground, colframe=definitionBackground, sharp corners, before upper={\parindent24pt}]
+    \begin{restatable}[Continuity]{definition}{continuity}
+        Let $S \subseteq \R$. A function $f \colon S \to \R$ is \textit{continuous at a point} $s \in S$ if and only if, for all $\e > 0$, there exists a $\delta > 0$ such that $|x-s| <\delta$ (for $x \in S$) implies that $|f(x)-f(s)| < \e$.
+
+        If $f$ is continuous at every point in its domain, then we say that $f$ is \textit{continuous}.
+    \end{restatable}
+\end{tcolorbox}
+
+Why does represent our primitive idea of continuity? Well, at any given point, we must have our function approach the same value from both sides (left and right) of the point, so our function meets in the middle, so to speak.
+
+We also have an alternate definition of continuity.
+\begin{thm}[Sequential continuity]{\label{thm:sequential def of cont}}
+    Let $S \subseteq \R$ and let $f \colon S \to \R$ be a function. Suppose $(s_n)$ is a sequence in $S$ such that $\lim s_n = s \in S$. Then, $f$ is continuous at $s$ if and only if $\lim f(s_n) = f(\lim s_n) = f(s)$.
+\end{thm}
+\begin{slogan}
+    Continuous $\iff$ preserves limits of sequences.
+\end{slogan}
+
+\begin{pf}
+    ($\Rightarrow$) Suppose $f$ is continuous at $s$. We aim to show that $\lim f(s_n) = f( \lim s_n) = f(s)$. Let $\e > 0$ be arbitrary. By $f$'s continuity, we know that there exists a $\delta > 0$ such that $|s_n - s| < \delta$ implies $|f(s_n)-f(s)| < \e$. Since $\lim s_n = s$, there exists an integer $N$ such that $|s_n-s| <\delta$ if $n \geq N$. Therefore, taking $n \geq N$ once more, we get that $|f(s_n)-f(s)| < \e$. Thus, $\lim f(s_n) = f(\lim s_n) = f(s)$.
+
+    ($\Leftarrow$) Suppose that $f$ preserves limits of sequences. Suppose towards a contradiction that $f$ is not continuous at $s \in S$. Then, by definition of continuity, there exists an $\e > 0$ such that for all $\delta > 0$, there exists a $t \in S$ such that $|t-s| < \delta$ but $|f(t)-f(s)| < \e$. Now define a sequence $(t_n)$ as follows: $t_n \in S$ is some number such that $|t_n-s| < 1/n$. By the Archimedean Property, we know that $\lim t_n = s$, but $|f(r_n) - f(t)| \geq \e$, so $\lim f(t_n) \neq f(s)$, which contradicts our assumption. Thus $f$ must be continuous.
+\end{pf}
+
+\subsubsection*{Intermediate Value Theorem}
+
+Are you convinced that the definition of continuity represents our intended idea? If you are, the following should seem immediate, but if you are not, the Intermediate Value Theorem should cement the idea that our definition is perfect. The Intermediate Value Theorem is the idea that continuous functions do not have jumps. More precisely:
+\begin{thm}[Intermediate Value Theorem]{\label{thm:intermediate value theorem}}
+    Suppose $f \colon [a,b] \to \R$ is continuous. If $r$ is a real number satisfying $f(a) < r <f(b)$ or $f(a) > r > f(b)$, then there exists a point $c \in (a,b)$ where $f(c) = r$.
+\end{thm}
+\begin{slogan}
+    Continuous functions don't have jumps.
+\end{slogan}
+Figure \ref{fig:intermediatevaluetheorem} should help illustrate what is being said.
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{\filepath {intermediatevaluetheorem.pdf_tex}}
+    \caption{Diagram of Theorem \ref{thm:intermediate value theorem}.}
+    \label{fig:intermediatevaluetheorem}
+\end{figure}
+Essentially, if we have a continuous function on an interval of this form, we function attains every value between the minimum and maximum in its range. In other words, if we draw a line through a continuous function of this sort, we must cross that line, as seen in Figure \ref{fig:intermediatevaluetheorem}. Now, to the proof.
+
+\begin{pf}
+    We will only prove the case of $f(a) < r <f(b)$ as the other case is similar.
+
+    Let $C \coloneqq \set{x \in [a,b] : f(x) < r}$. Define $c$ as the least upper bound of $C$ (we know such a number exists as $C$ is bounded above by $b$). We claim that $f(c) = r$.
+
+    Let $\e > 0$ be arbitrary. Since $f$ is continuous, there exists a $\delta > 0$ such that $|x-c| < \delta$ implies $|f(x)-f(c)| < \e$. In other words, $f(x)-\e < f(c) < f(x) + \e$ for $x \in (c-\delta, c+\delta)$. Now, taking $\alpha \in (c-\delta, c]$, it follows that
+        \[
+            f(\alpha) - \e < f(c) < f(\alpha) + \e < r + \e \implies f(c) < r + \e. \tag{1}
+        \]
+    Then, taking $\beta \in (c,c+\delta)$ (notice that $\beta \not \in C$), it follows that
+        \[
+            r - \e \leq f(\beta) - \e < f(c) < f(\beta) + \e \implies r-\e < f(c). \tag{2}
+        \]
+    (The leftmost sub-inequality of the inequality comes from the fact that since $\beta \not \in C$, $r \leq f(\beta)$.) Combining (1) and (2) we get that $r-\e < f(c) < r + \e \implies |f(c)-r| < \e$. It follows then from Lemma \ref{lem:epsilon equality} that $f(c) = r$. This completes the proof.
+\end{pf}
+
+\subsubsection*{Algebra and composition of continuous functions}
+
+Like convergent sequences, continuous functions interact with each other nicely (you can do algebra with them). They behave exactly as you expect. :)
+
+\begin{thm}[Algebraic Continuity Theorem]
+    Let $S \subseteq \R$. Suppose $f \colon S \to \R$ and $g \colon S \to \R$ are continuous at a point $s \in S$. Then,
+        \begin{enumerate}[\normalfont(i)]
+            \item $cf(x)$ is continuous at $s$ for all real $c$;
+            \item $f(x)+g(x)$ is continuous at $s$;
+            \item $f(x)g(x)$ is continuous at $s$;
+            \item $f(x)/g(x)$ is continuous at $c$ if the quotient is defined.
+        \end{enumerate}
+\end{thm}
+\begin{pf}
+    \textbf{Do this after we cover functional limits and stuff.}
+\end{pf}
+
+The following is another case of continuous functions behaving very nicely.
+\begin{thm}[Composition of continuous functions]
+    Let $S,T \subseteq \R$. Suppose that $f \colon S \to \R$ and $g \colon T \to \R$, and $f(S) \subseteq T$ (so that $(g \circ f)(x)$ is defined on $S$).
+
+    If $f$ is continuous at $s \in S$ and $g$ is continuous at $f(s) \in T$, then $g \circ f$ is continuous at $s$.
+\end{thm}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Suppose $(s_n)$ is a sequence in $S$ that converges to $s \in S$. By hypothesis, we know that $f(s_n)$ is a sequence in $T$, so $g(f(s_n))$ is defined. By $f$'s and $g$'s continuity, we know that $\lim g(f(s_n)) = g(\lim f(s_n)) = g(f(s))$, so $g \circ f$ preserves limits of sequences and is continuous by Theorem \ref{thm:sequential def of cont}.
+\end{pf}
+
+
+
+\subsection{Uniform Continuity}
+
+Let's get right into it.
+\begin{defn}[Uniform Continuity]
+    Let $S \subseteq \R$. A function $f \colon S \to \R$ is uniformly continuous (on $S$) if and only if, given an $\e > 0$, there is a $\delta > 0$ such that for all $x,y \in S$, if $|x-y| < \delta$, then $|f(x)-f(y)| < \e$.
+\end{defn}
+What does any of this mean? This sounds just like regular continuity, right? It does, yes, but they are not the same--they are different, though subtly. To make the difference more pronounced, we'll restate the the original definition of continuity:
+\begin{tcolorbox}[colback=definitionBackground, colframe=definitionBackground, sharp corners, before upper={\parindent24pt}]
+    \continuity*
+\end{tcolorbox}
+The thing to notice is the following: for continuity, $\delta$ can depend on $\e$ and the point being considered; for uniform continuity, $\delta$ can only depend on $\e$ (as the point being considered is not fixed since the $\delta$ must work for all $x,y$ in the domain). Do not forget this!
+
+\begin{ex}
+    Some examples of uniformly continuous functions:
+        \begin{enumerate}[(a)]
+            \item $f \colon \R \to \R$ defined by $f(x)=x$;
+            \item $f \colon [0,1] \to \R$ defined by $f(x) = x^2$;
+            \item $f \colon [0,\pi] \to \R$ defined by $f(x) = \sin x$.
+        \end{enumerate}
+\end{ex}
+
+We will prove that (b) is uniformly continuous.
+\begin{ex}
+    $f \colon [0,1] \to \R$ defined by $f(x)=x^2$ is uniformly continuous.
+\end{ex}
+\begin{pf}
+    Let $\e > 0$ be arbitrary. Suppose that $|x-y| < \e/2$. It then follows that
+        \begin{align*}
+            |x^2-y^2| &= |x-y| |x+y | \\
+                &\leq |x-y| \cdot 2 \\
+                &< \frac{\e}{2} \cdot 2 = \e.
+        \end{align*}
+    Thus $f$ is uniformly continuous.
+\end{pf}
+Is there something special about this example, however? Is there a general pattern/idea behind $x^2$ being continuous over a closed interval? Actually, yes. In fact, a continuous function over a \textit{compact} interval is uniformly continuous, but we'll get to that later in the topology sections. :$>$
+
+Are all functions uniformly continuous? No. Take $f(x) = 1/x$ on $(0,1)$, for example, but how do we know that $1/x$ is not uniformly continous? What if you're just not clever enough to figure out a $\delta$ that only depends on $\e$? Sometimes the latter might be the case, but there are ways to guarantee something is not uniformly continuous. The following is one to do this:
+\begin{thm}[Sequential Criterion for Absence of Uniform Continuity]
+    Let $S \subseteq \R$. A function $f \colon S \to \R$ is not uniformly continuous on $S$ if and only if there exists a particular $\e_0 > 0$ and two sequences $(x_n)$ and $(y_n)$ in $S$ satisfying
+        \[
+            |x_n-y_n| \to 0 \quad \text{ but } \quad |f(x_n)-f(y_n)| \geq \e_0.
+        \]
+\end{thm}
+\begin{pf}
+    \textbf{DO THIS}
+\end{pf}
+
+
+TEST2
+
+\end{document}
