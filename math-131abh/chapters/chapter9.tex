@@ -14,8 +14,23 @@
 
 \section{Equicontinuity and Arzela-Ascoli Theorem}
 
+\subsection{Equicontinuity}
 
+So we've covered continuity and uniformy continuity, but there's at least one more type: equicontinuity. Let's get right into the definition as I don't find the name itself to be particularly enlightening.
 
+\begin{defn}[Equicontinuity]
+    Let $(X,d_x)$ and $(Y,d_y)$ be metric spaces. A sequence of functions $(f_n)$ where each $f_n \colon X \to Y$, is called \textit{equicontinuous} if for every $\e > 0$ there exists a $\delta > 0$ such that $d_y(f_n(x),f_n(y)) < \e$ for all $n=1,2,3,\ldots$ and $d_x(x,y) < \delta$.
+\end{defn}
+
+In quantifiers this is: \textbf{get help on this. how do i translate purely into quantifiers?}
+
+What does equicontinuity really mean, however? It wasn't initially clear to me, but the way I best understand it by comparing it with the other types of continuity we've learned about. In particular, by comparing what $\delta$ can depend on in our definitions.
+
+\begin{enumerate}[$\bullet$]
+    \item Continuity: $\delta$ may depend on $\e$ and the point being considered.
+    \item Uniform continuity: $\delta$ may depend on $\e$ (and CANNOT depend on the point being considered)
+    \item Equicontinuity: $\delta$ may depend on $\e$ and \textbf{FINISH}
+\end{enumerate}
 
 
 \end{document}

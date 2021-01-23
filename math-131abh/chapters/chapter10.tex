@@ -1,0 +1,105 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+\externaldocument{chapter2}
+\externaldocument{chapter3}
+\externaldocument{chapter4}
+\externaldocument{chapter5}
+\externaldocument{chapter6}
+\externaldocument{chapter7}
+\externaldocument{chapter8}
+\externaldocument{chapter9}
+
+\begin{document}
+
+\section{Analysis on normed vector spaces}
+
+This was/is rough, but very cool lmao. B)
+
+\subsection{Vector spaces}
+
+Nothing new here (except infinite dimensional vector spaces), but we are only considering vector spaces over $\R$.
+
+\subsection{Norms}
+
+Let's get right into the definition.
+
+\begin{defn}[Norm]
+    Let $V$ be a vector space. A \textit{norm} is a nonnegative function $f \colon V \to \R$ defined by the following:
+        \begin{enumerate}[(1)]
+            \item $f(\vec u) = 0$ if and only if $\vec u =\vec 0$,
+            \item $f(a\vec u) = |a| f(\vec u)$,
+            \item $f(\vec u + \vec v) \leq f(\vec u) + f(\vec v)$,
+        \end{enumerate}
+    where $\vec u, \vec v \in V$ and $a \in \R$.
+\end{defn}
+\begin{rem}
+    We call (2) homogeneity and we call (3) being \textit{subadditive} or satisfying the triangle inequality. Most of the time, norms are also written $\| \cdot \|$ (where $\cdot$ represents an argument).
+\end{rem}
+
+I think of norms as sort of unary metrics (metrics take 1 argument) in a very rough sense. It gives us a rough sense of how `large' a vector is. Interestingly (and likely expectedly), we can define a metric using norms!
+
+\begin{fact}
+    Let $V$ be a vector space and let $\| \cdot \|$ be a norm on $V$. Then we can define a metric $d$ on $V \x V$ by the following:
+        \[
+            d(\vec u, \vec v) \coloneqq \|\vec u - \vec v \|.
+        \]
+\end{fact}
+I won't prove this lol. It shouldn't be too rough though.
+
+Now here are common norms you'll see in this section (probably):
+\begin{ex}[Norms on Euclidean space]
+    For this example, let $\vec x = (x_1, \ldots, x_n)$ be in $\R^n$.
+    \begin{enumerate}[$\bullet$]
+        \item The Euclidean norm (denoted by $\|\cdot\|_2$) on $\R^n$ is defined to be
+            \[
+                \| \vec x \|_2 \coloneqq \sqrt{\sum_{j=1}^{n} (x_j)^2)}
+            \]
+        is a norm on $\R^n$.
+
+        \item The $L^1$ norm (denoted $\|\cdot\|_1$) on $\R^n$ is defined to be
+            \[
+                \| \vec x \|_1 \coloneqq \sum_{j=1}^{n} |x_j|
+            \]
+        is a norm on $\R^n$.
+
+        \item The $\sup$ norm on (denoted $\|\cdot\|_\infty$) on $\R^n$ is defined to be
+            \[
+                \| \vec x\|_\infty \coloneqq \sup \set{|x_i| : i=1,\ldots,n}
+            \]
+        is a norm on $\R^n$.
+    \end{enumerate}
+\end{ex}
+
+Now we can move on to a more interesting idea: the equivalence of norms!
+
+\subsection{Equivalence of Norms}
+
+\begin{defn}[Equivalent norms]
+    Let $\| \cdot \|_0$ and $\| \cdot \|$ be norms on a vector space $V$. Then $\| \cdot \|_0$ and $\| \cdot \|$ are \textit{equivalent} if and only if there exists two positive real constants $a$ and $b$ such that for every $\vec v \in V$,
+        \[
+            a \| \vec v \|_0 \leq \| \vec v \| \leq b\| \vec v \|_0.
+        \]
+\end{defn}
+
+
+Let's go through and show that some of our common norms are equivalent. Let's go for showing the $L^1$ and Euclidean norms.
+
+\begin{fact}
+    The $L^1$ norm and the Euclidean norm on $\R^n$ are equivalent.
+\end{fact}
+\begin{pf}
+
+\end{pf}
+
+\subsection{Equivalence of norms on finite dimensional vector spaces}
+
+Is this a conditional? Is the quantifier version this: some is equicontinuous if and only if
+\[
+(\forall \epsilon > 0) (\exists \delta > 0) [y \in B(x;\delta) \land f \in F \implies |f(x)-f(y)| < \epsilon.
+\]
+
+
+
+\end{document}
