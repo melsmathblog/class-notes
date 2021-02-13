@@ -7,7 +7,7 @@
 
 \section{Basics of topology}
 
-\subsection{Topological spaces}
+\subsection{Super basics of topological spaces}
 
 We start with the titular definition.
 \begin{defn}[Topology]
@@ -39,14 +39,7 @@ Now let's get to some examples of topologies. (Some are gross, which seems to be
   \end{enumerate}
 \end{ex}
 
-Now let's get to closed sets. (They're what you think they are, if you're familiar with metric topology.)
-
-\begin{defn}[Closed set]
-  Let $X$ be a topological space. A subset $C$ of $X$ is \deft{closed} if and only if $X\sm C$ is open.
-\end{defn}
-\noindent It turns out that our aherent points thing from metric spaces still works but this is the more topology-core definition of closed. (We'll see this more and more in topology as we continue to study it, but things are usually defined in terms of open sets.)
-
-Let's keep translating some of our basic metric-space-type ideas to mroe general topology. Next we have the neighborhood (another name for an open ball in metric spaces).
+Let's start translating some of our basic metric-space-type ideas to more general topological spaces. Next we have the neighborhood (another name for an open ball in metric spaces).
 
 \begin{defn}[Neighborhood]
   Let $X$ be a topological space. An open \deft{neighborhood} of $x \in X$ is an open set $U$ with $x \in U$.
@@ -60,16 +53,79 @@ Recall that we would define open sets in metric spaces using interior points. We
   The \deft{interior} of $S$ is the set of interior points of $S$ and is denoted $S^\circ$.
 \end{defn}
 
-\begin{prop}
+\begin{result}{proposition}{\label{prop:interior-is-open-and-open-iff-set-is-interior}}
   Let $X$ be a topological space and let $S$ be a subset of $X$. Then
   \begin{enumerate}[(1)]
     \item $S^\circ$ is open and
     \item $S$ is open if and only if $S = S^\circ$.
   \end{enumerate}
-\end{prop}
+\end{result}
 \begin{pf}
-  ad
+  (1) Suppose $s \in S^\circ$. Then there exists an open neighborhood $U_s$ of $s$ contained in $S$. In fact, $U_s$ is an open neighborhood of all elements of $S$ in $U_s$. Hence, all points of $U_s$ are interior points of $S$ and we have that $U_s \subseteq S^\circ$. Now, notice that $\bigcup_{s \in S^\circ}^{} U_s$ is open by properties of open sets. Moreover, notice that
+    \[
+      S^\circ \subseteq \bigcup_{s \in S^\circ}^{} U_s \subseteq S^\circ \implies S^\circ = \bigcup_{s \in S^\circ}^{} U_s,
+    \]
+  so $S^\circ$ is open.
+
+  (2) ($\Rightarrow$) Suppose $S$ is open. Then $S$ is an open neighborhood of any of its points, so $S \subseteq S^\circ \subseteq S$. Thus $S^\circ = S$. ($\Leftarrow$) If $S = S^\circ$, then $S$ is open since $S^\circ$ is open.
 \end{pf}
+
+Now let's get to closed sets. (They're what you think they are, if you're familiar with metric topology.)
+
+\begin{defn}[Closed set]
+  Let $X$ be a topological space. A subset $C$ of $X$ is \deft{closed} if and only if $X\sm C$ is open.
+\end{defn}
+\noindent It turns out that our adherent points thing from metric spaces still works but this is the more topology-core definition of closed. (We'll see this more and more in topology as we continue to study it, but things are usually defined in terms of open sets.) Let's actually get into adherent points now.
+
+\begin{defn}[Adherent point]
+  Let $X$ be a topological space. A point $x \in X$ is \deft{adherent} to a subset $S$ of $X$ if and only if every open neighorhood of $x$ has nonempty intersection with $S$.
+\end{defn}
+
+Now that we have that, we can get to closures.
+
+\begin{defn}[Closure of a set]
+  Let $X$ be a topological space and let $S$ be a subset of $X$. The \deft{closure} of $S$ is defined to be $X \sm (X \sm S)^\circ$ and is denoted $\clos S$. Moreover, $\clos S$ consists precisely of the points of $X$ adherent to $S$.
+\end{defn}
+
+\begin{result}{proposition}{\label{prop:closure-is-closed}}
+  The closure of a set is closed.
+\end{result}
+\begin{pf}
+  This is clear considering that the closure is in fact the complement of an interior (which is always open).
+\end{pf}
+
+\begin{result}{proposition}
+  Let $X$ be a topological space and let $S$ be a subset of $X$. Then, $S$ is closed if and only if $S = \clos S$.
+\end{result}
+\begin{pf}
+  ($\Leftarrow$) Suppose $S  = \clos S$. Then $S$ is closed (by Proposition \ref{prop:closure-is-closed}).
+
+  ($\Rightarrow$) Suppose $S$ is closed. Then $X \sm S$ is open (by definition), so $(X \sm S)^\circ = X \sm S$ by Proposition \ref{prop:interior-is-open-and-open-iff-set-is-interior}. Thus we have that
+    \[
+      \clos S = X \sm (X \sm S)^\circ = X (X \sm S) = S.
+    \]
+\end{pf}
+
+Now let's move on to sequences.
+
+\begin{defn}
+  A sequence of points $(x_n)$ in a topological space $X$ \deft{converges} to $x \in X$ if and only if for every open neighborhood $U$ of $x$, there exists an integer $N$ such that $x_n \in U$ whenever $n \geq N$.
+\end{defn}
+
+Here's a neat proposition.
+
+\begin{result}{proposition}
+  If $S$ is a subset of a topological space $X$ and $(x_n)$ is a sequence in $S$ converging to $x \in X$, then $x \in \clos S$.
+\end{result}
+\begin{pf}
+  Suppose towards a contradiction that $x \nin \clos S$. Then $x \in X \sm \clos S = X \sm (X \sm (X \sm S)^\circ) = (X \sm S)^\circ$, which is clearly open. Since $X \sm \clos S$ is open, there exists an open neighborhood of $x$ entirely contained in $X \sm \clos S$ and since $(x_n)$ converges to $x$, such a neighborhood contains infinitely many terms of $(x_n)$. But $x_n \in S$ for all $n$.
+\end{pf}
+
+
+
+
+
+
 
 
 
