@@ -1,0 +1,299 @@
+% Document set up
+\usepackage[margin=1in]{geometry}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[skins]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,mathtools}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{listparindent=24pt}
+\usepackage{empheq}
+\usepackage{tikz-cd}
+\usepackage{ytableau}
+\usepackage{zref}% http://ctan.org/pkg/zref
+\usepackage{thmtools}
+\usepackage{thm-restate}
+% \usepackage{cleveref}
+\usepackage{mathrsfs}
+\usepackage{extarrows}
+\usepackage{fancyhdr}
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{standalone}
+\usepackage{xr}
+
+% Gives subsubsubsection
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+
+\titleformat{\subsubsubsection}
+{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+{3.25ex \@plus1ex \@minus.2ex}%
+{-1em}%
+{\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+{3.25ex \@plus1ex \@minus .2ex}%
+{-1em}%
+{\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+
+%   Proof symbol
+\renewcommand{\qedsymbol}{\ensuremath{\blacksquare}}
+
+%   File path command
+\newcommand{\filepath}{\import{C:/Users/Loopi/github/class-notes/math-131abh/chapters/figures}}
+
+%   Renew commands
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% code snippet?
+\definecolor{codegray}{gray}{0.9}
+\newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
+% \renewcommand{\emph}{\code}
+
+%   Math operators
+\DeclareMathOperator{\lcm}{lcm} % lcm
+\DeclareMathOperator{\im}{im} % image
+\DeclareMathOperator{\Stab}{Stab} % stabilizer of an element
+\DeclareMathOperator{\Orb}{Orb} % orbit of an element
+\DeclareMathOperator{\pset}{\mathcal P} % power set
+\DeclareMathOperator{\diam}{diam} % diameter of a set
+\DeclareMathOperator{\coker}{coker} % cokernel
+
+%   Shorthand
+\newcommand{\closure}[1]{\overline{#1}} % Closure notation // Legacy command
+\newcommand{\Syl}[1]{\ensuremath{\mathrm{Syl}_{#1}}}
+\newcommand{\clos}[1]{\overline{#1}} % Closure notation
+\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil} % ceiling function
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor} % floor function
+\newcommand{\seq}[1]{\left( #1 \right)} % sequence (131AH)
+\newcommand{\set}[1]{\ensuremath{\left\{ #1 \right\}}} % set
+\newcommand{\nrm}{\ensuremath{\triangleleft}} % normal subgroup
+\newcommand{\nrmeq}{\ensuremath{\trianglelefteq}} % normal subgroup
+\newcommand{\nrmneq}{\ensuremath{\triangleleftneq}} % normal proper subgroup
+\newcommand{\cyc}[1]{\left \langle #1 \right \rangle} % cyclic group
+\newcommand{\R}{\ensuremath{\mathbb{R}}} % Real numbers
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}} % Rational Numbers
+\newcommand{\I}{\ensuremath{\mathbb{I}}} % Irrational numbers
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}} % Integers
+\newcommand{\F}{\ensuremath{\mathbb{F}}} % Fields
+\newcommand{\N}{\ensuremath{\mathbb{N}}} % Naturals
+\newcommand{\C}{\ensuremath{\mathbb{C}}} % Complex numbers
+\newcommand{\es}{\ensuremath{\varnothing}} % empty set
+\newcommand{\sm}{\ensuremath{\setminus}} % better set minus
+\newcommand{\nss}{\not \subset} % not subset
+\newcommand{\eps}{\ensuremath{\epsilon}} % epsilon (legacy)
+\newcommand{\e}{\ensuremath{\epsilon}} % epsilon
+\newcommand{\x}{\ensuremath{\times}} % cartesian product
+\newcommand{\lam}{\ensuremath{\lambda}} % lambda
+\newcommand{\Lam}{\ensuremath{\Lambda}} % Lambda
+\newcommand{\melon}{\ensuremath{\ni\!\!\!\!\!\!\in}} % melon
+\newcommand{\bC}[2]{
+\begin{tikzpicture}
+  \draw plot [smooth cycle, tension=.5] coordinates {(#1*-0.106,#1*.12) (#1*-0.196,#1*0.266) (#1*-0.258,#1*0.44) (#1*-0.278,#1*0.535) (#1*-0.284,#1*0.635) (#1*-0.272,#1*0.73) (#1*-0.245,#1*0.825) (#1*-0.206, #1*0.892) (#1*-0.136,#1*0.958) (#1*-0.052,#1*0.993) (#1*0.057,#1*0.99) (#1*0.173,#1*0.944) (#1*0.27,#1*0.854) (#1*0.36,#1*0.72) (#1*0.45,#1*0.557) (#1*0.58, #1*0.44) (#1*0.738, #1*0.353) (#1*0.87, #1*0.253) (#1*0.972, #1*0.113) (#1*0.996,#1*-0.036) (#1*0.918, #1*-0.18) (#1*0.776, #1*-0.256) (#1*0.627,#1*-0.28) (#1*0.446, #1*-0.258) (#1*0.28, #1*-0.201) (#1*0.134, #1*-0.117) (0,0)};
+
+  #2
+\end{tikzpicture}
+}
+
+% gives fancy E
+\DeclareFontFamily{U}{calligra}{}
+\DeclareFontShape{U}{calligra}{m}{n}{<->callig15}{}
+
+\newcommand{\E}{{\!\!\text{\usefont{U}{calligra}{m}{n}E}\,\,}}
+
+% Colors
+\definecolor{theoremBackground}{RGB}{212,232,246}
+\definecolor{theoremTitle}{RGB}{52,114,163}
+\definecolor{definitionBackground}{RGB}{255,248,197}
+\definecolor{definitionTitle}{RGB}{182,93,27}
+\definecolor{exampleTitle}{RGB}{3, 192, 60}
+\definecolor{exampleBackground}{RGB}{209,255,227}
+\definecolor{problemTitle}{RGB}{0,0,0}
+\definecolor{problemBackground}{RGB}{255,225,225}
+\definecolor{topicTitle}{RGB}{0,0,0}
+\definecolor{topicBackground}{RGB}{239, 146, 122} % fix later
+
+% Basic environments
+\newtheorem{dummy}{***}[section] % Used so that theorems, definitions, etc can have same counter within subsections
+\newtheorem{theorem}[dummy]{\color{theoremTitle}Theorem}
+\newtheorem{lemma}[dummy]{\color{theoremTitle}Lemma}
+\newtheorem{factBasic}[dummy]{\color{theoremTitle}Fact}
+\newtheorem{corollary}[dummy]{\color{theoremTitle}Corollary}
+\newtheorem{proposition}[dummy]{\color{theoremTitle}Proposition}
+\newtheorem{axiom}[dummy]{\color{theoremTitle}Axiom}
+
+
+\theoremstyle{definition}
+\newtheorem{notation}[dummy]{\color{definitionTitle}Notation}
+\newtheorem{problem}{\color{problemTitle}Problem}
+\newtheorem*{topicBasic}{\color{topicTitle}Topic(s)}
+\newtheorem*{remark}{Remark}
+\newtheorem{example}[dummy]{\color{exampleTitle}Example}
+\newtheorem{definition}[dummy]{\color{definitionTitle}Definition}
+\newtheorem*{sloganBasic}{\color{topicTitle}Slogan}
+
+% Custom Environments
+
+\newenvironment{ax} % axiom environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{axiom}
+    }
+    {
+  \end{axiom}
+\end{tcolorbox}
+}
+
+\newenvironment{rem} % simple remark environment
+{
+\begin{remark}
+  }
+  {
+\end{remark}
+}
+
+\newenvironment{prop} % colored Proposition environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{proposition}
+    }
+    {
+  \end{proposition}
+\end{tcolorbox}
+}
+
+
+\newenvironment{thm} % Colored theorem environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{theorem}
+    }
+    {
+  \end{theorem}
+\end{tcolorbox}
+}
+
+
+\newenvironment{defn} % Colored definition environment
+{
+\begin{tcolorbox}[colback=definitionBackground, colframe=definitionBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{definition}
+    }
+    {
+  \end{definition}
+\end{tcolorbox}
+}
+
+\newenvironment{lem} % Colored lemma environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{lemma}
+    }
+    {
+  \end{lemma}
+\end{tcolorbox}
+}
+
+\newenvironment{fact} % Colored fact environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{factBasic}
+    }
+    {
+  \end{factBasic}
+\end{tcolorbox}
+}
+
+\newenvironment{coro} % Colored corollary environment
+{
+\begin{tcolorbox}[colback=theoremBackground, colframe=theoremBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{corollary}
+    }
+    {
+  \end{corollary}
+\end{tcolorbox}
+}
+
+\newenvironment{ex} % Colored example environment
+{
+\begin{tcolorbox}[colback=exampleBackground, colframe=exampleBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{example}
+    }
+    {
+  \end{example}
+\end{tcolorbox}
+}
+
+\newenvironment{nota} % Colored notation environment
+{
+\begin{tcolorbox}[colback=definitionBackground, colframe=definitionBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{notation}
+    }
+    {
+  \end{notation}
+\end{tcolorbox}
+}
+
+\newenvironment{prob}
+{
+\stepcounter{section}
+\begin{tcolorbox}[colback=problemBackground, colframe=problemBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{problem}
+    }
+    {
+  \end{problem}
+\end{tcolorbox}
+}
+
+\newenvironment{pf}
+{
+\begin{proof}[\textbf{\emph{Proof}}]
+  }
+  {
+\end{proof}
+}
+
+\newenvironment{topic}
+{
+\begin{tcolorbox}[colback=topicBackground, colframe=topicBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{topicBasic}
+    }
+    {
+  \end{topicBasic}
+\end{tcolorbox}
+}
+
+\newenvironment{slogan}
+{
+\begin{tcolorbox}[colback=topicBackground, colframe=topicBackground, sharp corners, before upper={\parindent24pt}]
+  \begin{sloganBasic}
+    }
+    {
+  \end{sloganBasic}
+\end{tcolorbox}
+}
+
+\raggedbottom

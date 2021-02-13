@@ -1,0 +1,76 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\externaldocument{chapter1}
+
+\begin{document}
+
+\section{Basics of topology}
+
+\subsection{Topological spaces}
+
+We start with the titular definition.
+\begin{defn}[Topology]
+  A \deft{topology} on a set $X$ is a collection $\mathcal T$ of subsets of $X$ such that
+    \begin{enumerate}[(1)]
+      \item $\es, X \in \mathcal T$;
+      \item any union of sets in $\mathcal T$ is in $\mathcal T$; and
+      \item any finite intersection of sets in $\mathcal T$ is in $\mathcal T$.
+    \end{enumerate}
+  The elements of $\mathcal T$ are called \deft{open sets}. A topological space is a pair $(X,\mathcal T)$.
+\end{defn}
+\begin{rem}
+  A topology is a prescription for which sets are open.
+\end{rem}
+
+Let's relate this back to something more familiar and intuitive: open sets in metric spaces. Recall the following properties of open sets in metric spaces: the empty set and the whole space are open; any union of open sets is open; and any finite intersection of open sets is open. I think of our definition of topology as a generalization of that.
+
+Now let's get to some examples of topologies. (Some are gross, which seems to be a common theme in topology. Things can get pretty pathological at times.)
+
+\begin{ex} \ldr
+  \begin{enumerate}[(1)]
+    \item If $X$ is a metric space, the collection of open sets is a topology called the \deft{metric topology}.
+
+    \item If $X$ is any set, the family $\mathcal T \coloneqq \set{\es, X}$ forms a topology called the \deft{indiscrete topology}.
+
+    \item If $X$ is any set, the family $\mathcal T \coloneqq \mathcal P (X)$ (the collection of all subsets) forms the \deft{discrete topology}.
+
+    \item Let $X \coloneqq \set{a,b}$. Then $\mathcal T \coloneqq \set{\es, \set a, X}$ is a topology.
+  \end{enumerate}
+\end{ex}
+
+Now let's get to closed sets. (They're what you think they are, if you're familiar with metric topology.)
+
+\begin{defn}[Closed set]
+  Let $X$ be a topological space. A subset $C$ of $X$ is \deft{closed} if and only if $X\sm C$ is open.
+\end{defn}
+\noindent It turns out that our aherent points thing from metric spaces still works but this is the more topology-core definition of closed. (We'll see this more and more in topology as we continue to study it, but things are usually defined in terms of open sets.)
+
+Let's keep translating some of our basic metric-space-type ideas to mroe general topology. Next we have the neighborhood (another name for an open ball in metric spaces).
+
+\begin{defn}[Neighborhood]
+  Let $X$ be a topological space. An open \deft{neighborhood} of $x \in X$ is an open set $U$ with $x \in U$.
+\end{defn}
+
+Recall that we would define open sets in metric spaces using interior points. We actually have a very similar idea in general topological spaces using open neighborhoods instead of the open ball.
+
+\begin{defn}
+  Let $X$ be a topological space and suppose $S$ is a subset of $X$. A point $x \in X$ is an \deft{interior point} of $S$ if and only if there exists an open neighborhood $U$ of $x$ that is contained in $S$
+
+  The \deft{interior} of $S$ is the set of interior points of $S$ and is denoted $S^\circ$.
+\end{defn}
+
+\begin{prop}
+  Let $X$ be a topological space and let $S$ be a subset of $X$. Then
+  \begin{enumerate}[(1)]
+    \item $S^\circ$ is open and
+    \item $S$ is open if and only if $S = S^\circ$.
+  \end{enumerate}
+\end{prop}
+\begin{pf}
+  ad
+\end{pf}
+
+
+
+\end{document}
