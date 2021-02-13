@@ -112,21 +112,61 @@ Now let's move on to sequences.
   A sequence of points $(x_n)$ in a topological space $X$ \deft{converges} to $x \in X$ if and only if for every open neighborhood $U$ of $x$, there exists an integer $N$ such that $x_n \in U$ whenever $n \geq N$.
 \end{defn}
 
-Here's a neat proposition.
+Here's a neat little theorem.
 
-\begin{result}{proposition}
+\begin{result}{theorem}
   If $S$ is a subset of a topological space $X$ and $(x_n)$ is a sequence in $S$ converging to $x \in X$, then $x \in \clos S$.
 \end{result}
 \begin{pf}
-  Suppose towards a contradiction that $x \nin \clos S$. Then $x \in X \sm \clos S = X \sm (X \sm (X \sm S)^\circ) = (X \sm S)^\circ$, which is clearly open. Since $X \sm \clos S$ is open, there exists an open neighborhood of $x$ entirely contained in $X \sm \clos S$ and since $(x_n)$ converges to $x$, such a neighborhood contains infinitely many terms of $(x_n)$. But $x_n \in S$ for all $n$.
+  Suppose towards a contradiction that $x \nin \clos S$. Then $x \in X \sm \clos S$, which is open. Then there exists an open neighborhood of $x$ entirely contained in $X \sm \clos S$ and since $(x_n)$ converges to $x$, such a neighborhood contains infinitely many terms of $(x_n)$. But $x_n \in S$ for all $n$.
 \end{pf}
 
+Now let's talk a bit more about adherent points. It turns out that we can use adherent points to define what the boundary of a subset of a topological space is.
+\begin{defn}
+  Let $X$ be a topological space and let $S$ be a subset of $X$. A point $x \in X$ is a \deft{boundary point} of $S$ if and only if $x$ is adherent to both $S$ and $X \sm S$ (i.e., $x \in \clos S \cap \clos{(X \sm S)}$).
+
+  The set of boundary points, or \deft{boundary} of $S$, is $\clos S \cap \clos{(X \sm S)}$ and is denoted by $\partial S$.
+\end{defn}
+
+\begin{result}{proposition}
+  Let $X$ be a topological space and let $S$ be a subset of $X$. Then,
+  \begin{enumerate}[(1)]
+    \item $S^\circ \cap \partial S= \es$ and
+    \item $\clos S = S^\circ \cup \partial S$
+  \end{enumerate}
+\end{result}
+\begin{pf}
+  (1) Suppose towards a contradiction that $S^\circ \cap \partial S$ is nonempty. Then there exists an $x$ in the intersection. Then there exists an open neighborhood of $x$ that is completely contained inside $S$. However, since $x \in \partial S$, every open neighorbood intersects $X \sm S$ nontrivially. Thus we have reached a contradiction and $S^\circ \cap \partial S$ is empty.
+
+  (2) ($\supseteq$) Since $S^\circ \subseteq S \subseteq \clos S$ and $\partial S \subseteq \clos S$, we have that $S^\circ \cup \partial S \subseteq S$. ($\subseteq$) Suppose $x \in \clos S$. Then, either there exists an open neighborhood $U$ of $x$ with $U \subseteq S$ or not. In the former case, $x \in S^\circ$. In the latter case, any open neighorhood of $x$ intersects $X \sm S$, so $x \in \clos{(X \sm S)}$, so $x \in \clos S \cap \clos{(X \sm S)}$, so $x \in \partial S$.
+\end{pf}
+
+Now let's move on to I think our shortest section: subspaces.
 
 
 
 
 
 
+
+
+
+
+
+\subsection{Subspaces}
+
+\begin{defn}
+  Let $S$ be a subset of a topological space $(X, \mathcal T)$. The family
+    \[
+      \mathcal S \coloneqq \set{U \cap S : U \in \mathcal T}
+    \]
+  is a topology for $S$ called the \deft{subspace topology}. (This is also called the \deft{relative topology}.) The elements of $\mathcal S$ are called \deft{relatively open} subsets of $S$.
+\end{defn}
+
+Here's an example of this:
+\begin{ex}
+  If $X$ is a metric space and $Y$ is a subspace of $X$, the topology on $Y$ obtained by restricting the metric to $Y$ coincides with the relative topology.
+\end{ex}
 
 
 \end{document}
