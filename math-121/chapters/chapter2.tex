@@ -169,4 +169,88 @@ Here's an example of this:
 \end{ex}
 
 
+
+
+
+
+
+
+
+
+\subsection{Continuous functions}
+
+Because general topological spaces do not have metrics, we can't actually define metrics using our usual $\e$-$\delta$ definition, so we use another idea (that's more topology-core tbh): open sets. In particular, we define a function to be continuous if and only if preimages preserve openness. Let's put this in one of our pretty boxes.
+\begin{defn}[Continuity]
+  Let $X$ and $Y$ be topological spaces and let $f \colon X \to Y$ be a function.
+
+  The function $f$ is \deft{continuous} if and only if $f^{-1}(V)$ is open whenever $V$ is an open subset of $Y$ (where $f^{-1}(V)$ is the preimage of $V$).
+
+  The function $f$ is \deft{continuous at a point} $x \in X$ if and only if for every open set $V \subseteq Y$ such that $f(x) \in V$, there exists an open set $U \subseteq X$ such that $x \in U$ and $f(U) \subseteq V$.
+\end{defn}
+
+It turns out that being continuous at every point in your domain does indeed mean you're continuous. Here's it stated formally and its proof.
+
+\begin{result}{theorem}
+  Let $X$ and $Y$ be topological spaces. A map $f \colon X \to Y$ is continuous if and only if $f$ is continuous at every point of $X$.
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Suppose $f$ is continuous. Taken $x \in X$ and let $V$ be an open subset of $Y$ containing $f(x)$. Then, $U = f^{-1}(V)$ is open in $X$ (by definition of being continuous), contains $x$, and satisfies $f(U) \subseteq V$.
+
+  ($\Leftarrow$) Suppose $f$ is continuous at every point of $X$. Let $V$ be an open subset of $Y$ and take $x \in f^{-1}(V)$. Then there exists an open set $U_x \subseteq X$ containing $x$ with $U_x \subseteq f^{-1}(V)$, which means that $f(U_x) \subseteq V$. \textbf{FINISH}
+\end{pf}
+
+Honestly this last theorem kind of sucks tbh. I don't see this fact being very useful in my (brief) experience of topology. But now we have something definitely more useful: the composition of continuous functions is continuous.
+
+\begin{result}{theorem}[Composition of continuous functions is continuous]
+  Let $X$, $Y$, and $Z$ be topological spaces, $f \colon X \to Y$, and $g \colon Y \to Z$ be cotninuous maps. Then $g \circ f \colon X \to Z$ is continuous.
+\end{result}
+\begin{pf}
+  Let $V$ be an open subset of $Z$. Then $g^{-1}(V) \subseteq Y$ is open and $f^{-1}(g^{-1}(V)) \subseteq X$ is open. Since $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$, we have shown that $g \circ f$ is continuous.
+\end{pf}
+
+Here's a definition very related to continuity: openness (of a function).
+
+\begin{defn}[Open function]
+  Let $X$ and $Y$ be topological spaces and let $f \colon X \to Y$ be a function. The function $f$ is \deft{open} if and only if for all open subsets $U$ of $X$, the image $f(U)$ is an open subset of $Y$.
+\end{defn}
+
+Now we have a very special type of continuous function: homeomorphisms.
+\begin{defn}[Homeomorphism]
+  Let $X$ and $Y$ be topological spaces. A function $f \colon X \to Y$ is a \deft{homeomorphism} if and only if $f$ is continuous, bijective, and open.
+\end{defn}
+\begin{rem}
+  For a bijection $f \colon X \to Y$ and topological spaces $X$ and $Y$, $f$ is open if and only if $f^{-1}$ is continuous.
+\end{rem}
+
+This coming idea is what we call it when we have a homeomorphism, but it's not immediately relevant I'd say. This will come up more often as we continue to learn about things called \deft{topological properties}, but that's a story for another day (or rather very soon lmao).
+
+\begin{defn}[Homeomorphic spaces]
+  Two topological spaces $X$ and $Y$ are \deft{homeomorphic} if and only if there exists a homeomorphism $f \colon X \to Y$.
+\end{defn}
+
+\begin{rem}
+  If $f \colon X \to Y$ is a homeomorphism, then so is $f^{-1} \colon Y \to X$. Compositions of homeomorphisms are also homeomorphisms and the identity map is a homeomorphism. Thus, ``being homeomorphic" is an equivalence relation on topological spaces.
+\end{rem}
+
+\begin{ex}
+  In $\R$, let $X = [0,r)$ and $Y=[0,\infty)$. Then
+    \[
+      f(t) \coloneqq \frac{t}{r-t}
+    \]
+  is a homeomorphism from $X$ to $Y$ (exercise lmao).
+
+  This can be used to show that in $\R^n$, if $X = B(\vec 0;r)$ and $Y=\R^n$, then $X$ and $Y$ are homeomorphic via $g\colon B(\vec 0;r) \to \R^n$
+    \[
+      g(\vec x) \coloneqq f(\|\vec x\|) \vec x.
+    \]
+  More generally, any ball $B(\vec x_0 ;r)$ around any $\vec x_0 \in \R^n$ is homeomorphic to $\R^n$ itself via
+    \[
+      h(\vec x) \coloneqq f(\|\vec x - \vec x_0\|) (\vec x - \vec x_0).
+    \]
+\end{ex}
+
+\begin{rem}
+  A property of a topological space is a \deft{topological invariant} or \deft{topological property} if and only if it is preserved under homeomorphisms. We'll get some examples of these soon.
+\end{rem}
+
 \end{document}
