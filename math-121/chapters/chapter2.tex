@@ -188,6 +188,10 @@ Because general topological spaces do not have metrics, we can't actually define
   The function $f$ is \deft{continuous at a point} $x \in X$ if and only if for every open set $V \subseteq Y$ such that $f(x) \in V$, there exists an open set $U \subseteq X$ such that $x \in U$ and $f(U) \subseteq V$.
 \end{defn}
 
+\begin{slogan}
+  Continuous $\iff$ preimages preserve openness.
+\end{slogan}
+
 It turns out that being continuous at every point in your domain does indeed mean you're continuous. Here's it stated formally and its proof.
 
 \begin{result}{theorem}
@@ -214,6 +218,10 @@ Here's a definition very related to continuity: openness (of a function).
   Let $X$ and $Y$ be topological spaces and let $f \colon X \to Y$ be a function. The function $f$ is \deft{open} if and only if for all open subsets $U$ of $X$, the image $f(U)$ is an open subset of $Y$.
 \end{defn}
 
+\begin{slogan}
+  Open $\iff$ images preserve openness.
+\end{slogan}
+
 Now we have a very special type of continuous function: homeomorphisms.
 \begin{defn}[Homeomorphism]
   Let $X$ and $Y$ be topological spaces. A function $f \colon X \to Y$ is a \deft{homeomorphism} if and only if $f$ is continuous, bijective, and open.
@@ -227,6 +235,10 @@ This coming idea is what we call it when we have a homeomorphism, but it's not i
 \begin{defn}[Homeomorphic spaces]
   Two topological spaces $X$ and $Y$ are \deft{homeomorphic} if and only if there exists a homeomorphism $f \colon X \to Y$.
 \end{defn}
+
+% \begin{slogan}
+%   Things are homeomorphic $\iff$ they have the same open sets.
+% \end{slogan}
 
 \begin{rem}
   If $f \colon X \to Y$ is a homeomorphism, then so is $f^{-1} \colon Y \to X$. Compositions of homeomorphisms are also homeomorphisms and the identity map is a homeomorphism. Thus, ``being homeomorphic" is an equivalence relation on topological spaces.
@@ -252,5 +264,245 @@ This coming idea is what we call it when we have a homeomorphism, but it's not i
 \begin{rem}
   A property of a topological space is a \deft{topological invariant} or \deft{topological property} if and only if it is preserved under homeomorphisms. We'll get some examples of these soon.
 \end{rem}
+
+
+
+
+
+
+
+
+
+\subsection{Basis for a topology}
+
+We revisit several notions from metric space topology and discuss them in a more general setting.
+
+\textbf{[insert review of basis and stuff from metric space stuff]}
+
+\begin{result}{theorem}
+  A family $\BB$ of subsets of $X$ is a basis for a topology of $X$ if and only if $\BB$ satisfies
+    \begin{enumerate}[(1)]
+      \item Each $x \in X$ lies in at least one set from $\BB$.
+      \item If $U,V \in \BB$ and $x \in U \cap V$, then there exists $W \in \BB$ with $x \in W \subseteq U \cap V$.
+    \end{enumerate}
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Assume $\BB$ is a basis. Then $\BB$ satisfies (1) by the recalled theorem above. Moreover, since $U \cap V$ is open, that same theorem shows that $\BB$ satisfies (2).
+
+  ($\Leftarrow$) Assume $\BB$ satisfies (1) and (2). Let $\mathcal T$ be the family of all unions of sets from $\BB$. It suffices to show that $\mathcal T$ is a topology for $X$ (in which case, $\BB$ is basis for $\mathcal T$). To this end, recall that
+  \begin{enumerate}[(i)]
+    \item $\es, X \in \mathcal T$,
+    \item any union of sets in $\mathcal T$ is in $\mathcal T$, and
+    \item any finite intersection of sets in $\mathcal T$ is in $\mathcal T$.
+  \end{enumerate}
+  \noindent (ii) is clear by construction of $\mathcal T$.
+
+  In regards to (i), $\es = \bigcup_{\es}^{} \in \mathcal T$ and the fact that $\BB$ satisfies (1) means that $\bigcup_{V \in \BB}^{} V$, hence $X \in \mathcal T$.
+
+  For (iii), it suffices to show that the intersection of any two sets in $\mathcal T$ is in $\mathcal T$. So let $U,V \in \mathcal T$. Since $U$ and $V$ are unions of sets in $\BB$, there exists $U_0$ and $V_0$ with $x \in U_0 \subseteq U$ and $x \in V_0 \subseteq V$, thus $x \in U_0 \cap V_0$. Since $\BB$ satisfies (2), we know there exists $W_x \in \BB$
+  such that $x \in W_x$ and $W_x \subseteq U_0 \cap V_0$. Then $W_x \subseteq U \cap V$ and
+    \[
+      U \cap V = \bigcup_{x \in U \cap V}^{} W_x
+    \]
+  hence, $U \cap V \in \mathcal T$.
+\end{pf}
+
+It obvious that every topological space has a basis (take the entire topology, for example), but there are some interesting results that we can get from putting constraints on the size of basis.
+
+\begin{defn}[Second countable]
+  A topologicals space $X$ is \deft{second countable} if and only if there is a countable basis for the topology of $X$.
+\end{defn}
+
+\begin{result}{theorem}[Lindel\"{o}f's Theorem]
+  Let $X$ be a second countable topological space. Then every open cover of $X$ has a countable subcover.
+\end{result}
+
+\begin{pf}
+  Identical as done in the section on compactness of metric spaces.
+\end{pf}
+
+\begin{defn}[Dense]
+  A subset $S$ of a topological space $X$ is \deft{dense} in $X$ if $\clos S = X$.
+\end{defn}
+
+\begin{defn}[Separable]
+  A topological space $X$ is separable if and only if there is a countable dense subset of $X$.
+\end{defn}
+
+\begin{result}{theorem}
+  If $X$ is a second countable topological space, then $X$ is separable.
+\end{result}
+
+\begin{rem}
+  There are separable topological spaces which are not second countable. Such spaces cannot be metrizable.
+\end{rem}
+
+
+
+
+
+
+
+
+
+
+\subsection{Finite product spaces}
+
+What happens when you take products of topological spaces? When we take products of sets it's pretty straight forward, but for topological spaces we have to ensure that that structure of a topology is itself preserved, but how do we manage that? We do that with a thing called the \deft{product topology} which we'll define now.
+
+\begin{defn}[Product topology]
+  Let $X_1, \ldots, X_n$ be topological spaces. The \deft{product topology} on the Cartesian product $X \coloneqq X_1 \x \cdots \x X_n$ is teh topology for which a basis given by the ``rectangles:"
+    \[
+      \set{U_1 \x \cdots \x U_n : U_i \subseteq X_i \text{ is open for } 1 \leq i \leq n}.
+    \]
+\end{defn}
+
+The product topology ensures that component projections are continuous: indeed, if $\pi_j : X \to X_j$ is the map such that
+  \[
+    (x_1, \ldots, x_n) \mapsto x_j
+  \]
+for all $(x_1, \ldots, x_n) \in X$ and $U_j \subseteq X_j$ is open, then
+  \[
+    \pi_j^{-1}(U_j) = X_1 \x \cdots \x X_{j-1} \x U_j \x X_{j+1} \cdots \x X_n
+  \]
+which is open in $X$. In fact, the product topology is the smallest such topology that guarantees that the projection functions are continuous. We'll show this now.
+
+\begin{result}{theorem}
+  The product topology for $X \coloneqq X_1 \x \cdots \x X_n$ is the smallest topology for which the component projections $\pi_j$ are continuous.
+\end{result}
+\begin{pf}
+  Let $\mathcal T$ be a topology for which the projections $\pi_j$ are $\mathcal T$-continuous. Let $U_1, \ldots, U_n$ be open subset of $X_1, \ldots, X_n$, respectively. We've seen taht each $\pi_j^{-1}(U_j)$ is an open set in $X$. Since
+    \[
+      \pi_1^{-1}(U_1) \cap \cdots \cap \pi_n^{-1}(U_n) = U_1 \x \cdots \x U_n \subseteq \mathcal T
+    \]
+  is an open set, $\mathcal T$ contains the basis for the product topology.
+\end{pf}
+\begin{rem}
+  Why does this actually show that the product topology is the smallest? When any topology then contains the basis of the product topology, so the product topology is contained within any other topology that satisfies the continuity of $\pi_j$ for each $j$.
+\end{rem}
+
+Not only are projections continuous, they are also open!
+
+\begin{result}{theorem}
+  Let $X \coloneqq X_1 \x \cdots \x X_n$ eb the product of topological spaces $X_1, \ldots, X_n$. Then each projection $\pi_j \colon X \to X_j$ is an open map.
+\end{result}
+\begin{pf}
+  Let $U \coloneqq U_1 \x \cdots \x U_n$ be a basic open set. Then $\pi_j(U) = U_j$ is open. Since maps preserve unions, it follows that the image of any open subset of $X$ under $\pi_j$ is open in $X_j$.
+\end{pf}
+
+I can't think of a way to introduce this coming theorem yet lmao.
+\begin{result}{theorem}
+  Let $E$ be a topological space and let $f$ be a map from $E$ to $X \coloneqq X_1 \x \cdots \x X_n$. Then $f$ is continuous if and only if each $\pi_j \circ f \colon E \to X_j$ is continuous for $1 \leq j \leq n$.
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Since $f$ and $\pi_j$ are continuous, the composition $\pi_j \circ f$ is continuous.
+
+  ($\Leftarrow$) Suppose each $\pi_j \circ f$ is continuous and let $U \coloneqq U_1 \x\cdots\x U_n$ be a basic open set in $X$. Then
+    \begin{align*}
+      f^{-1}(U) &= f^{-1}(\pi_1^{-1} (U_1) \cap \cdots \cap \pi_n^{-1}(U_n)) \\
+        &= (f^{-1} \circ \pi_1^{-1})(U_1) \cap \cdots \cap (f^{-1}\circ \pi_n^{-1})(U_n)) \\
+        &= (\pi_1 \circ f)^{-1}(U_1) \cap \cdots \cap (\pi_n \circ f)^{-1}(U_n))
+    \end{align*}
+  is a finite intersection of open sets and hence is open. Moreover, inverse preserve unions, so, similarly, the preimage of any open set under $f$ is open. So $f$ is continuous.
+
+  This completes the proof.
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+\subsection{Quotient spaces}
+\textbf{FINISH}
+
+
+
+
+
+
+
+
+
+
+\subsection{Separation axioms}
+
+Convergence of sequences depends on the topology. For metric spaces, we could discuss limits by invoking the metric topology. In general, the picture is not so clear.
+
+\begin{ex}
+  In $\Z$ with the cofinite topology, the sequence $(1,2,3,\ldots)$ converges to every point in $\Z$.
+\end{ex}
+
+We control this with separation axioms. [I personally like to think of separation axioms is how much you can `separate' or distinguish subsets of a topological space.]
+
+\begin{defn}
+  A topological space $X$ is $T_0$ if and only if its points are ``topologically distinguishable." That is, $X$ is $T_0$ if and only if for all $x,y \in X$ with $x \neq y$, there exists an open set containg $x$ and not $y$ or containing $y$ and not $x$.
+\end{defn}
+
+\begin{ex}
+  Take a set $X$ of more than one point with the indiscrete topology. Then, $X$ is not $T_0$.
+\end{ex}
+
+
+
+
+
+
+
+
+
+
+\subsection{Compactness}
+
+Compactness is the same thing from metric space topology (the open cover definition, I mean).
+
+\begin{defn}[Compactness]
+  Let $X$ be a topological space. A subset $Y \subseteq X$ is \deft{compact} if and only if for every open cover $\set{U_i}_{i \in I}$ of $Y$, there is a finite set $\set{i_1, \ldots, i_n}$ such that $Y \subseteq U_{i_1} \cup \cdots \cup U_{i_n}$.
+\end{defn}
+\begin{slogan}
+  Compact $\iff$ every open cover has a finite subcover.
+\end{slogan}
+
+Now, recall the following proposition:
+\textbf{[insert proposition about closed subset of compact is compact]}
+
+\begin{rem}
+  We had a converse to this proposition (i.e., if $V \subseteq X$ is compact, then $V$ is closed) for metric spaces, but we don't have this for general topological spaces. However, it suffices to have our space be Hausdorff for this converse to hold.
+\end{rem}
+
+\begin{result}{proposition}
+  Suppose that $X$ is a Hausdorff topological space and that $K$ is a compact subset of $X$, then $K$ is closed.
+\end{result}
+\begin{pf}
+  We will show that $X \sm K$ is open. Let $x \in X \sm K$. Since $X$ is Hausdorff, for each $k \in K$, there exists $U_k \ni k$ and $V_k \ni x$ with $U_k$ and $V_k$ disjoint and open. Now $K \subseteq \bigcup_{k \in K}^{} U_k = \colon U$ and since $K$ is compact, there exists finitely many $k_1, \ldots, k_n$ such that $K \subseteq U_{k_1} \cup \cdots \cup U_{k_n}$. Define
+    \[
+      V \coloneqq V_{k_1} \cap \cdots \cap V_{k_n}.
+    \]
+  Then $x \in V$ and $V \cap U$ is empty, which implies that $V \cap K$ is empty and $V \subseteq X \sm K$. Thus $X \sm K$ is open and $K$ is closed.
+\end{pf}
+
+\begin{result}{corollary}
+  A compact Hausdorff space is $T_3$.
+\end{result}
+\begin{pf}
+  \textbf{FINISH}
+\end{pf}
+
+\begin{result}{proposition}
+  A compact Hausdorff topological space is $T_4$.
+\end{result}
+\begin{pf}
+  asdf
+\end{pf}
+
+
+
+
+
+
 
 \end{document}
