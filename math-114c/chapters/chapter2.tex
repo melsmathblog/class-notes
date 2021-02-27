@@ -3,10 +3,41 @@
 
 \begin{document}
 
-\section{Effective enumerations}
+\section{Effective enumerations and undecidability}
 
-test
+\subsection{Recursive partial functions}
 
+In the previous section we talked about different models of computation (hence its title) and generally different ways to think about computability in terms of, well, computing (with computers). Now, we come across a new term: recursive. What recursive means is that the more pure-mathematical way to define computability without machines necessarily. Now let's get into our definition.
 
+\begin{defn}
+  We define the \deft{class $\RR$ of recursive partial functions} to be the
+  $\subseteq$-smallest collection of partial functions $f\colon \N^n \pto \N$
+  such that
+    \begin{enumerate}[(1)]
+      \item $\RR$ contains the zero function $\underline 0$, the successor function, and the projection functions $U_k^n$.
+
+      \item $\RR$ is closed under definition by substitution, definition by recursion, and definition by minimalization.
+    \end{enumerate}
+\end{defn}
+
+We're also going to give a name to the class of functions we were working with before: the URM computable functions.
+
+\begin{defn}
+  We define the \deft{class $\CC$ of URM computable partial functions} to be the class of partial functions $g \colon \N^n \pto \N$ such that there exists a URM program $P$ with $g = f_P^{(n)}$.
+\end{defn}
+
+Our first big result of these notes indeed relating $\RR$ and $\CC$. In particular,
+\begin{result}{theorem}
+  A partial function $f \colon \N^n \to \N$ is recursive if and only if it is URM-computable (i.e., $\RR = \CC$).
+\end{result}
+
+We actually have one direction of this already (the proof is very short and follows mostly by definition).
+\begin{result}{lemma}
+  $\RR \subseteq \CC$.
+\end{result}
+\begin{pf}
+  Since $\CC$ is closed under the same constraints that define $\RR$, since $\RR$ is the smallest such set, it is necessarily true that $\RR \subseteq \CC$.
+\end{pf}
+We will prove the other direction in due time.
 
 \end{document}

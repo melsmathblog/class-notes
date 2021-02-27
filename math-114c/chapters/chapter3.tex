@@ -1,0 +1,89 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\begin{document}
+
+\section{Computably enumerable sets}
+
+\subsection{Partially decidable relations}
+
+In this section, we're going to use the Kleene T predicate a lot, so we're going to restate it here.
+
+\begin{result}{theorem}[Kleene T predicate]
+  For each positive integer $n$, there is a recursive $(n+2)$-ary relation $T_n(e, \vec x,y)$ and a computable totla function $U\colon \N \to \N$ which satisfy the following condition: for every $e \in \N$ and every $\vec x \in \N^n$,
+    \[
+      \varphi_e^{(n)} (\vec x) = U(\mu y[T_n(e, \vec x, y)]).
+    \]
+\end{result}
+\begin{rem}
+  Let recall what the Kleene T predicate does: it takes a program code $e$, an input for the program $\vec x$, and a computation history $y$, and decides whether $y$ is a computation history for the program defined by $e$ with input $\vec x$ that halts. Recall that the Kleene T predicate is indeed decidable.
+\end{rem}
+
+\begin{defn}
+  An $n$-ary relation $R \subseteq \N^n$ is \deft{partially decidable} if and only if the partial function $f\colon \N^n \pto \N$ defined by
+    \[
+      f(\vec x) =
+        \begin{cases}
+          1 &\text{if } R(\vec x) \text{ holds}, \\
+          \ua &\text{otherwise},
+        \end{cases}
+    \]
+  is computable.
+
+  The function $f$ above is called the \deft{partial characteristic function} of $R$ and any algorithm computing $f$ is called a \deft{partial decision procedure} for $R$.
+\end{defn}
+\begin{rem}
+  Partially decidable has other names too; semi-decidable, semi-computable, and partially solvable are other common names. We will try to use partially decidable mainly though. I don't like the other names lmao.
+\end{rem}
+
+Do we have any examples of partially decidable relations? We do! In fact, we have many, many such relations. Here's a canonical one, though.
+
+\begin{ex}
+  The (unary diagonal) halting problem (i.e., whether $\varphi_x(x)$ halts) is partially decidable.
+
+  \begin{pf}
+    We can define its partial characteristic function $f \colon \N \pto \N$ as the following:
+      \[
+        f(x) = 1 + 0 \cdot \mu y [T(x,x,y)].
+      \]
+    Observe that $f$ is computable since it is the minimalization of a decidable relation. Then, notice that if $\varphi_x(x) \da$, then there does exist a halting computation history $y$ and our minimalization will eventually return a value, so $f(x) = 1$ if $\varphi_x(x) \da$. If $\varphi_x(x) \ua$, then there does not exist a halting computation history $y$ and our minimalization never ends, so $f(x) \ua$.
+  \end{pf}
+\end{ex}
+\begin{rem}
+  This trick of multiplying a minimalization by $0$ to encode divergence of a computation is SUPER useful. Be aware of its existence!
+\end{rem}
+
+\begin{ex}
+  Any decidable relation is partially decidable.
+
+  \begin{pf}
+    Suppose $R \subseteq \N^n$ is decidable. Then, $f \colon \N^n \to \N$ defined by
+      \[
+        f(\vec x) = 1 + 0\cdot \mu y[R(\vec x) \land y=y].
+      \]
+    If $R(\vec x)$ holds, then the minimalization ends and we get $f(\vec x) = 1$ as desired. IF $R( \vec x)$ does not hold, then our minimalization never ends and the computation diverges, so $f(\vec x) \ua$.
+  \end{pf}
+\end{ex}
+\begin{rem}
+  I told you the multiplying by $0$ trick would be useful!
+\end{rem}
+
+We know that there exist decidable relations, but do there exist not partially decidable relations? Yes, there do! We actually have another `simple' example: the negation of the (unary diagonal) Halting Problem.
+\begin{ex}
+  Let $Q(x)$ hold if and only if $\varphi_x(x) \ua$. The relation $Q$ is not partially decidable.
+
+  \begin{pf}
+    Suppose towards a contradiction that $Q$ is partially decidable. In particular, suppose that the the partial characteristic function of $Q$, $f_Q \colon \N \pto \N$, is computable. Morever, let $f_H \colon \N \pto \N$ be the (computable) partial characteristic function of the (unary diagonal) Halting Problem. Now, by running $f_Q(x)$ and $f_H(x)$ at the same time, we may decide whether $\varphi_x(x)$ halts (as we will be able to decide if it does or if it does not based on the ouput of $f_H(x)$ and $f_Q(x)$, respectively). Since the Halting Problem is undecidable we have a contradiction and thus $Q$ must not have been partially decidable.
+  \end{pf}
+\end{ex}
+
+
+
+
+
+
+
+
+
+
+\end{document}
