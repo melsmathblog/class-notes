@@ -16,7 +16,7 @@ In this section, we're going to use the Kleene T predicate a lot, so we're going
     \]
 \end{result}
 \begin{rem}
-  Let recall what the Kleene T predicate does: it takes a program code $e$, an input for the program $\vec x$, and a computation history $y$, and decides whether $y$ is a computation history for the program defined by $e$ with input $\vec x$ that halts. Recall that the Kleene T predicate is indeed decidable.
+  Let recall what the Kleene T predicate does: it takes a program code $e$, an input for the program $\vec x$, and a computation history $y$, and decides whether $y$ is a computation history for the program defined by $e$ with input $\vec x$ that halts. It basically simulates a register machine which runs a program with code $e$ and input $\vec x$. Recall that the Kleene T predicate is indeed decidable.
 \end{rem}
 
 \begin{defn}
@@ -30,7 +30,7 @@ In this section, we're going to use the Kleene T predicate a lot, so we're going
     \]
   is computable.
 
-  The function $f$ above is called the \deft{partial characteristic function} of $R$ and any algorithm computing $f$ is called a \deft{partial decision procedure} for $R$.
+  The function $f$ above is called the \deft{partial characteristic function} of $R$ (which is often denoted $\chi_R^p$) and any algorithm computing $f$ is called a \deft{partial decision procedure} for $R$.
 \end{defn}
 \begin{rem}
   Partially decidable has other names too; semi-decidable, semi-computable, and partially solvable are other common names. We will try to use partially decidable mainly though. I don't like the other names lmao.
@@ -38,7 +38,7 @@ In this section, we're going to use the Kleene T predicate a lot, so we're going
 
 Do we have any examples of partially decidable relations? We do! In fact, we have many, many such relations. Here's a canonical one, though.
 
-\begin{ex}
+\begin{ex}{\label{ex:unary-diagonal-halting-is-partially-decidable}}
   The (unary diagonal) halting problem (i.e., whether $\varphi_x(x)$ halts) is partially decidable.
 
   \begin{pf}
@@ -53,7 +53,7 @@ Do we have any examples of partially decidable relations? We do! In fact, we hav
   This trick of multiplying a minimalization by $0$ to encode divergence of a computation is SUPER useful. Be aware of its existence!
 \end{rem}
 
-\begin{ex}
+\begin{ex}{\label{ex:decidable-implies-partially-decidable}}
   Any decidable relation is partially decidable.
 
   \begin{pf}
@@ -77,6 +77,157 @@ We know that there exist decidable relations, but do there exist not partially d
   \end{pf}
 \end{ex}
 
+The next two theorems will provide some neat equivalent characterizations of partially decidable relations.
+
+\begin{result}{theorem}{\label{thm:partially-decidable-iff-domain-of-partial-function}}
+  An $n$-nary relation $R \subseteq \N^n$ is partially decidable if and only if $R$ is the domain of a computable partial function, i.e., there is a computable partial function $g\colon \N^n \pto \N$ such that for all $\vec x \in \N^n$,
+    \[
+      R(\vec x) \iff g(\vec x) \da.
+    \]
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Suppose $R$ is partially decidable. Then the domain of $R$'s partial characteristic function clearly equals $R$.
+
+  ($\Leftarrow$) Suppose $R = \Dom(\varphi_e^{(n)})$. Then the partial characteristic function of $R$, $\chi_R^p(\vec x) = 1 + 0 \cdot \mu y[T_n(e,\vec x,y)]$ is computable.
+\end{pf}
+\begin{rem}
+  It follows that $W_0^{(n)}, W_1^{(n)}, W_2^{(n)}, \ldots$ is an (effective) enumeration of all partially deicdable $n$-ary relations.
+\end{rem}
+
+\begin{result}{theorem}
+  An $n$-ary relation $R \subseteq \N^n$ is partially decidable if and only if there is a $(n+1)$-ary decidable relation $Q \subseteq \N^{n+1}$ such that for any $\vec x \in \N^n$,
+    \[
+      R(\vec x) \iff \exists y [Q(\vec x,y)].
+    \]
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Suppose $R$ is partially decidable. Then $R = W_e^{(n)}$ for some code $e \in \N$. We then have that
+    \[
+      R(\vec x) = \varphi_e^{(n)}(\vec x) \da \iff \exists y [T_n(e,\vec x,y)]
+    \]
+  where $T_n$ is the Kleene T predicate. (To be more explicit, deifne $Q(\vec x,y)$ to hold if and only if $T_n(e, \vec x, y)$.)
+
+  ($\Leftarrow$) Suppose $R$ is a rleation satisfying
+    \[
+      R(\vec x) \iff \exists y[Q(\vec x,y)]
+    \]
+  for a decidable $(n+1)$-ary relation $Q \subseteq \N^{n+1}$. Define $f(\vec x) = \mu y[Q(\vec x,y)]$. Then $f$ is computable and $R = \Dom(f)$, so $R$ is partially decidable.
+\end{pf}
+
+The next theorem gives closure properties of the class of partially decidable relations.
+
+\begin{result}{theorem}
+  The class of partially decidable relations is closed under $\land$, $\lor$, $\exists^<$, $\forall^<$, and $\exists$. It is not closed under negation $\lnot$. More formally:
+  \begin{enumerate}[(a)]
+    \item If $R$ is partially decidable $n$-ary relations, then the relations $(R \land Q$) and $(R \lor Q)$ are also partially decidable $n$-ary relations.
+
+    \item If $R$ is a partially decidable $(n+1)$-ary relation, then the relations
+      \begin{align*}
+        (\exists^< R)(\vec x,y) \quad &\iff_\df \quad (\exists z < y) [R(\vec x,z)], \\
+        (\forall^< R) (\vec x,y) \quad &\iff_\df \quad (\forall z <y)[R(\vec x,z)], \\
+        (\exists R)(\vec x) \quad &\iff_\df \quad \exists y [R(\vec x,y)],
+      \end{align*}
+    are also partially decidable.
+
+    \item There are partially decidable relations $R$ such that $\lnot R$ is not partially decidable.
+  \end{enumerate}
+\end{result}
+\begin{pf}
+  This is annoying. Maybe later lmao.
+  % We list this proofs in parts for ease of reading.
+  %
+  % \begin{enumerate}[(a)]
+  %   \item ($\land$) Let $R = \Dom(f)$ or $Q = \Dom(g)$ for some computable partial functions $f,g \colon \N^n \pto \N$. Then, $(R \land Q) = \Dom(f+g)$.
+  %
+  %   ($\lor$) \textbf{How ot prove the closure under or?}
+  %
+  %   \item ($\exists^<$)
+  %
+  %   ($\forall^<$)
+  %
+  %   ($\exists$) Since $R$ is partially decidable, there exists a decidable relations $Q$ such that $R(\vec x,y)$ holds if and only if $\exists z [Q(\vec x,y,z)]$. Then,
+  %     \begin{align*}
+  %       (\exists^< R) (\vec x,y) &\iff (\exists z<y)[R(\vec x,z)] \\
+  %         &\iff (\exists z < y)(\exists w)[Q(\vec x,z,w)] \\
+  %         &\iff (\exists a)[(a)_0 < y \land Q(\vec x, (a)_0, (a)_1)]
+  %     \end{align*}
+  %   which is partially decidable since projection, comparison, and $Q$ are decidable/computable. T
+  % \end{enumerate}
+\end{pf}
+
+
+\begin{result}{corollary}
+  If $R$ is an $(n+k)$-ary partially decidable relation, then the $n$-ary relation
+    \[
+      Q(\vec x) \quad \iff_\df \quad (\exists y_1)\cdots(\exists y_k)[R(\vec x,y_1, \ldots, y_k)]
+    \]
+  is also partially decidable.
+\end{result}
+\begin{rem}
+  We can rewrite our bunch of existentials as a single number being projected many times, like $Q(\vec x) \iff (\exists a)[R(\vec x, (a)_0, \ldots, (a)_{k-1})]$.
+\end{rem}
+
+Here are some more partially decidable relations using these properties.
+\begin{ex}
+  The following relations are partially decidable for each fixed $n$.
+  \begin{enumerate}[(1)]
+    \item $R^{(n)}(e) \quad \iff_\df \quad W_e^{(n)} \neq \es$.
+      \begin{pf}
+        We may rewrite our relation as:
+          \[
+            W_e^{(n)}\neq \es \iff (\exists x_0) \cdots (\exists x_{n-1})[\varphi_e^{(n)}(\vec x) \da],
+          \]
+        This is partially decidable since partialy decidability is closed under many existentials and $\varphi_e^{(n)}(\vec x) \da$ is partially decidable. Thus $R^{(n)}$ is partially decidable.
+      \end{pf}
+
+    \item $Q^{(n)}(e,y) \quad \iff_\df \quad y \in E_e^{(n)}$.
+    \begin{pf}
+       Same many existential trick again.
+    \end{pf}
+  \end{enumerate}
+\end{ex}
+
+Now here comes a way to relate decidable and partially decidable relations.
+\begin{result}{theorem}
+  Let $R$ be an $n$-ary relation. The relation $R$ is decidable if and only if $R$ and $\lnot R$ are both partially decidable.
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Since $R$ is decidable, $\lnot R$ is also decidable. Then by Example \ref{ex:decidable-implies-partially-decidable}, $R$ and $\lnot R$ are partially decidable.
+
+  ($\Leftarrow$) Suppose $R$ and $\lnot R$ are partially decidable. Let $f,g \colon \N \pto \N$ be such that
+    \[
+      R(\vec x) \iff f(\vec x)\da \quad \text{and} \quad \lnot R(\vec x) \iff g(\vec x) \da.
+    \]
+  Notice that for any $\vec x$, $R(\vec x)$ holds (and hence $f(\vec x) \da$) or $\lnot R(\vec x)$ holds (and hence $g(\vec x)\da$), but not both! Then, running both $f(\vec x)$ and $g(\vec x)$ and seeing which halts is a decision procedure for $R$ since if $f(\vec x)$ halts, $R$ holds, and if $g(\vec x)$ halts, $R$ does not hold.
+\end{pf}
+
+\begin{result}{corollary}
+  Any relation $R$ which is partially decidable but not decidable has $\lnot R$ not partially decidable.
+\end{result}
+
+\subsubsection{Graphs of computable partial functions}
+
+Now let's talk about graphs! When we talked about total functions, we saw that a total function was computable if and only if its graph was decidable. It turns out that we actually have an analagous result for partial functions. Indeed, it is:
+\begin{result}{theorem}
+  Let $f\colon \N^n \to \N$ be a partial function. Then, $f$ is computable if and only if its graph relation $G_f$ is partially decidable.
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Suppose $f$ is computable and has a code $e \in \N$. Then,
+    \[
+      f(\vec x) \da  = y \iff \exists z [T_n(e,\vec x,z) \land U(z) = y]
+    \]
+  which is partially decidable since the statement being quantified over is indeed decidable.
+
+  ($\Leftarrow$) Suppose $G_f$ is partially decidable. Pick a decidable relation $R$ such that
+    \[
+      G_f(\vec x,y) \iff \exists z [R(\vec x,y,z)].
+    \]
+  We may then define $f$ by
+    \[
+      f(\vec x) = (\mu a[R(\vec x, (a)_0, (a)_1)])_0.
+    \]
+  Thus $f$ is computable since it is defined through minimalization with a decidable relation and substitution with computable functions.
+\end{pf}
 
 
 
@@ -85,5 +236,147 @@ We know that there exist decidable relations, but do there exist not partially d
 
 
 
+
+
+
+\subsection{Recursively enumerable sets}
+
+Before we start we're going to do some quick review/comments.
+\begin{itemize}
+  \item Unary relations on $\N$ are the same things as subsets of $\N$.
+  \item Another name for decidable unary relations on $\N$ are called \deft{computable} or \deft{recursive} sets.
+  \item A subset $A$ of $\N$ is decidable/computable/recursive if and only if its characteristic function is computable.
+  \item A subset $A$ of $\N$ is partially-decidable/semi-computable/semi-recursive if and only if its partial characteristic function is computable.
+  \item All of the theorems of the previous section about partially decidable relations apply to these partially decidable sets (unary relations). For example: (1) if $A$ and $B$ are partially decidable subsets of $\N$, then $A \cup B$ and $A \cap B$ are partially decidable (since partial decidability is closed under $\land$ and $\lor$); and (2) a subset $A$ of $\N$ is decidable if and only if $A$ and $\N \sm A$ are partially decidable.
+\end{itemize}
+\begin{rem}
+  That last set of names are kind of garbage imo, so we're going to stick to partially decidable (until we learn about a shorter name).
+\end{rem}
+
+Here's an example using an something we know but with this new set up.
+\begin{ex}
+  The unary, diagonal Halting Problem as a set is usually denoted by $K \ceq \set{x \in \N : \varphi_x(x) \da}$. We know from Example \ref{ex:unary-diagonal-halting-is-partially-decidable} that $K$ is partially decidable.
+\end{ex}
+
+Here's the name we were alluding to earlier.
+\begin{defn}
+  A set $A \subseteq \N$ is \deft{recursively enumerable} (or \deft{computably enumerable}) if and only if either $A$ is empty or there exists a computable total function $f\colon \N \to \N$ such that $A = \Ran(f)$.
+\end{defn}
+\begin{rem}
+  We say $f$ enumerates $A$ since
+    \[
+      A = \set{f(0), f(1), f(2), \ldots}.
+    \]
+  Notice that our list above may have repeats.
+\end{rem}
+\begin{rem}
+  We often abbreviate recursively enumerable by r.e. (which we will do from now on).
+\end{rem}
+
+Now here's why we said we may be able to use this new name instead of partially decidable.
+\begin{result}{theorem}
+  A set $A \subseteq \N$ is partially decidable if and only if it is r.e.
+\end{result}
+\begin{pf}
+  ($\Leftarrow$) Suppose $A$ is r.e. Then there is a computable total function $f \colon \N \to \N$ such that $A = \Ran(f)$. Then,
+    \[
+      y \in A \iff \exists x [f(x)=y].
+    \]
+  Since $f$ is computable total, its graph is decidable, so $A$ is partially decidable.
+
+  ($\Rightarrow$) Suppose $A$ is partially decidable. If $A$ is empty or finite, it is clearly r.e., so we may assume that $A$ is infinite. Then there exists a decidable relation $R \subseteq \N^2$ such that
+    \[
+      x \in A \iff \exists y [R(x,y)].
+    \]
+  Now define $f \colon \N \to \N$ by
+    \[
+      f(n) = (\mu z [ z \geq n \land R((z)_0,(z)_1)])_0.
+    \]
+  If $x \in A$, let $z = \cyc{x,y}$ such that $R(x,y)$. Then $f(z) = x$. \textbf{Proof read}
+\end{pf}
+
+Here's basically a list of all our equivalent definitions of r.e. that we have established.
+\begin{result}{theorem}
+  For a set $A \subseteq \N$, the following are equivalent:
+  \begin{enumerate}[(i)]
+    \item $A$ is r.e.
+    \item $A$ is partially decidable (i.e., the partial characteristic function of $A$ is computable).
+    \item $A = W_e$ for some $e \in \N$.
+    \item There is a decidable binary relation $R$ such that for every $x \in \N$,
+      \[
+        x \in A \iff \exists y [R(x,y)].
+      \]
+    \item There is a partially decidable $(n+1)$-ary relation $R$ such that for every $x \in \N$,
+      \[
+        x \in A \iff \exists y_1 \cdots \exists y_n [R(x,y_1, \ldots, y_n)].
+      \]
+    \item $A$ is finite or $A$ is the range of a computable injective total function.
+    \item $A = E_e$ for some $e \in \N$.
+  \end{enumerate}
+\end{result}
+
+\begin{ex}
+  The set $\set{x \in \N : \varphi_x \text{ is not total}}$ is not r.e.
+
+  \begin{pf}
+    We will computably reduce membership in $\clos K \ceq \N \sm K$ to membership in $A \ceq \set{x \in \N : \varphi_x \text{ is not total}}$. (i.e., we want a computable total $f\colon \N \to \N$ such that $x \in \clos K \iff f(x) \in A$.)
+
+    Define
+      \[
+        g(x,y) =
+          \begin{cases}
+            0 & \text{if } \varphi_x(x)\da, \\
+            \ua & \text{otherwise}.
+          \end{cases}
+      \]
+    Since $\varphi_x(x)\da$ is partially decidable, $g$ is computable. By the s-m-n Theorem, there is a computable total function such that
+      \[
+        \varphi_{f(x)}(y) = g(x,y)
+      \]
+    for all $x,y \in \N$. Then we have that
+      \[
+      x \in \clos K &\iff \varphi_x(x) \ua\\
+        \iff \forall y [g(x,y) \ua] \\
+        \iff W_{f(x)} = \es \\
+        \iff \varphi_{f(x)} \text{ is not total}.
+      \]
+    Thus if $A$ was r.e., then $\clos K$ would be r.e. which is absurd! Thus $A$ is not r.e. \textbf{ASK: the last equivalence doesn't make sense to me.}
+  \end{pf}
+\end{ex}
+\begin{rem}
+  For a subset $A$ of $\N$, we denote its complement by $\clos A$ (i.e., $\clos A \ceq \N \sm A$).
+\end{rem}
+
+\begin{result}{theorem}{\label{thm:increasing-enumeration-is-recursive}}
+  Let $A \subseteq \N$ be an infinite set. $A$ is recursive if and only if $A$ is the range of a computable total function which is strictly increasing (i.e., $A = \set{f(0) < f(1) < f(2) < \cdots}$).
+\end{result}
+\begin{pf}
+  ($\Rightarrow$) Suppose $A$ is infinite and recursive. Define $f\colon \N \to \N$ by recusion as follows: let $w_0$ be the least element of $A$ and define $f$ by
+    \[
+      \begin{cases}
+        f(0) &= w_0, \\
+        f(n+1) &= \mu x [x \in A \land x > f(n)].
+      \end{cases}
+    \]
+  Notice that $f$ is then computable since it is defined from recursion by computable functions (in particular, a minimalization of a decidable relation). We know that $f$ enumerates $A$ since find a new element of $A$ with every new value of $f$.
+
+  ($\Leftarrow$) Suppose $f$ is computable and enumerates $A$ in increasing order. Then $f$ is strictly increasing, so $f(n) \geq n$. Then apply our midterm problem.
+\end{pf}
+
+\begin{result}{theorem}
+  Every infinite r.e. set has an infinite recursive subset.
+\end{result}
+\begin{pf}
+  Let $A$ be an infinite r.e. set. Pick a computable total function $f\colon \N \to \N$ such that $A = \Ran(f)$.
+
+  Define $g\colon \N \to \N$ by
+    \[
+      \begin{cases}
+        g(0) &= f(0) \\
+        g(n+1) &= f(\mu x [f(x) > g(n)]).
+      \end{cases}
+    \]
+  Our function $g$ is computable since we are composing computable functions (the inner argument is computable since it is the minimalization of a decidable comparison). Furthermore, $g$ is total since $A$ is infinite. Finally, because $g$ is strictly increasing, $\Ran(g) \subseteq A$ is recursive by Theorem \ref{thm:increasing-enumeration-is-recursive}. 
+\end{pf}
 
 \end{document}
