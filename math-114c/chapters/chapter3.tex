@@ -792,7 +792,7 @@ For a set $A$ which is r.e., $A$ is not recursive if and only if its complement 
   \end{pf}
 \end{ex}
 
-\begin{result}{theorem}
+\begin{result}{theorem}{\label{thm:creative-iff-m-complete}}
   A set $A$ is creative if and only if it is $m$-complete.
 \end{result}
 \begin{pf}
@@ -853,11 +853,117 @@ For a set $A$ which is r.e., $A$ is not recursive if and only if its complement 
     \]
 \end{pf}
 
+From Theorem \ref{thm:creative-iff-m-complete}, we can restate our goal: to find an r.e., non-recursive, non-creative set.
+
+This next theorem will help us check that sets are not creative.
+
+\begin{result}{theorem}
+  If $A$ is productive, then it contains an infinite r.e. subset.
+\end{result}
+\begin{pf}
+  Let $A$A be productive and fix a productive function $p \colon \N \to \N$ for $A$.
+
+  \begin{rem}
+    Insert idea figure.
+  \end{rem}
+
+  Want to define a computable function $f\colon \N \to \N$ such that
+    \[
+      \begin{cases}
+        W_{f(0)} &= \es \\
+        W_{f(1)} &= W_{f(0)} \cup \set{p(f(0))} \\
+        W_{f(n+1)} &= w_{f(n)} \cup \set{p(f(n))}.
+      \end{cases}
+    \]
+  With such an $f$, ew define $h(n) = p(f(n))$. Then $h$ is computable and $\Ran(h)$ is an infinite r.e. subset of $A$. \textbf{Check by induction that $h(n+1) \nin \set{h(0),\ldots,h(n)=W_{f(n+1)}}$} $h(n+1) = p(f(n+1)) \in A \sm W_{f(n+1)}$.
+
+  Need to construct $f$.
+  \textbf{Claim.} There is an $s\colon\N \to \N$ computable such that for all $x$, $W_{s(x)} = W_x \cup \set{p(x)}$.
+
+  \textbf{Proof of claim.} Apply s-m-n Theorem to
+    \[
+      g(x,y) =
+        \begin{cases}
+          0 & \text{if } y = p(x) \lor y \in W_x, \\
+          \ua &\text{otherwise}.
+        \end{cases}
+    \]
+  Then define $f$ by recursion:
+    \[
+      \begin{cases}
+        f(0) &= e_0 \text{ such that } W_{e_0} = \es \\
+        f(n+1) = s(f(n)).
+      \end{cases}
+    \]
+  Then
+    \[
+      W_{f(n+1)} = W_{s(f(n))} = W_{f(n)} \cup \set{p(f(n))}.
+    \]
+  Notice that $f$ is computable since defined by recursion from computable functions.
+\end{pf}
+
+\begin{result}{corollary}
+  If $B$ is r.e. but its complement is does not contain an infinite r.e. subset, then $B$ is not creative.
+\end{result}
 
 
 
 
 
 
+
+
+
+
+
+
+\subsubsection{Simple sets}
+
+\begin{defn}
+  A set $A$ is \deft{simple} if and only if
+    \begin{enumerate}[(i)]
+      \item $A$ is r.e.,
+      \item $\clos A$ is infinite, and
+      \item $\clos A$ does not contain any infinite r.e. subsets.
+    \end{enumerate}
+\end{defn}
+\begin{rem}
+  The existence of such a set would settle our question.
+\end{rem}
+
+\begin{result}{corollary}
+  A simple set $A$ is not recursive, not creative, and hence not $m$-complete. Thus $\vec 0_m <_m d_m(A) <_m \vec 0_m'$.
+\end{result}
+
+Thus, once we prove the following theorem, we will have achieved our goal:
+
+\begin{result}{theorem}
+  Simple sets exist.
+\end{result}
+\begin{pf}
+  \textbf{Get walkthrough. finish}
+
+  Want to build $A$ such that $A$ is r.e., $W_e$ infinite implies $A \cap W_e \neq \es$, $\clos A$ is infinite.
+
+  Define the partially decidable relation
+    \[
+      R(e,x) \iff x\in W_e\ land x > 2e.
+    \]
+  Use the selection principle from Homework (\textbf{include this in notes. finish}) to get a computable $f\colon \N \pto \N$ such that
+    \begin{align*}
+      f(e) \da &\iff \exists x [R(e,x)] \\
+      f(e) \da &\iff R(e,f(e)).
+    \end{align*}
+  Let $A = \Ran(f)$. Since $f$ is computable, $A$ is r.e. \textbf{why? finish}
+    \begin{align*}
+      W_e \text{ is infinite} &\implies \exists x [x \in W_e \land x > 2e] \\
+        &\implies \exists [R(e,x)] \\
+        &\implies f(e) \da \in A \land R(e,f(e)) \\
+        &\implies f(e) \da \in A \cap W_e \\
+        &\implies A \cap W_e \neq \es.
+    \end{align*}
+  Finally we show $\clos A$ is infinite. Fix $e$ such that $f(e) \da$. Then $f(e) > 2e$. For all $e' > e$, $f(e') \da \implies f(e') > 2e' > 2e$. Then, $f\inv(\set{0,\ldots,2e}) \subseteq \set{0,\ldots,e-1}$. Thus, $|\Ran(f) \cap \set{0,\ldots,2e}| \leq e$.
+  This implies that $|\clos A \cap \set{0,\ldots,2e}| \geq e+1$. So, $|\clos A| \geq e+1$ for all $e$. Thus $\clos A$ is infinite.
+\end{pf}
 
 \end{document}
