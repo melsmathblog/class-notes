@@ -315,7 +315,7 @@ Here's basically a list of all our equivalent definitions of r.e. that we have e
   \end{enumerate}
 \end{result}
 
-\begin{ex}
+\begin{ex}{\label{ex:being-not-total-is-not-r.e.}}
   The set $\set{x \in \N : \varphi_x \text{ is not total}}$ is not r.e.
 
   \begin{pf}
@@ -335,12 +335,12 @@ Here's basically a list of all our equivalent definitions of r.e. that we have e
       \]
     for all $x,y \in \N$. Then we have that
       \[
-      x \in \clos K &\iff \varphi_x(x) \ua\\
+      x \in \clos K \iff \varphi_x(x) \ua\\
         \iff \forall y [g(x,y) \ua] \\
         \iff W_{f(x)} = \es \\
         \iff \varphi_{f(x)} \text{ is not total}.
       \]
-    Thus if $A$ was r.e., then $\clos K$ would be r.e. which is absurd! Thus $A$ is not r.e. \textbf{ASK: the last equivalence doesn't make sense to me.}
+    (Note that the last equivalence holds only because of the way we defined $g$ and hence $f$. It acts sort of like a `all or nothing' relation where it's either empty or all of $\N$.) Thus if $A$ was r.e., then $\clos K$ would be r.e. which is absurd! Thus $A$ is not r.e.
   \end{pf}
 \end{ex}
 \begin{rem}
@@ -376,7 +376,488 @@ Here's basically a list of all our equivalent definitions of r.e. that we have e
         g(n+1) &= f(\mu x [f(x) > g(n)]).
       \end{cases}
     \]
-  Our function $g$ is computable since we are composing computable functions (the inner argument is computable since it is the minimalization of a decidable comparison). Furthermore, $g$ is total since $A$ is infinite. Finally, because $g$ is strictly increasing, $\Ran(g) \subseteq A$ is recursive by Theorem \ref{thm:increasing-enumeration-is-recursive}. 
+  Our function $g$ is computable since we are composing computable functions (the inner argument is computable since it is the minimalization of a decidable comparison). Furthermore, $g$ is total since $A$ is infinite. Finally, because $g$ is strictly increasing, $\Ran(g) \subseteq A$ is recursive by Theorem \ref{thm:increasing-enumeration-is-recursive}.
 \end{pf}
+
+
+
+
+
+
+
+
+
+\subsection{Many-one reducibility}
+
+Notice how we made particular names for unary relations being decidable? We're doing the same exact thing for computable reductions/reducibility; we call computable reductions on unary relations/subsets of $\N$ are called \deft{many-one reductions}.
+
+\begin{defn}
+  Let $A$ and $B$ be subsets of $\N$. $A$ is \deft{many-one reducible} (or \deft{$m$-reducible}) to $B$ if and only if there is a computable total function $f\colon \N \to \N$ such that
+    \[
+      x \in A \iff f(x) \in B.
+    \]
+  Such an $f$ is called an \deft{$m$-reduction} from $A$ to $B$.
+
+  If $A$ is m-reducible to $B$, we write $A \leq_m B$.
+
+  For a computable total function $f\colon \N \to \N$, we write $f\colon A \leq_m B$ to mean that $f$ is an $m$-reduction from $A$ to $B$.
+\end{defn}
+
+\begin{figure}[ht]
+  \center
+  \resizebox{\textwidth}{!}{\figpath {mone.pdf_tex}}
+  \caption{A drawn example of $A \leq_m B$ for $A$ (red) and $B$ (blue) subsets of $\N$.}
+  \label{fig:many-one-reducibility}
+\end{figure}
+
+
+
+\begin{rem}
+  We say "many-one" because the reductions aren't required to be injective. When we do require them to be injective, we call it $1$-reducibility where $A$ is $1$-reducible to $B$. But we won't work with this so don't worry about it. $\colon >$
+\end{rem}
+
+\begin{ex}
+  If $A$ is a nonempty subset of $\N$, then $\N \leq_m A$.
+
+  \begin{pf}
+    Since $A$ is nonempty, we can pick some $a \in A$. Define $f\colon \N \to \N$ by $f(x) = a$. Then $f$ is a many-one reduction of $\N$ to $A$. (See the accompanying figure for a visual.)
+  \end{pf}
+
+  \begin{center}
+    \resizebox{\textwidth}{!}{\figpath {N-to-nonempty-m-reduction.pdf_tex}}
+  \end{center}
+\end{ex}
+
+
+\begin{ex}
+  $\set{x \in \N : \varphi_x \text{ is total}} \leq_m \set{x \in \N : \varphi_x = \underline 0}$.
+
+  \begin{pf}
+    Define $g\colon \N^2 \to \N$ by
+      \[
+        g(x,y) =
+          \begin{cases}
+            0 & \text{if } \varphi_x(y) \da, \\
+            \ua & \text{otherwise}.
+          \end{cases}
+      \]
+    Notice that $g$ is computable since $\varphi_x(y)\da$ is partially decidable (it is an iteration of the Halting Problem). By s-m-n Theorem, there exists a computable total function $f\colon \N \to \N$ such that $\varphi_{f(x)}(y) = g(x,y)$ for all $x,y$. We then have that
+      \[
+        \varphi_x \text{ is total} \iff g(x,y) \da=0 \text{ for all } y \iff \varphi_{f(x)} = \underline 0.
+      \]
+    Thus, $f\colon \set{x \in \N : \varphi_x \text{ is total}} \leq_m \set{x \in \N : \varphi_x = \underline 0}$.
+  \end{pf}
+\end{ex}
+
+We now recall  here one application of many-one reducibility that we've mentioned before when talking about relations.
+
+\begin{result}{proposition}
+  If $A \leq_m B$ and $B$ is recursive, then $A$ is recursive. This is logically equivalent to the statement: if $A\leq_m B$ and $A$ is not recursive, then $B$ is not recursive.
+\end{result}
+
+In our homework we proved a similar thing about r.e. sets.
+\begin{result}{proposition}{\label{prop:reduce-to-r.e.-is-r.e.}}
+  If $A \leq_m B$ and $B$ is r.e., then $A$ is r.e. This is logically equivalent to the statement: if $A\leq_m B$ and $A$ is not r.e., then $B$ is not r.e.
+\end{result}
+
+Here's the thing we proved in homework so you have some context.
+\begin{result}{theorem}
+  If $R \subseteq \N^m$ and $Q \subseteq \N^n$ are relations, $R$ is partially decidable, and $R$ can be computably reduced to $Q$, then $Q$ is not partially decidable.
+\end{result}
+\begin{pf}
+  Suppose that $R$ is an $m$-ary not partially decidable relation that can be computably reduced to an $n$-ary relation $Q$. We aim to show that $Q$ is also not partially decidable. Suppose towards a contradiction that $Q$ is partially decidable. Then its characterstic function, $\chi_Q \colon \N^n \pto \N$, is a computable partial function. Let $f_0, \ldots, f_{n-1} : \N^m \to \N$ be the computable reduction from $R$ to $Q$. Then, $\chi_R(\vec x) \sqeq \chi_Q(f_0(\vec x), \ldots, f_{n-1}(\vec x))$ where $\chi_R$ is the characteristic function for $R$. Then $\chi_R$ is computable partial, but this is absurd since $R$ is not partially decidable. Thus $Q$ must not have been partially decidable. This completes the proof.
+\end{pf}
+
+It should be clear that this general theorem about partially decidable sets and computable reductions applies to our subset sof $\N$ (because they are just unary relations).
+
+We saw an example of using Proposition \ref{prop:reduce-to-r.e.-is-r.e.} in Example \ref{ex:being-not-total-is-not-r.e.}.
+
+We turns out that we can almost sort of maybe order sets based on whether they are many-one reducible to each other. We'll put this in a formal statement now.
+\begin{result}{proposition}{\label{prop:leq_m-as-a-preorder}}
+  $\leq_m$ is a preorder on the power of $\N$, i.e.
+    \begin{enumerate}[(i)]
+      \item $\leq_m$ is reflexive: $A \leq_m A$ for every $A \subseteq \N$.
+      \item $\leq_m$ is transitive: if $A \leq_m B$ and $B\leq_m C$, then $A \leq_m C$.
+    \end{enumerate}
+\end{result}
+\begin{pf}
+  (i) The identity function $U_1^1$ is a $m$-reduction from a set $A$ to itself.
+
+  (ii) If $f\colon A \leq_m B$ and $g \colon B \leq_m C$, then $g \circ f$ is computable and for any $x$,
+    \[
+      x \in A \iff f(x) \in B \iff g(f(x)) \in C.
+    \]
+  Thus, $g \circ f \colon A \leq_m C$.
+\end{pf}
+\begin{rem}
+  $\leq_m$ is not a partial order because it is not antisymmetric: there exists $A,B \subseteq \N$ such that $A \leq_m B$ and $B \leq_m A$, but $A \neq B$. For example, take the set of even numbers and the set of odd numbers. Then the successor function is an $m$-reduction both ways but the sets are clearly not equal.
+\end{rem}
+
+It turns out that some things, in a way, both comparable and incomparable to other r.e. sets. What I mean by this vague comment is the following: there are sets that are \emph{maximally} complicated, i.e., there are r.e. sets that are as complicated as all other r.e. sets. Very cool stuff B). Let's put this more formally.
+\begin{defn}
+  A set $A$ is \deft{$m$-complete} if and only if it is r.e. and $B \leq_m A$ for all r.e. sets $B$.
+\end{defn}
+
+We immediately have an example of such a set: the Halting Problem! Very neat that this canonical example of undecidability comes up all the time is pretty neat imo.
+
+\begin{result}{theorem}
+  $K \ceq \set{x \in \N : \varphi_x(x) \da}$ is $m$-complete.
+\end{result}
+\begin{pf}
+  Let $B$ be an r.e. set. Then there exists a recursive $2$-ary relation $R$ such that for all $x \in \N$,
+    \[
+      x \in B \iff \exists y [R(x,y)].
+    \]
+  (Note: We want that a computable total function $f$ such that $x \in B \iff \varphi_{f(x)}(f(x))\da \iff f(x) \in K$.)
+
+  Define $g(x,y) = \mu z [R(x,z)]$, so
+    \[
+      g(x,y) \da \text{ for all } y \in \N \iff x \in B.
+    \]
+  By s-m-n Theorem, there is a computable $f\colon \N \to \N$ such that $\varphi_{f(x)}(y) = g(x,y)$ for all $x,y$. Thus,
+    \[
+      x \in B \iff g(x,y) \da \text{ for all } y \in \N \iff g(x,f(x)) \da \iff \varphi_{f(x)}(f(x)) \da \iff f(x) \in K,
+    \]
+  so $f\colon B \leq_m K$.
+\end{pf}
+
+Do we have more examples of $m$-complete sets? We do! But not just yet. The following result should help us find a ton more.
+\begin{result}{proposition}
+  If $A$ is $m$-complete, $B$ is r.e., and $A \leq_m B$, then $B$ is $m$-complete.
+\end{result}
+\begin{pf}
+  (This is mainly by transitivity of $\leq_m$.) If $B$ is r.e., $A$ is $m$-complete, and $A \leq_m B$, then for any r.e. set $C$, $C \leq_m A \leq_m B$ which then says by transitivity that $C \leq_m B$. Thus $B$ is $m$-complete.
+\end{pf}
+
+Thus we have that any time we reduce $K$ to any other r.e. set, that other set is another example of an $m$-complete set. So, here are two immediate examples.
+\begin{ex}
+  \begin{enumerate}[(i)]
+    \item $\set{x \in \N : \varphi_x(x) \da = 0}$ is $m$-complete.
+    \item $\set{x \in N : x \in E_x}$ is $m$-complete.
+  \end{enumerate}
+\end{ex}
+
+Now here's an interesting question that my professor posed: does there exist an r.e. set which is not recursive \emph{and} is not $m$-complete? It turns out that the answer is yes, there is! But we don't have any examples at the moment. But rest assured, (according to lecture) we will prove that such sets do in fact exist.
+
+
+
+
+
+
+
+
+
+\subsubsection{Degrees}
+
+\begin{defn}
+  Sets $A$ and $B$ are said to be $m$-equivalent, denoted $A \equiv_m B$, if $A \leq_m B$ and $B \leq_m A$.
+\end{defn}
+
+\begin{result}{proposition}
+  $m$-equivalence, $\equiv_m$, is an equivalence relation on $\mathcal P(\N)$.
+\end{result}
+\begin{pf}
+  This should be pretty clear from the preorder properties of $\leq_m$.
+\end{pf}
+
+\begin{defn}
+  For a set $A$, we denote its $\equiv_m$-equivalence class by
+    \[
+      d_m(A) \ceq \set{B \in \mathcal P(\N) : A \equiv_m B}.
+    \]
+  $d_m(A)$ is called the $m$-degree of $A$.
+\end{defn}
+\begin{rem}
+  Motivation for terminology: if $d_m(A) = d_m(B)$, i.e., $A \equiv_m B$, then $A$ and $B$ have the same \emph{degree} of difficulty with respect to $\leq_m$.
+\end{rem}
+
+\begin{ex}
+  $\set{x \in N : x \text{ is even}} \equiv_m \set{x \in \N : x \text{ is odd}}$.
+
+  \begin{pf}
+    We mentioned this already with the successor function in the remark to Proposition \ref{prop:leq_m-as-a-preorder}.
+  \end{pf}
+\end{ex}
+
+\begin{ex}
+  $K \equiv_m A \ceq \set{x \in \N : \varphi_x(x) \da = 0}$.
+
+  \begin{pf}
+    Since $K$ is $m$-complete and $A$ is r.e., we have by definition of $m$-complete that $A \leq_m K$. We also showed in the homework that $A \leq_m K$. \textbf{finish. maybe fix this up and actually include the proof if it's not in the notes already.}
+  \end{pf}
+\end{ex}
+
+\begin{ex}
+  If $A$ and $B$ are nontrivial, i.e., not $\es$ nor $\N$, recursive sets, then $A \equiv_m B$.
+
+  \begin{pf}
+    Fix $b \in B$ and $c \in \clos B$. Define $f\colon \N \to \N$ by
+      \[
+        f(x) =
+          \begin{cases}
+            b & \text{if } x\in A, \\
+            c & \text{if } x \nin A.
+          \end{cases}
+      \]
+    Then $f$ is computable since it is defined by cases with decidable relations and constant functions. Thus, $f\colon A \leq_m B$. It is similar to show $B \leq_m A$.
+  \end{pf}
+\end{ex}
+
+\begin{nota}
+  Often we use boldface letters to denote $m$-degree, $\vec a$, $\vec b$. In handwriting, we underline: \underline a, \underline b, etc.
+\end{nota}
+
+Note that for $m$-degrees $\vec a$, $\vec b$,
+  \[
+    A \leq_m B \text{ for some } A \in \vec a, B \in \vec b \iff A\leq_m B \text{ for all } A \in \vec a, \, B \in \vec b.
+  \]
+
+\begin{defn}
+  For $m$-degrees $\vec a$, $\vec b$, we write $\vec a \leq_m \vec b$ if and only if $A \leq_m B$ for all (equivalently, some) $A \in \vec a$, $B \in \vec b$.
+
+  We write $\vec a <_m \vec b$ if and only if $\vec a \neq \vec b$ and $a \leq_m \vec b$.
+\end{defn}
+
+\begin{result}{proposition}
+  $\leq_m$ is a partial ordering of the $m$-degrees, i.e., $\leq_m$ is reflexive, transitive, and antisymmetric on $m$-degrees.
+\end{result}
+\begin{pf}
+  Let $\vec a$, $\vec b$, and $\vec c$ be $m$-degrees.
+
+  (Reflexive) Let $A \in \vec a$. Then, $A \leq_m A$, so $\vec a \leq_m \vec a$.
+
+  (Transitive) Suppose $\vec a \leq_m \vec b \leq_m \vec c$ and let $A \in \vec a$, $B \in \vec b$, and $C \in \vec c$. Then, $A \leq_m B \leq_m C$. Thus we have that $A \leq_m C$, so $\vec a \leq_m \vec c$.
+
+  (Antisymmetric) Suppose $\vec a \leq_m \vec b$ and $\vec b \leq_m \vec a$. Fix $A \in \vec a$ and $B \in \vec b$. Since $\vec a \leq_m \vec b$, $A \leq_m B$. Similarly, since $\vec b \leq_m \vec a$, $B \leq_m A$. Then, $A \equiv_m B$, so
+    \[
+      \vec a = d_m(A) = d_m(B) = \vec b.
+    \]
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Lay of the land of $m$-degrees}
+
+\begin{nota}
+  We denote $\vec o \ceq d_m(\es)$, $\vec n \ceq d_m(\N)$, $\vec 0_m \ceq d_m(A)$, where $A$ is any recursive set other than $\es$ and $\N$, and $\vec 0_m' \ceq d_m(K)$.
+\end{nota}
+
+\begin{defn}
+  Call a degree an \deft{r.e. $m$-degree} if it contains an r.e. set $A \in \vec a$.
+\end{defn}
+
+\begin{ex}
+  $\vec 0_m'$ is an r.e. $m$-degree.
+\end{ex}
+
+(Cool picture incoming!!) $\vec o, \vec n \leq_m \vec a$ for any $m$-degree $\vec a$, but $\vec o \not \leq_m \vec n$ and $\vec n \not \leq_m \vec o$. We then have the following diagram.
+
+\begin{figure}[ht]
+  \center
+  \resizebox{\textwidth}{!}{\figpath {lay-of-the-land.pdf_tex}}
+  \caption{Diagram of what $m$-degrees look like in a graph.}
+  \label{fig:lay-of-the-land}
+\end{figure}
+\noindent This diagram begs the question: is there an r.e. $m$-degree $\vec a$ which is not any of $\vec o, \vec n, \vec 0_m, \vec 0_m'$? We need to do a lot of work to show that such $m$-degrees do exist, but we'll get there eventually.
+
+I don't have a good intro for this one lmao.
+\begin{result}{theorem}
+  For any two $m$-degrees $\vec a$, $\vec b$, there is a least upper bound $c$ so that $\vec a \leq_m \vec c$ and $\vec b \leq_m \vec c$, and there is no $\vec d<_m \vec c$ such that $\vec a \leq_m \vec d$ and $\vec b \leq_m \vec d$.
+\end{result}
+\begin{pf}
+  Pick $A \in \vec a$ and $B \in \vec b$. Define
+    \[
+      C \ceq \set{2x : x \in A} \cup \set{2x+1: x \in B} = A \oplus B.
+    \]
+  Let $\vec c = d_m(C)$. Note,
+    \begin{align*}
+      x \in A &\iff 2x \in A \oplus B, \\
+      x \in B &\iff 2x+1 \in A \oplus B.
+    \end{align*}
+  So $f_0 \colon A \leq_m A \oplus B$ and $f_1 \colon B \leq_m A \oplus B$ where $f_0(x) =2x$ and $f_1(x) = 2x+1$, so $\vec c$ is an upper bound for $\vec a$ and $\vec b$.
+
+  Suppose $\vec a, \vec b \leq_m \vec d$. We aimt to show that $\vec c \leq_m\vec d$. Pick $D \in \vec d$ and $h_0 \colon A \leq_m D$, $h_1 \colon B \leq_m D$. Then,
+    \begin{align*}
+      x = 2k \in A \oplus B &\iff k \in A \iff h_0(k) \in D, \\
+      x = 2k+1 \in A \oplus B &\iff k \in B \iff h_1(k) \in D.
+    \end{align*}
+  Thus, $h\colon A \oplus B \leq_m D$ where
+    \[
+      h(x) =
+        \begin{cases}
+          h_0(k) &\text{if } \exists k [x=2k], \\
+          h_1(k) &\text{if } \exists k [x=2k+1].
+        \end{cases}
+    \]
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+\subsection{An r.e., non-recursive, non-$m$-complete set}
+\textbf{Goal.} We will prove the existence of a set $A$ wihch is r.e., not recursive, and not $m$-complete. In other words, we will find an r.e. $m$-degree $\vec a$ such that
+  \[
+    \vec 0_m <_m \underbrace{\vec a}_{\ni A} <_m \vec 0_m' = d_m(K).
+  \]
+In other other words, we're finding a weird seeming set/problem. This goal will take some work and will require us to first study sets which fail to be r.e. in a strong way.
+
+\subsubsection{Productive and creative sets}
+
+If a set $A$ is not r.e., then
+  \[
+    W_e \subseteq A \implies A \sm W_e \neq \es.
+  \]
+We study such sets where we can, from an index $e$ with $W_e \subseteq A$, compute a "witness" that $A \sm W_e \neq \es$, i.e.m compute an element $x \in A \sm W_e$. This leads us to our first definition of this little section.
+
+\begin{defn}
+  A set $A$ is \deft{productive} if and only if there is a totla computable function $p\colon \N \to \N$ such that for any $e \in \N$,
+    \[
+      W_e \subseteq A \implies p(e) \in A \sm W_e.
+    \]
+  The function $p$ is called a \deft{productive function} for $A$.
+\end{defn}
+\begin{rem}
+  Note that if $A$ is productive, then $A$ is not r.e.: if there were $e$ such that $A= W_e$,, then we would get the absurdity that $p(e) \in A \sm W_e = \es$.
+\end{rem}
+
+We have an example of such a set, actually! (This kind of surprised me that we had one immediately.)
+
+\begin{result}{proposition}
+  $\clos K$ is productive.
+\end{result}
+\begin{pf}
+  Define $p\colon \N \to \N$ by $p(e)=e$. We claim that $p$ is a productive function for $\clos K$.
+
+  Suppose $W_e \subseteq \clos K$. We want to show that $p(e)= e \in \clos K \sm W_e$ (i.e., $e \nin K$ and $e \nin W_e$). Suppose towards a contradiction that $e \in W_e$. Since $W_e \subseteq \clos K$, $e \in \clos K$, so $e \nin K$. Thus, $e \nin W_e$, which is absurd!
+
+  Thus $e \nin W_e$, so $e \nin K$, hence $e \in \clos K \sm W_e$. Thus $p$ is a productive function for $\clos K$ and $\clos K$ is productive.
+\end{pf}
+
+We have many more examples! Well, a class of them. I'm not planning to give a long list lmfao.
+
+\begin{result}{proposition}{\label{prop:productive-from-reduction}}
+  If $A$ is productive and $A \leq_m B$, then $B$ is productive.
+\end{result}
+\begin{pf}
+  Let $p\colon \N \to \N$ be the productive function for $A$ and let $f\colon A \leq_m B$. First, we show that there is a computable total function $s\colon \N \to \N$ such that
+    \[
+      W_{s(e)} = f\inv (W_e) \text{ for all } e \in \N.
+    \]
+  Apply s-m-n Theorem to
+    \[
+      g(e,x) =
+        \begin{cases}
+          0 & \text{if } f(x) \in W_e, \\
+          \ua & \text{otherwise}.
+        \end{cases}
+    \]
+
+  Our claim is that the function $q(e) = f(p(s(e)))$ is a productive function for $B$.
+    \begin{align*}
+      W_e \in B & \stackrel{f\colon A \leq_m B}{\implies} W_{s(e)} = f\inv (W_e) \subseteq A \\
+        & \stackrel{p \text{ is productive for } A}{\implies} p(s(e)) \in A \sm W_{s(e)} = A \sm f\inv (W_e) \\
+        & \stackrel{f\colon A \leq_m B}{\implies} f(p(s(e))) \in B\sm W_e.
+    \end{align*}
+\end{pf}
+
+\begin{rem}
+  If $K \leq_m A$< then $\clos K \leq_m \clos A$. Thus, for any $m$-complete set $A$, $\clos A$ is not productive. e.g., $A \ceq \set{x \in \N : x \in E_x}$, then $\clos A = \set{x \in \N : x \nin E_x}$ is productive.
+\end{rem}
+
+For a set $A$ which is r.e., $A$ is not recursive if and only if its complement is not r.e. The next notion captures the idea of r.e. sets whose complement is not r.e. in a ``strong" way:
+
+\begin{defn}
+  A set $A$ is \deft{creative} if it is r.e. and its complement $\clos A$ is productive.
+\end{defn}
+
+\begin{ex}{\label{ex:m-complete-implies-creative}}
+  $K$ is creative. In fact, any $m$-complete set is creative.
+
+  \begin{pf}
+    See the remark for Proposition \ref{prop:productive-from-reduction} to see that $m$-complete implies creative.
+  \end{pf}
+\end{ex}
+
+\begin{result}{theorem}
+  A set $A$ is creative if and only if it is $m$-complete.
+\end{result}
+\begin{pf}
+  \textbf{Ask for a walk through with this proof. FINISH}
+  ($\Leftarrow$) This was shown in Example \ref{ex:m-complete-implies-creative}.
+
+  ($\Rightarrow$)
+
+  \begin{rem}
+    This is honestly pretty difficult and confusing. It's a clever application of the (amazing) Second Recursion Theorem (which is honestly always pretty weird for me). Because of the difficulty of this argument, we're going to outline much more.
+  \end{rem}
+
+  Suppose $A$ is creative. Let $B$ be r.e. We want to show that $B \leq_m A$. Let $p$ be the productive function for $\clos A$.
+
+  \textbf{Claim.} Suffices to find a computable total function $f\colon \N \to \N$ such that
+    \[
+      W_{f(x)} =
+        \begin{cases}
+          \set{p(f(x))} & \text{if } x\in B, \\
+          \es & \text{otherwise}.
+        \end{cases}
+    \]
+
+  \textbf{Proof of claim.} Suppose we have such an $f$. Then we show $g(x) = p(f(x))$ is an $m$-reduction from $B$ to $A$.
+
+  \underline{Case 1:} Suppose $x \in B$. Then, $W_{f(x)} = \set{p(f(x))}$ by assumption. Now, suppose towards a contradiction that $p(f(x)) \nin A$. Then $W_{f(x)} \subseteq \clos A$ implies $p(f(x)) \in \clos A \sm W_{f(x)}$, which then yields that $p(f(x)) \neq p(f(x))$ which is absurd!
+
+  \underline{Case 2:} Suppose $x \nin B$. Then, $W_{f(x)} = \es \subseteq \clos A$. Then, $p(f(x)) \in \clos A \sm W_{f(x)} = \clos A$, so $p(f(x)) \nin A$.
+
+
+  \textbf{Construction of $f$.} Let $s\colon \N^2\to \N$ be such that
+    \[
+      \varphi_{s(e,x)}(y) = \varphi_e^{(2)}(x,y) \text{ for all } e,x,y \in \N.
+    \]
+  Define
+    \[
+      h(e,x,y) =
+        \begin{cases}
+          0 & \text{if } y = p(s(e,x)) \land x \in B, \\
+          \ua & \text{otherwise}.
+        \end{cases}
+    \]
+  By the (amazing) Second Theorem, there is $e^*$ such that
+    \[
+      \varphi_{s(e,x)}(y) = \varphi_{e^*}(x,y) = h(e^*,x,y).
+    \]
+  Then define $f(x) = s(e,x)$. Thus we have that
+    \[
+      \varphi_{f(x)}(y) = \varphi_{s(e^*,x)}(y) =
+      \begin{cases}
+        0 & \text{if } y = p(s(e,x)) \land x \in B \\
+        \ua & \text{otherwise}
+      \end{cases} =
+      \begin{cases}
+        0 & \text{if } y = p(f(x)) \land x \in B \\
+        \ua & \text{otherwise}.
+      \end{cases}
+    \]
+\end{pf}
+
+
+
+
+
+
+
 
 \end{document}
