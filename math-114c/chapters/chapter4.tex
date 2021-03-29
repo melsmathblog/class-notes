@@ -1,0 +1,109 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{preamble}
+
+\begin{document}
+
+\section{Relativized computing}
+
+\subsection{Oracle machines}
+
+Let $\alpha \colon \N\to\N$ be a total function. $\alpha$ is an arbitrary functions, perhaps not computable.
+
+We consider an oracle machine with oracle $\alpha$:
+
+\begin{figure}[ht]
+  \center
+  \resizebox{\textwidth}{!}{\figpath{oracle-diagram.pdf_tex}}
+  \label{fig:oracle-diagram}
+\end{figure}
+
+This motivates the idea of computable relative to $\alpha$.
+
+\subsubsection{Unlimited register machine with oracle}
+
+An unlimited register machine with oracle (URMO) is the same as previous register machines except there is \underline{one more type of instruction:}
+
+The machine responds to instruction $O(n)$ by replacing $r_n$, the contents of the register $R_n$, with the oracle function's value at $r_n$, $\alpha(r_n)$.
+
+\textbf{insert example maybe? finish}
+
+A URMO program is a finite ordered list of instructions of the form $Z(n), S(n), T(m,n), J(m,n,q)$, and $O(n)$.
+
+\begin{rem}
+  (1) If in a URMO program $P$, the instruction $I_k$ is an oracle instruction $O(n)$, then after executing $I_k$ the next instruction to be executed is $I_{k+1}$.
+
+  (2) The oracle function $\alpha$ is not a part of the machine, but rather a "plug-in" or "external" device that can be swapped for another oracle $\beta\colon \N\to\N$.
+
+  (3) Every URM program is an URMO program (since URM programs are just URMO programs that never use the oracle instruction.)
+\end{rem}
+
+\begin{defn}
+  For a positive integer $n$ and an oracle $\alpha$ and a URMO program $P$, we define the partial function $f_P^{\alpha,n} \colon \N^n \pto \N$ as follows:  for input $\vec x = (x_1,\ldots,x_n) \in \N^n$, run program $P$ on the URMO with oracle $\alpha$ with the initial state given by $\vec x$ and if the machine halts, then $f_P^{\alpha,n}(\vec x) \da = $ the contents of register $R_1$ in the halting state.
+\end{defn}
+\begin{rem}
+  This is just us redefining programs as partial functions in our new type of computing.
+\end{rem}
+
+\begin{defn}
+  An $n$-ary partial function $g\colon \N^n \pto \N$ is called $\alpha$-computable if and only if $g=f_P^{\alpha,n}$ for some URMO program $P$.
+\end{defn}
+
+\begin{ex}
+  \begin{enumerate}[(1)]
+    \item Every computable partial function is $\alpha$-computable for every oracle $\alpha$.
+
+      \begin{pf}
+        URM prgorams are URMO programs.
+      \end{pf}
+
+
+  ` \item `$\alpha$ is $\alpha$-computable.
+
+      \begin{pf}
+        A URMO program that computes $\alpha$ is $O(1)$.
+      \end{pf}
+  \end{enumerate}
+\end{ex}
+
+
+\subsubsection{Another approach: $\alpha$-recursive partial functions}
+
+\begin{defn}
+  The class of $\alpha$-recursive partial functions is the smallest class of partial functions which
+    \begin{enumerate}[(a)]
+      \item contains the basic functions: zero function, successor function, projection functions;
+      \item contains $\alpha$;
+      \item is closed under definition by substitution, recursion, and minimalization.
+    \end{enumerate}
+\end{defn}
+
+
+\begin{result}{theorem}
+  A partial function $f\colon \N^n \to \N$ is $\alpha$-computable if and only if $f$ is $\alpha$-recursive.
+\end{result}
+\begin{pf}
+  We won't prove this but the proof in outline is exactly the same as the non-relativized version.
+\end{pf}
+
+\begin{ex}
+  If $\alpha,\beta \colon \N \to \N$ are both oracles and $\alpha$ is $\beta$-recursive, then every $\alpha$-recursive partial function is also $\beta$-recursive.
+    \begin{pf}
+      Suppose $\alpha$ is $\beta$-recursive. Then $\mathcal C^\beta \ceq $ the class of $\beta$-recursive partial functions contains the basic functions, $\alpha$, and is closed under substitution, recursion, and minimalization, but $\mathcal C^\alpha$ is the smallest class with these properties, so $\mathcal C^\alpha \subseteq \mathcal C^\beta$.
+    \end{pf}
+
+  In particular: if $\alpha$ is computabel, then a partial function is $\alpha$-recursive if and only if it is recursive.
+
+
+\end{ex}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
