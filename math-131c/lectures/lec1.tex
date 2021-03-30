@@ -1,0 +1,125 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 1---March 29, 2021}
+
+We're starting by reviewing metric spaces! It's kind of old now (third time I'm writing this for notes lmao) but it's really cool nonetheless. :)
+
+\begin{defn}{\label{defn:metric-space}}
+  A \emph{metric space} is a nonempty set $X$ and a function $d\colon X \x X \to [0,\infty)$ such that for all $x,y,z \in X$, \begin{enumerate}[(i)]
+    \item $d(x,y) = d(y,x)$,
+    \item $d(x,y) = 0$ if and only if $x=y$,
+    \item and $d(x,z) \leq d(x,y)+d(y,z)$.
+  \end{enumerate}
+  (This function is called a \emph{metric}.)
+\end{defn}
+
+My professor does these in class questions to make sure we're following along to check our understanding it seems, so I've tried ot make them pretty.
+
+\begin{understandingcheck}{question}
+  Which of the following is \underline{not} a metric on $\R^2$? \begin{enumerate}[(a)]
+    \item $d(x,y) = \sqrt{(x_1-y_1)^2+(x_2-y_2)^2}$
+    \item $d(x,y) = \max \set{|x_1-y_1|,|x_2-y_2|}$
+    \item
+      \[
+        d(x,y) = \begin{cases}
+          0 & \text{if } x=y \\
+          1 & \text{otherwise}
+      \end{cases}
+      \]
+    \item $d(x,y) = \min \set{|x_1-y_1|, |x_2-y_2|}$
+  \end{enumerate}
+
+  \textbf{Answer:} (d) as (ii) from Definition \ref{defn:metric-space} fails.
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  $X \ceq \R^2$ with Euclidean metric
+    \[
+      d(x,y) = \sqrt{\sum_{j=1}^{n} |x_j-y_j|^2}.
+    \]
+\end{understandingcheck}
+
+\begin{defn}
+  If $(X,d)$ is a metric space and $Y \subseteq X$ is non-empty, then the metric space $(Y, d|_{Y\x Y})$ is called a \emph{subspace} of $(X,d)$.
+\end{defn}
+
+\begin{defn}
+  We say that a sequence $(x_n)$ in a metric space $(X,d)$ \emph{converges} if and only if there exists an $x \in X$ such that $d(x,x_n) \to 0$ as $n\to \infty$.
+\end{defn}
+
+\begin{understandingcheck}{question}
+  TRUE OR FALSE?
+
+  If $x_n \to x$, then every subsequence $x_{n_k} \to x$.
+
+  \textbf{Answer:} TRUE. As $n_k \geq k$: for all $\e > 0$, there exists an integer $N$ such that for all $n \geq N$, $d(x,x_n) < \e$ (by definition of convergence), so for all $k \geq N$, $d(x,x_{n_k}) < \e$.
+\end{understandingcheck}
+
+\begin{defn}
+  We say a sequence $(x_n)$ is \emph{Cauchy} if and only if $d(x_n,x_m) \to 0$ as $n,m\to \infty$.
+\end{defn}
+
+\begin{understandingcheck}{question}
+  TRUE OR FALSE?
+
+  Every Cauchy sequence converges.
+
+  \textbf{Answer:} FALSE. Take $(0,1]$ equipped with the Euclidean metric. Consider the sequence $x_n = \frac{1}{n}$. This is Cauchy but does not converge in our metric space (since $0$ is not included).
+\end{understandingcheck}
+
+\begin{defn}
+  We say a metric space is \emph{complete} if and only if every Cauchy sequence converges.
+\end{defn}
+
+\begin{defn}
+  Let $(X,d)$ be a metric space. Denote
+    \[
+      B(x;r) \ceq \set{y \in X: d(x,y) < r}.
+    \]
+
+  We say a set $U \subseteq X$ is open if and only if for all $x \in U$, there exists an $r$ such that $B(x;r) \subseteq U$.
+
+  We say a set $F \subseteq X$ is closed if and only if $X \sm F$ is open.
+\end{defn}
+
+This last definition seems a bit odd and to me feels not very analysis-ee, so thankfully we have another sequence based definition coming up in this question right now.
+
+\begin{understandingcheck}{question}
+  TRUE OR FALSE?
+
+  A set $F$ is close if whenever $(x_n) \subseteq F$ such that $x_n \to x$ in $X$, then $x \in F$.
+
+  \textbf{Answer:} TRUE. \textbf{FINISH: prove this for practice}
+\end{understandingcheck}
+
+\begin{understandingcheck}{question}
+  Which of the following sets is not relatively open in $(0,2]$? \begin{enumerate}[(a)]
+    \item $(0,1)$
+    \item $(1,2]$
+    \item $[0,1]$
+    \item $(0,2]$
+  \end{enumerate}
+
+  \textbf{Answer:} (c) is relatively closed, the rest are relatively open.
+\end{understandingcheck}
+
+\begin{defn}
+  Let $(X,d_X)$ and $(Y,d_Y)$ be two metric spaces. A function $f\colon X\to Y$ is \emph{continuous at a point $x \in X$} if and only if $d_Y(f(x), f(y)) \to 0$ as $y \to x$.
+
+  We say that $f$ is \emph{continuous on $X$} if and only if it is continuous at every $x \in X$.
+\end{defn}
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 1 - March 29, 2021}
+
+Today felt more like an overview than anything/basic introduction, so we didn't do anything too crazy today, but it was still pretty cool.
+
+We first define the complex numbers.
+
+\begin{defn}
+  We define $\C\ceq \set{x+iy : x,y \in \R \land i^2 = -1}$.
+\end{defn}
+Notice that $\C$ is a $2$D basically $\R^2$ and is a field, but the $i$ gives us some cool stuff. It's also a field since we can add, subtract, multiply, and divide.
+
+Here are some basic operations/facts with $z \ceq x+iy$:
+  \begin{enumerate}[(a)]
+    \item $\overline z \ceq x-iy$;
+    \item $z\cdot \overline z=|z|^2=x^2+y^2$;
+    \item $\Re(z) \ceq x$ and $\Im(z) \ceq y$.
+  \end{enumerate}
+
+
+We also have that $\C$ is a metric space with respect to $|z|^2$. Thus it also satisfies the triangle inequality: $|z+w| \leq |z|+|w|$.
+
+We then talked about Euler's Identity/Formula for a bit but it culminated with this fact:
+\begin{result}{fact}
+  We may represent complex numbers as $r e^{i\theta}$ for suitable $r$ and $\theta$.
+\end{result}
+
+Now we're talking about sequences in $\C$.
+
+\begin{defn}
+  Let $(z_n)$ be a sequence in $\C$. We say that $\lim_{n \to \infty} z_n =w $, or \emph{$(z_n)$ converges to $w$} if and only if $|z_n-w| \to 0$ as $n \to \infty$. Equivalently, for all $\e > 0$ there exists an $N$ such that $n \geq N$ implies that $|z_n -w | < \e$.
+\end{defn}
+
+\begin{defn}
+  Let $(z_n)$ be a sequence in $\C$. We say that $(z_n)$ is a \emph{Cauchy sequence} if and only if for all $\e > 0$, there exists an $N$ such that $|z_n-z_m| < \e$ whenever $n,m \geq N$.
+\end{defn}
+
+Now onto our first theorem!
+
+\begin{result}{theorem}
+  The set $\C$ is complete (i.e., all Cauchy sequences in $\C$ converge in $\C$).
+\end{result}
+
+\subsection*{Topology of the $\C$}
+Then we talked a bit about topology and how we're lucky we have a metric because that gives us a lot of nice properties. The first thing we really talked about regarding topology is disc in $\C$.
+
+\begin{defn}
+  We define the following sets for $r > 0$ and $z_0 \in \C$:
+    \begin{enumerate}[(a)]
+      \item $D_r(z_0) \ceq \set{z \in \C : |z-z_0|< r}$ (\emph{open disc of radius $r$ in $\C$});
+      \item $\overline D_r(z_0)\ceq \set{z \in \C : |z-z_0| \leq r}$ (\emph{closed disc of radius $r$ in $\C$});
+      \item $C_r(z_0) \ceq \set{z\in \C : |z-z_0| = r}$ (\emph{circle of radius $r$ in $\C$}).
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+  Given a set $\Omega\subseteq \C$ and a point $z_0 \in \Omega$, $z_0$ is an \emph{interior point of $\Omega$} if and only if there exists an open disc $D_r(z_0)\subseteq \Omega$.
+
+  The \emph{interior of $\Omega$} is the set of all interior points of $\Omega$. This is denoted $\inte(\Omega)$.
+
+  The set $\Omega$ is open if and only if $\Omega = \inte(\Omega)$.
+\end{defn}
+
+\begin{defn}
+  A set $\Omega \subseteq \C$ is closed if and only if $\C \sm \Omega$ is open.
+\end{defn}
+\begin{rem}
+  Equivalently, $\Omega$ is closed if and only if it contains all of its limit points.
+\end{rem}
+
+This leads us into $\inte$'s counterpart: closure.
+\begin{defn}
+  The closure of $\Omega$ is the union of $\Omega$ with all of its limit points. This is denoted $\clos \Omega$.
+\end{defn}
+
+We're just going to keep loading up on definitions for now.
+
+\begin{defn}
+  The boundary of $\Omega$ is $\clos \Omega \sm \inte(\Omega)$.
+\end{defn}
+
+Because we are in a metric space, we have a sense of being bounded. This means that the distance between points is bounded. The actual definition for this that we use in this class is this:
+
+\begin{defn}
+  A set $\Omega \subseteq \C$ is bounded if and only if it is contained in some $D_r(z_0)$ for some finite $r$.
+\end{defn}
+
+Now to compactness! This guy is pretty important. The professor said Heine-Borel is good exercise. Pretty good. b)
+
+\begin{defn}
+  A set $\Omega \subseteq \C$ is \emph{compact} if and only if $\Omega$ is closed and bounded.
+\end{defn}
+
+\begin{result}{theorem}
+  Let $\Omega$ be a subset of $\C$. Then, $\Omega$ is compact if and only if every sequence has a subsequence that converges in $\Omega$.
+\end{result}
+\begin{rem}
+  This is known as \emph{sequential compactness}. Very important property.
+\end{rem}
+
+Now we can get to the definition of \emph{covering compactness}.
+
+\begin{defn}
+  Let $\Omega$ be a subset of $\C$. An \emph{open cover of $\Omega$} is a family of open sets $\set{U_\alpha}$ (not necessarily countable) such that
+    \[
+      \Omega \subseteq \bigcup_{\alpha}^{} U_\alpha.
+    \]
+\end{defn}
+
+\begin{result}{theorem}
+  A subset $\Omega$ of $\C$ is compact if and only if every open cover has a finite subcover.
+\end{result}
+
+Now to our first proposition/proof (though it is said to be trivial haha). However, before this we need a quick definition.
+
+\begin{defn}
+  The diameter of a set $\Omega\subseteq\C$ is defined to be $\sup S$ where $S \ceq \set{|z-w| : z,w \in \C}$.
+\end{defn}
+
+\begin{result}{proposition}
+  Suppose $\Omega_1 \supseteq \Omega_2 \supseteq \cdots \supseteq \Omega_n \supseteq \cdots$ is a sequence of nonempty compact sets such that $\diam(\Omega_n) \to 0$ as $n \to \infty$. Then there is a unique $w \in \C$ such that $w \in \Omega_n$ for all $n$.
+\end{result}
+\begin{pf}
+  Choose $z_n \in \Omega_n$ for each $n$. Then $(z_n)$ is a Cauchy sequence.
+  Let $w \ceq \lim_{n \to \infty} z_n$ (this exists since $\C$ is complete).
+  Then $w$ is clearly in $\Omega_n$ for all $n$ and it also trivially unique
+  (since a convergent sequence can only have $1$ limit).
+
+  \textbf{My question:} how did we get that there is only one sequence? Couldn't we get a bunch?
+\end{pf}
+
+Now to connectedness.
+\begin{defn}
+  A set $\Omega \subseteq \C$ is \emph{connected} if and only if it is not possible to express $\Omega$ as the disjoint union of nonempty sets $\Omega_1$ and $\Omega_2$ such that $\clos \Omega_1\cap \Omega_2 = \Omega_1 \cap\clos \Omega_2 = \es$.
+\end{defn}
+\begin{rem}
+  In the case of an open $\Omega$, this definition reduces to the following: $\Omega$ is connected if and only if you cannot express $\Omega$ has the union of disjoint nonempty open sets.
+\end{rem}
+
+\begin{defn}
+  A \emph{region} is an open and connected set.
+\end{defn}
+
+\subsection*{Functions on regions}
+
+\begin{defn}
+  Let $\Omega$ be a subset of $\C$ and let $f\colon \Omega \to \C$. The function $f$ is \emph{continuous at a point $z_0 \in\Omega$} if and only if for all $\e>0$ there exists a $\delta > 0$ such that whenever $z \in \Omega$ and $|z-z_0| < \delta$, $|f(z)-f(z_0)| < \e$.
+
+  The function $f$ is \emph{continuous on $\Omega$} if and only if it is continuous at every $z_0 \in \Omega$.
+\end{defn}
+
+\begin{result}{theorem}
+  A continuous $f$ on a compact $\Omega$ is bounded and attains a maximum and a minimum.
+\end{result}
+
+We talk about holomorphic functions (complex differentiable functions) next!
+
+\end{document}
