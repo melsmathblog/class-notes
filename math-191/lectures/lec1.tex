@@ -1,0 +1,167 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 1---March 29, 2021}
+
+\subsection*{Categories}
+History: Eilenberg and MacLane needed to make sense of ``naturality." Here are a bunch of examples of natural maps!
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(a)]
+    \item
+      Let $X$ be a set and let $\Cc P(X)$ be the powerset of $X$. Then there is a natural function from $X \to \Cc P(X)$ defined by $x \mapsto \set x$.
+
+    \item
+      For any sets $X$ and $Y$, let $Y^X \ceq \set{f\colon X \to Y}$. Then there exists a natural bijection from $\Cc P(X)$ to $\set{0,1}^X$ by $A \mapsto \chi_A$ where $\chi_A$ is the characteristic function of $A$.
+
+    \item
+      For any sets $X$ and $Y$, $X \x Y \ceq \set{(x,y) : x \in X \land y \in Y}$. Then there is a natural bijection from $X \x Y$ to $Y \x X$: $(x,y) \mapsto (y,x)$.
+  \end{enumerate}
+\end{understandingcheck}
+
+How do we make this ``naturality" precise, however? Well, there are a few problems that Eilenberg and MacLane had to face. Here they are:
+  \begin{itemize}
+    \item We're talking about ``natural maps"---they need domains and codomains (these are called functors)
+      \begin{itemize}
+        \item Functor is a ``construction"
+        \item Functors also have inputs and outputs $\leadsto$ some kind of mapping, so they need domain and codomain, also.
+        \item The domain and codomain of functors are \emph{categories}.
+      \end{itemize}
+  \end{itemize}
+
+Now let's define what a category is. Spoiler: it's actually really long lmao.
+
+\begin{defn}
+  A \emph{category} $\Cc C$ consists of
+    \begin{enumerate}[(1)]
+      \item a collection of objects $A,B,C, \ldots$,
+      \item and a collection of morphisms (arrows) $f,g,h,\ldots$
+    \end{enumerate}
+  such that
+    \begin{enumerate}[(i)]
+      \item each morphism has a domain and a codomain object. We write $f\colon A \to B$ as a shorthand for ``$f$ is a morphism with domain $A$ and codomain $B$," and we write $\Cc C(A,B)$ for the collection of all morphisms $f\colon A \to B$.
+
+      \item Each object $A$ has an idntity morphism $1_A\colon A \to A$.
+      \item For any pair of ``composable morphisms" $g$ and $f$ with $\Dom(g) = \Cod(f)$, there is a composite morphism $g \circ f$ with $\Dom(g \circ f) = \Dom(f)$ and $\Cod(g \circ f) = \Cod(g)$. This is exemplified in the following diagram:
+    \end{enumerate}
+
+    \begin{center}
+      \begin{tikzcd}
+        A \arrow[r, "f"] \arrow[rr, "g \circ f"', bend right] & B \arrow[r, "g"] & C
+      \end{tikzcd}
+    \end{center}
+
+  These data are subject to two axioms:
+    \begin{enumerate}[(C1)]
+      \item (associativity) for any $f\colon A \to B$, $g\colon B \to C$, and $h\colon C \to D$, $(h \circ g) \circ f = h \circ (g \circ f)$; and
+      \item (unitality) for any $f\colon A \to B$, $f \circ 1_A = f = 1_B \circ f$.
+    \end{enumerate}
+\end{defn}
+
+Finally that definition is done. It's the longest I've ever seen (so far). Now to some examples of categories.
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(a)]
+    \item
+      The category of sets consists of all sets and all functions between sets. We write $\Sf{Set}$.
+
+    \item
+      A \emph{pointed set} is a pair $(X,x)$ where $x \in X$ is a distinguished element. A morphism $f\colon (X,x) \to (Y,y)$ is a function $f\colon X \to Y$ such that $f(x) = y$. We denote this $\Sf{Set}_*$.
+
+    \item
+      A \emph{monoid} is a triple $(M, \cdot, e)$ such that
+        \begin{enumerate}[(i)]
+          \item $M$ is a set,
+          \item $\cdot \colon M \x M \to M$ is a binary operation, and
+          \item $e \in M$ is a distinguished element
+        \end{enumerate}
+      such that
+        \begin{enumerate}[(M1)]
+          \item (associativity) $(x \cdot y) \cdot z = x \cdot (y \cdot z)$ for all $x,y,z \in M$ and
+          \item (unitality) $e \cdot x = x = x \cdot e$ for all $x \in M$.
+        \end{enumerate}
+      A \emph{monoid homomorphism} $f\colon (M, \cdot_M, e_M) \to (N, \cdot_N, e_N)$ is a function $f\colon M \to N$ such that
+        \begin{enumerate}[(i)]
+          \item $f(e_M) = e_N$ and
+          \item $f(x \cdot_M y) = f(x) \cdot_N f(y)$.
+        \end{enumerate}
+      These data assemble into the category $\Sf{Mon}$.
+
+    \item
+      A group is a quadruple $(G, \cdot, e, (-)\inv)$ such that
+        \begin{enumerate}[(i)]
+          \item $G$ is a set,
+          \item $\cdot \colon G \x G \to G$ is a binary operation,
+          \item $e$ is a distinguished element, and
+          \item $(-)\inv \colon G \to G$ is a unary operation
+        \end{enumerate}
+      such that
+        \begin{enumerate}[(G1)]
+          \item $(G, \cdot, e)$ is a monoid and
+          \item $x\inv \cdot x = e = x \cdot x \inv$ for all $x \in G$.
+        \end{enumerate}
+
+      A \emph{group homomorphism} $f\colon (G, \cdot_G, e_G, (-)\inv_G) \to (H, \cdot_H, e_H, (-)\inv_H)$ is a function $f\colon G \to H$ such that
+        \begin{enumerate}[(i)]
+          \item $f(xy) = f(x)f(y)$ for all $x,y \in G$,
+          \item $f(e_G)=e_H$, and
+          \item $f(x\inv) = f(x)\inv$ for all $x \in G$.
+        \end{enumerate}
+
+      We denote this category $\Sf{Grp}$.
+
+    \item
+      A \emph{preorder} is a pair $(P,\leq)$ such that $P$ is a set and $\leq$ is a binary relation on $P$ such that
+        \begin{enumerate}[(P1)]
+          \item (reflexivity) $x \leq x$ for all $x \in P$ and
+          \item (transivitiy) $x \leq y$ and $y \leq z$ implies $x \leq z$ for all $x,y,z \in P$.
+        \end{enumerate}
+      A morphism of preorders $f\colon P \to Q$ is a function such that $x \leq y$ implies $f(x) \leq f(y)$ (\emph{order-preserving functions}).
+
+      We denote this category $\Sf{Preord}$.
+  \end{enumerate}
+\end{understandingcheck}
+
+\begin{defn}
+  Let $\Cc C$ be a category. A \emph{subcategory} $\Cc D$ of $\Cc C$ consists of a collection of objects of $\Cc C$ and a collection of morphisms of $\Cc C$ such that
+    \begin{enumerate}[(1)]
+      \item (closed under domain/codomain) if $f\colon A \to B$ is in $\Cc D$, then so are $A$ and $B$;
+      \item (closed under composition) if $f\colon A \to B$, $g\colon B \to C$ are in $\Cc D$, then so is $g \circ f$; and
+      \item (contains identities) if $A$ is an object of $\Cc D$, then so is $1_A$.
+    \end{enumerate}
+\end{defn}
+
+Now to examples, again.
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(a)]
+    \item
+      The collection of all \underline{finite} sets and all the maps between them is a subcategory of $\Sf{Set}$.
+
+      We denote this category $\Sf{FinSet}$.
+
+    \item
+      A \emph{commutative monoid} is a monoid $(M, \cdot, e)$ such that $x \cdot y = y \cdot x$ for all $x,y \in M$. The collection of all commutative monoids and monoid homomorphisms between tehm for a subcategory of $\Sf{Mon}$.
+
+      We denote this category $\Sf{CMon}$.
+
+    \item
+      An \emph{abelian group} is a group $(G,\ldots)$ such that $\cdot$ is commutative. This is a subcategory of $\Sf{Grp}$.
+
+      We denote this category $\Sf{Ab}$.
+
+    \item
+      A \emph{poset} $(P,\leq)$ is a preorder $(P,\leq)$ such that $\leq$ is antisymmetric, i.e. $x\leq y$ and $y \leq x$ implies that $x=y$. The collection of all posets and order-preserving maps between them form a subcategory of $\Sf{Preord}$.
+
+      We denote this category $\Sf{Pos}$.
+  \end{enumerate}
+\end{understandingcheck}
+
+\begin{defn}
+  A subcategory $\Cc D$ of $\Cc C$ is \emph{full} if and only if for any objects $A$ and $B$ of $\Cc D$, every morphism $f\colon A \to B$ in  $\Cc C$ is also in $\Cc D$. 
+\end{defn}
+
+\end{document}
