@@ -1,0 +1,161 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Discussion 1---April 1, 2021}
+
+\subsection*{Complex Plane}
+
+A complex number $z \in \C$ is a pair of real numbers $x$ and $y$ such that $z = x+iy$ where $i^2=-1$. Moreover, $x$ is the \emph{real part} and $y$ is the \emph{imaginary part}. We denote that $\Re(z)$ and $\Im(z)$, respectively. We may also represent them using `polar coordinates' with $z = r e^{i \phi}$ where $r \ceq |z| \ceq \sqrt{z \overline z} = \sqrt{x^2+y^2}$ and $\phi$ is the \emph{argument} of $z$.
+
+Addition: use the paralleogram law.
+
+Multiplication: sum the angles and multiply the magnitudes.
+\begin{figure}[ht]
+  \center
+  \resizebox{\textwidth}{!}{\figpath{dis1-pic3.pdf_tex}}
+  \caption{Multiplication geometrically.}
+  % \label{fig:[label]}
+\end{figure}
+
+
+\begin{understandingcheck}{example}
+  Compute the following:
+    \begin{enumerate}[(a)]
+      \item $(1+i)^6$: Notice that $1+i = \sqrt 2 e^{i\pi/4}$, so
+        \begin{align*}
+          (1+i)^6 &= (\sqrt 2 e^{i\pi/4})^6 \\
+            &= 2^3 e^{i3\pi/2} \\
+            &= -8i
+        \end{align*}
+      (We simplify this quickly by seeing this geometrically as going $270^\circ$ around the circle counterclockwise.)
+
+      \item $z$ such that $z^3 = 8i$: Recall that we can write $z$ as $r e^{i\phi}$ for $r > 0$ and $\phi \in \R$. Notice that
+        \[
+          8i = e^{i \bigpar{\frac{\pi}{2} + 2\pi n}} = z^3 = (e^{i \phi})^3 = r^3 e^{i3 \phi}.
+        \]
+      Hence, $r^3 = 8$, and $3 \phi = \frac{\pi}{2} + 2\pi n$ for any $n \in \Z$. Then we get $r=2$ and $\phi = \frac{\pi}{6} + \frac{2 \pi }{3}n$ for $n \in \Z$. However, this does not mean we have infinitely many solutions! Because, we just get redundant angles, so we only count the ones between $0$ and $2\pi$. So we have that:
+        \[
+          z = 2e^{i\pi/6}, 2^{i5\pi/6},2e^{i9\pi/6}.
+        \]
+      \begin{figure}[ht]
+        \center
+        \resizebox{3in}{!}{\figpath{dis1-pic4.pdf_tex}}
+        \caption{Solutions plotted.}
+        % \label{fig:[label]}
+      \end{figure}
+
+    \end{enumerate}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(a)]
+    \item Prove: if $f\colon \C \to \C$ is continuous, then for all open subsets $U$ of $\C$, we have that $f\inv(U)\subseteq C$ is open.
+      \begin{pf}
+        Recall $f \inv(U) \ceq \set{z \in \C : f(z)\in U}$. Fix $z_0 \in f\inv(U)$. We want to show that there exists an $r > 0$ such that $D_r(z_0) \subseteq f\inv(U)$. (This would show the set is open.) Note that $z_0 \in f\inv(U)$ implies that $f(z_0) \in U$. As $U$ is open, there is a radius $\e > 0$ so that $D_\e(f(z_0)) \subseteq U$. As $f$ is continuous on all of $\C$, it is continuous at $z_0$, so there exists a $\delta > 0$ such that $|f(z)-f(z_0)|<\e$ whenever $|z-z_0| < \delta$.
+
+        \begin{figure}[ht]
+          \center
+          \resizebox{\textwidth}{!}{\figpath{dis1-pic5.pdf_tex}}
+          \caption{Diagram of the proof.}
+        \end{figure}
+
+
+        Therefore: $z \in D_\delta(z_0) \ceq \set{w: |w-z_0|<\delta}$ implies $f(z) \in D_\e(f(z_0)) \ceq\set{w : |w-f(z_0)|<\e} \subseteq U$. This is hte definition of $D_\delta(z_0) \subseteq f\inv(U)$ as desired.
+      \end{pf}
+
+    \item Prove: if $f\colon \C\to\C$, $\Omega \subseteq \C$ connected, then $f(\Omega)$ is connected.
+      \begin{pf}
+        Claim: $\clos{f\inv(V)} \subseteq f\inv(\clos V)$ for all $V \subseteq \C$. Fix $V \subseteq \C$. Recall that $\clos V$ is closed (by definition), so $\clos V^c$ is open. Thus, by part (a), we have that $f\inv(\clos V^c) = (f\inv(\clos V))^c$ is open. Thus, $f\inv(\clos V)$ is closed. So
+          \[
+            \clos{f\inv(V)}\subseteq \clos{f\inv(\clos V)} = f\inv(\clos V)
+          \]
+        since $f\inv(V) \subseteq f\inv(\clos V)$ and $f\inv(\clos V)$ is closed.
+
+        Suppose that $f(\Omega)$ is not connected. Then there exists $V_1, V_2 \subseteq \C$ such that $f(\Omega) = V_1 \cup V_2$, $\clos V_1 \cap V_2 = \es$, and $V_1 \cap \clos V_2 = \es$. Want: $V_1 = \es$ or $V_2 = \es$. (This is a direct proof since we don't assume that they are nonempty.) Note: $\Omega = f\inv(V_1) \cup f\inv(V_2)$, and
+          \[
+            \clos{f\inv(V_1)} \cap f\inv(V_2) \subseteq f\inv(\clos V_1) \cap f\inv(V_2)= f\inv(\clos V_1\cap V_2) = f\inv(\es) = \es,
+          \]
+        with the first containment by the claim and the last line of reasoning from the separatedness of $V_1$ and $V_2$. Similarly,
+          \[
+            f\inv(V_1) \cap \clos{f\inv(V_2)} \subseteq f\inv(V_1) \cap f\inv(\clos V_2) = f\inv(V_1 \cap \clos V_2) = f\inv(\es) = \es.
+          \]
+         But $\Omega$ is connected, so $f\inv(V_1) = \es$ or $f\inv(V_2) = \es$, hence $V_1 = \es$ or $V_2 = \es$.
+      \end{pf}
+  \end{enumerate}
+\end{understandingcheck}
+
+\subsection*{Complex derivatives}
+
+$f(z)$ is $\C$-differentiable at $z_0$ $\iff$
+  \[
+    \lim_{h\to 0}\frac{f(z_0+h)-f(z_0)}{h}
+  \]
+exists.
+\begin{rem}
+  Note $h \to 0$ in $\C$, not $\R$.
+
+  \begin{rem}
+    (lmao remark in a remark) In $\R$, for limits we come from either left or right, but in $\C$ we can come from up or down, or left or down, or spiral into the point. We can come in from \textbf{any} direction.
+  \end{rem}
+\end{rem}
+
+\begin{result}{fact}
+  $f = u+iv$ is $\C$-differentiable at $x_0 + iy_0$ implies that $F(x,y) = (u(x,y),v(x,y))$ is $\R$-differentiable at $(x_0,y_0)$ and the Cauchy Riemann equations hold at that point.
+\end{result}
+\begin{rem}
+  Cauchy Riemann equatiosn are
+    \[
+      \frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = - \frac{\partial v}{\partial x}.
+    \]
+\end{rem}
+
+\begin{understandingcheck}{example}
+  Find all holomorphic functions $f\colon \C \to \C$ of the form $f(x+iy) = u(y) + i v(x)$.
+    \begin{pf}
+      $f\colon \C \to \C$ holomorphic implies that $u,v\colon \R^2 \to \R$, $\R$-differentiable and Cauchy Riemann equatiosn hold:
+        \[
+          \frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = - \frac{\partial v}{\partial x}.
+        \]
+      The first equations becomes $0=0$ since $u$ is only a function of $y$ and $v$ is only a function of $x$. The second equation yields that $u'(y) = -v'(x)$. This tells us that $u'(y)\equiv a$, $v'(x) \equiv -a$ for some $a \in \R$. Integrating, we get that
+        \[
+          u(y) = ay+b, \quad v(x)=-ax+c
+        \]
+      for $a,b,c \in \R$. In other words,
+        \[
+          f(x+iy) = u+iv = (ay+b)+i(-ax+c) = -\underbrace{ia}_{\text{any } i \lam \in i \R}(\underbrace{x+iy}_{z})+(\underbrace{b+ic}_{\text{any } z_0 \in \C}).
+        \]
+      Conclude: $f(x+iy)= u(y) + iv(x)$ entire $\iff$ $f(z) = i\lam z + z_0$ for $\lam \in \R$ and $z_0 \in \C$.
+
+      (Note: ($\Leftarrow$) implication holds since polynomials are entire.)
+    \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  Prove: if $F = (u,v) \colon \R^2 \to \R^2$ is $\R$-differentiable, then $f(x+iy) = u(x,y) + iv(x,y) \colon \C \to \C$ satisfies
+    \[
+      f(z) = f(z_0) + \frac{\partial f}{\partial z}(z_0) \cdot (z-z_0) + \frac{\partial f}{\partial \overline z}(z_0) \cdot \overline{(z-z_0)} + \oo(|z-z_0|).
+    \]
+  Conclude: if $f$ is $\C$-differentiable at $z_0$, then
+    \[
+      f(z) = f(z_0)+ \frac{\partial f}{\partial z}(z_0) \cdot (z-z_0) + \oo(|z-z_0|) = f(z_0)+ f'(z_0) \cdot (z-z_0) + \oo(|z-z_0|)
+    \]
+\end{understandingcheck}
+
+\begin{rem}
+  $\oo$ means: $g\colon \R^m \to \R^n$ is $\oo(\vbf(x))$ as $x \to 0$ $\iff$
+    \[
+      \lim_{\vbf x\to 0} \frac{|g(\vbf(x))|}{|\vbf x}=0.
+    \]
+
+  Note that:
+    \[
+      f'(z_0) = \lim_{h \to 0} \frac{f(z_0+h)-f(z_0)}{h} \iff f'(z_0) +\oo(1) = \frac{f(z_0+h)-f(z_0)}{h} \iff f(z_0+h)=f(z_0)+f'(z_0) \cdot h + \oo(h).
+    \]
+
+\end{rem}
+
+
+\end{document}
