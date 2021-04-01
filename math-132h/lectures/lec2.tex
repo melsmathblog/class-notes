@@ -1,0 +1,227 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 2---March 31, 2021}
+
+\subsection*{Complex Derivatives (Holomorphic functions)}
+
+Let $\Omega \subseteq \C$ be open. Let $f\colon \Omega \to \C$. Let $F(x,y)= (u(x,y),v(x,y))$ be a related vector function. Define $f$ by $f(z) = u(x,y) + iv(x,y)$.
+
+\begin{defn}
+  A function $f\colon \Omega \to \C$ ($\Omega \subseteq \C$ open) is \emph{differentiable} at $z_0 \in \Omega$ if there is a $f'(z_0) \in \C$ such that
+    \[
+      \lim_{h \to 0} \frac{f(z_0+h)-f(z_0)}{h} = f'(z_0).
+    \]
+\end{defn}
+\begin{rem}
+  This limit must be independent of how $h$ goes to $0$. This causes it to be stronger than the real variable definition.
+\end{rem}
+
+\begin{defn}
+  A function $f\colon \Omega \to \C$ on an open subset $\Omega$ of $\C$ is \emph{holomorphic on $\Omega$} if it differentiable at every $z_0 \in \Omega$.
+
+  If $C$ is a closed set then $f$ is \emph{holomorphic on $C$} if it is holomorphic on an open set containing $C$.
+
+  If $\Omega = \C$ and if $f$ is holomorphic on $\C$, $f$ is said to be \emph{entire}.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(1)]
+    \item $f(z) = z^n$, $n \geq 0$ is entire. In this case, $f'(z) = nz^{n-1}$.
+    \item $f(z) = z^n$ where $n < 0$ is holomorphic on $\C \sm \set 0$.
+    \item $f(z) = \overline z$ is NOT holomorphic anywhere.
+  \end{enumerate}
+\end{understandingcheck}
+\begin{rem}
+  Verify all of these! Good practice.
+\end{rem}
+\begin{rem}
+  A holomorphic function is continuous.
+\end{rem}
+
+\begin{result}{proposition}
+  Let $f,g\colon \Omega \to \C$ ($\Omega\subseteq\C$ open) be holomorphic and $c \in \R$. Then
+    \begin{enumerate}[(i)]
+      \item $f+g$ is holomorphic on $\Omega$ and $(f+g)' = f'+g'$,
+      \item $(cf)' = cf'$,
+      \item Standard product rule holds,
+      \item Quotient rule holds,
+      \item Chain rule: $f\colon \Omega \to U$, $g\colon U \to \C$, both holomorphic, then $(g \circ f)' = g'(f(z)) f'(z)$.
+    \end{enumerate}
+\end{result}
+
+
+\subsection*{Complex function as a mapping}
+
+We can identify complex functions with real functions. Like, $f(z) = u+iv$ and $F(x,y) = (u(x,y),v(x,y))$ ($F\colon \R^2 \to \R^2$).
+
+Recall that $F$ is \emph{differentiable at $P_0 = (x_0,y_0)$} if there exists $J \colon \R^2 \to \R^2$ linear such that
+  \[
+    \frac{| F(P_0+H)-F(P_0)-J(H)|}{|H|} \to 0
+  \]
+as $|H| \to 0$. Equivalently this is:
+  \[
+    |F(P_0+H)-F(P_0)-J(H)| = |H| \psi(H)
+  \]
+where $\psi(H) \to 0$ as $|H| \to 0$.
+\begin{rem}
+  Read this over.
+\end{rem}
+If $J$ exists it is unique and also $u_x$, $u_y$, $v_x$, and $v_y$ (partial derivatives) exist. In fact,
+  \[
+    J =
+      \begin{bmatrix}
+        u_x & u_y \\
+        v_x & v_y
+      \end{bmatrix}
+  \]
+gives the linear function.
+
+\begin{rem}
+
+    \[
+      x+iy \mapsto x
+        \begin{bmatrix}
+          1&0\\
+          0&1
+        \end{bmatrix}
+        + y
+          \begin{bmatrix}
+            0&1\\
+            -1&0
+          \end{bmatrix}
+        =
+          \begin{bmatrix}
+            x&y \\
+            -y&x
+          \end{bmatrix}
+    \]
+  since
+    \[
+      \begin{bmatrix}
+        0&1\\-1&0
+      \end{bmatrix}^2
+      =
+        -\begin{bmatrix}
+          1&0\\0&1
+        \end{bmatrix}.
+    \]
+  This actually stores all the same information as complex numbers (addition, $i$, multiplication, commutativity, etc.). We could actually take this further to make things like quarternions and such. Neat stuff.
+
+  The way we see truth in the comment "It's easier to a matrix than a number" with how complex numbers are special types of matrices.
+
+  Notice that
+    \[
+      J =
+        \begin{bmatrix}
+          u_x&u_y\\v_x&v_y
+        \end{bmatrix}
+    \]
+  having this form would mean that $v_x=v_y$ and $u_y=-v_x$. (These are called the Cauchy-Riemann Equations.) If $J$ satisfies this, then it's related to being complex differentiable.
+\end{rem}
+
+Consider
+  \[
+    f'(z_0) = \lim_{h_1 \to 0} \frac{f(x_0+h_1+iy_0)-f(x_0+iy_0)}{h_1} =
+      \frac{\partial f}{\partial x}(z_0) = (u_x + iv_x)(z_0).
+  \]
+ where $h=h_1+ih_2$. Also, letting $h=-ih_2$, we must have
+   \[
+     f'(z_0) =\lim_{h_2 \to 0} \frac{f(x_0+i(y_0+h_2))-f(x_0+iy_0)}{ih_2} = \frac{1}{i} \frac{\partial f}{\partial y}(z_0) = -i(u_y+iv_y) = v_y-u_y.
+   \]
+ Thus if $f$ is complex differentiable at $z_0$, then the Cauchy-Riemann Equations $u_x=v_y$ and $u_y=-v_x$ must hold at $z_0 = x_0+iy_0$.
+
+ So, just because a real function is differentiable, that does not mean it is complex differentiable.
+
+ \begin{understandingcheck}{example}
+   $F(x,y) = (x,-y)$ is real differentiable but not complex differentiable since it does not satisfy the Cauchy-Riemann equations as $u(x,y)=x$, $v(x,y) = -y$, $u_x=1$, and $v_y=-1$.
+
+   Real sense:
+     \[
+       J =
+        \begin{bmatrix}
+          1&0\\0&-1
+        \end{bmatrix},
+     \]
+   so we're real differentiable, but this clearly fails to be complex differentiable by the Cauchy-Riemann Equations.
+ \end{understandingcheck}
+
+\begin{nota}
+
+    \[
+      \frac{\partial }{\partial z} = \frac{1}{2} \bigpar{\frac{\partial }{\partial x} - i \frac{\partial }{\partial y}}
+    \]
+
+      \[
+        \frac{\partial }{\partial z}= \frac{1}{2} \bigpar{\frac{\partial }{\partial x} + i \frac{\partial }{\partial y}}
+      \]
+    huh??? what the
+\end{nota}
+
+\begin{result}{proposition}
+  If $f$ is holomorphic at $z_0$ then
+    \begin{enumerate}[(i)]
+      \item $\frac{\partial f}{\partial \overline z}(z_0) = 0$ and $f'(z_0) = \frac{\partial f}{\partial z}(z_0) = \partial \frac{\partial u}{\partial z}(z_0)$.
+
+      \item Writing $F(x,y) = (u(x,y),v(x,y))=f(z)$. Then $F$ is differentiable in the real sense and
+        \[
+          \det(J_F(x_0,y_0)) = |f'(z_0)|^2.
+        \]
+    \end{enumerate}
+\end{result}
+\begin{pf}
+  (i)
+    \begin{align*}
+      \frac{\partial f}{\partial z} \frac{2(u+iv)}{2z} &= \frac{1}{2} \bigpar{\frac{\partial }{\partial x}(u+iv) - i \frac{\partial }{\partial y}(u+iv)}\\
+        &= \frac{1}{2}(u_x+iv_x-i(u_y+iv_y)) \\
+        &= \frac{1}{2} \bigpar{2u_x - 2iu_y} \\
+        &= 2 \frac{\partial u}{\partial z}.
+    \end{align*}
+  Check other formula on your own.
+
+  (ii) We want to show that if $H = (h_1,h_2)$, $h=h_1+ih_2$,
+    \[
+      J_F(x_0,y_0)(H) = \bigpar{\frac{\partial u}{\partial x}-i \frac{\partial v}{\partial y}}(h_1+ih_2).
+    \]
+    We first expand the LHS:
+      \[
+        J_F(x_o,y_0)(H) =
+          \begin{bmatrix}
+            u_x&u_y\\v_x&v_y
+          \end{bmatrix}
+          \begin{bmatrix}
+            h_1\\h_2
+          \end{bmatrix}
+          =
+          \begin{bmatrix}
+            h_1u_x+h_2u_y \\
+            h_1v_x+h_2v_y
+          \end{bmatrix}.
+      \]
+    We now expand the RHS
+      \begin{align*}
+        \frac{\partial u}{\partial x}h_1 + \frac{\partial u}{\partial y}h_2 + i \bigpar{\frac{\partial u}{\partial x}h_2 - \frac{\partial u}{\partial y}h_1} &=
+          \frac{\partial u}{\partial x}h_1 + \frac{\partial u}{\partial y}h_2 + i \bigpar{\frac{\partial v}{\partial y}h_2 + \frac{\partial v}{\partial x}h_1}.
+      \end{align*}
+    Then we can identify the LHS with the RHS by treating a complex number as vector!
+
+    Now,
+      \[
+        \det(J_F(x_0,y_0)) = u_xv_y-u_yv_x.
+      \]
+    We then have that
+      \[
+        \text{Cauchy-Riemann} \implies u_x^2+u_y^2 = \abs{2 \frac{\partial u}{\partial z}}^2
+      \]
+    since
+      \[
+        \frac{\partial u}{\partial z}= \frac{1}{2} \bigpar{\frac{\partial u}{\partial x} - i \frac{\partial u}{\partial y}},
+      \]
+    so $\det(J_F) = |f'(z_0)|^2$.
+\end{pf}
+
+
+\end{document}

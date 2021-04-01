@@ -1,0 +1,82 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Discussion 1---March 30, 2021}
+
+\begin{understandingcheck}{example}
+  Given a metric space $(X,d)$, $x_0 \in X$, $r > 0$, let $B \ceq \set{x \in X : d(x,x_0) < r}$, $C\ceq \set{x\in X: d(x,x_0) \leq r}$. Show that
+    \begin{enumerate}[(a)]
+      \item $\clos B\subseteq C$, and that
+      \item the inclusion can be strict.
+    \end{enumerate}
+
+  \begin{pf}
+    \begin{enumerate}[(a)]
+      \item Recall that for a set $E$ in a metric space $X$, $\clos E \ceq$ the set of all points that are limits of sequences in $E$. Fix $x\in\clos B$. By definition of closure, there is a sequence $(x_n) \subseteq B$ such that $\lim x_n = x$. Notice that because $(x_n)$ is a sequence in $B$,
+        \[
+          d(x_n,x_0) < r \tag{1}
+        \]
+        for all $n$.
+
+      By definition of limit, for all $\e > 0$, there exists an $N$ such that $n \geq N$ implies $d(x_n,x) < \e$. Using this fact and (1), we have that
+        \[
+          d(x_0,x) \leq d(x_0,x_n) + d(x_n,x) < r + \e
+        \]
+      by the triangle inequality. Thus, $d(x_0,x) \leq r$ and $x\in C$. Therefore, $\clos B\subseteq C$.
+
+      \item Take $\R$ with the discrete metric and concsider $B(0 ; 1)$. This only contains $0$ and is closed, so its closure is itself, while the closed ball is all of $\R$.
+    \end{enumerate}
+  \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  Suppose $(x_n)$ is a Cauchy sequence in $(X,d)$ and has a subsequence $(x_{n_j})$ that converges to $x \in X$. Show $(x_n) \to x$ in $X$.
+
+  \begin{pf}
+    Fix $\e > 0$. By definition, since $(x_n)$ is Cauchy, there exists an $N$ such that $n,m \geq N$ implies that
+      \[
+        d(x_n,x_m) < \frac{\e}{2}. \tag{1}
+      \]
+     Then, since $(x_{n_j})$ converges, there exists an $M$ such that $j \geq M$ implies that
+       \[
+         d(x_{n_j},x) < \frac{\e}{2}. \tag{2}
+       \]
+     Combining (1) and (2) and taking $j\geq \max \set{N,M}$,
+       \[
+         d(x_j,x) \leq d(x_j,x_{n_j}) + d(x_{n_j},x) < \frac{\e}{2} + \frac{\e}{2} = \e.
+       \]
+     This completes the proof.
+  \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  \begin{enumerate}[(a)]
+    \item Let $(Y,d|_{Y \x Y})$ be a subspace of a metric space $(X,d)$. Show that $(Y,d|_{Y \x Y})$ completes implies that $Y$ is closed in $X$.
+
+    \item Suppose $(X,d)$ is complete and $Y \subseteq X$ is closed. Then $(Y,d|_{Y \x Y})$ is complete.
+  \end{enumerate}
+
+  \begin{pf}
+    \begin{enumerate}[(a)]
+      \item Suppose $(x_n)$ is a sequence in $Y$ and suppose $(x_n) \to x$ in $X$.TO show $Y$ is closed, we must show that $x\in Y$. Since $(x_n)$ converges, $(x_n)$ is Cauchy. Since $Y$ is complete with respect to its metric, there exists an $x' \in Y$ such that $(x_n) \to x'$ in $Y$. Thus, $(x_n) \to x'$ in $X$ and $x'=x$. Thus $Y$ is closed.
+    \end{enumerate}
+  \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  Prove that the following are equivalent for $f\colon (X,d_X) \to (Y,d_Y)$:
+  \begin{enumerate}[(1)]
+    \item $f$ is continuous (in the $\e$-$\delta$ sense)
+    \item $(x_n) \to x_0$ implies that $(f(x_n)) \to f(x_0)$
+    \item for all open $V\subseteq Y$ containing $f(x_0)$, there exists open $U\subseteq X$ containing $x_0$ such that $f(U) \subseteq V$.
+  \end{enumerate}
+
+  \begin{pf}
+    ((1) $\implies$ (2)) Fix $\e  >0 $. By (1), there exists a $\delta > 0$ such that $d(x,x_0) < \delta$ implies that $d(f(x),f(x_0)) < \e$. Assume $(x_n) \to x_0$. Then there exists an $N$ such that $d(x_n,x_0) < \delta$ whenever $n \geq N$. Thus, $n \geq N$ implies that $d(f(x_n),f(x_0)) < \e$. Thus, $\lim f(x_n) = f(x_0)$.
+  \end{pf}
+\end{understandingcheck}
+
+\end{document}

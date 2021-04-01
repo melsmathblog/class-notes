@@ -1,0 +1,146 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 2---March 31, 2021}
+
+\subsection*{Recall}
+Last time introduced categories. Categories are composed of objects and morphisms. Morphisms are composed of domain and codomain, identity maps, associativity, and unital (i.e., identity acts like identity).
+
+\begin{understandingcheck}{example}
+  $\Sf{Set}$, $\Sf{Set}_*$, $\Sf{Mon}$, $\Sf{Grp}$, $\Sf{Preord}$, etc. Also, subcategories: $\Sf{CMon} \subseteq \Sf{Mon}$, $\Sf{Ab} \subseteq \Sf{Grp}$, $\Sf{Pos} \subseteq \Sf{Preord}$.
+\end{understandingcheck}
+
+Notice that the categories in this example are collections of ``structured sets" plus structure preserving maps between them.
+
+\begin{understandingcheck}{question}
+  Can we encode familiar properties of functions categorically?
+\end{understandingcheck}
+
+\begin{defn}
+  Suppose that $\Cc C$ is a category. A morphism $f\colon A\to B$ in $\Cc C$ is an \emph{isomorphism} if it has a two-sided inverse, i.e., if there exists a morphisms $g\colon B \to A$ such that $g\circ f = 1_A$ and $f \circ g = 1_B$.
+
+  Two objects $A,B \in \Cc C$ are \emph{isomorphic} if there is an isomorphism between them, in which case, we write $A \cong B$.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  In each of the categories $\Sf{Set}$, $\Sf{Set}_*$, $\Sf{Mon}$, $\Sf{Grp}$, $\Sf{Preord}$, an isomorphism is just a bijective set map that preserves all structure (operations \& distinguished elements).
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  In each of categories $\Sf{Preord}$ and $\Sf{Pos}$, an isomorphism $f\colon P \to Q$ is a bijective set map such that
+    \[
+      x\leq y \iff f(x) \leq f(y).
+    \]
+\end{understandingcheck}
+
+\textbf{Upshot:} Purely categorical condition of invertibility (having a two-sided inverse) encodes bijective correspondences that identify structure (in these ``concrete" cases).
+
+\subsection*{Encoding injectivity and surjectivity}
+
+\begin{defn}
+  Let $\Cc C$ be a category. A morphism $f\colon A \to B$ in $\Cc C$ is a \emph{monomorphism} if: for any $T \in \Cc C$ and $h,k\colon T \rightrightarrows A$ if $fh = fk$, then $h=k$.
+
+  Similarly, a morphism $f\colon A \to B$ in $\Cc C$ is an \emph{epimorphism} if for any $T \in \Cc C$ and $h,k \colon B \to T$, if $hf = kf$, tehn $h=k$.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  Suppose $f\colon A\to B$ is in $\Sf{Set}$.Then $f$ is monomorphism if and only if $f$ is injective, and $f$ is epimorphism if and only if $f$ is surjective.
+\end{understandingcheck}
+\begin{rem}
+  These don't correspond in all categories.
+\end{rem}
+
+We can say a bit more in $\Sf{Set}$. If $r\colon A \to B$ is and epimorphism in $\Sf{Set}$, then there is a function $s\colon B \to A$ such that $r \circ s = 1_B$.
+
+\begin{defn}
+  Suppose $r\colon A \to B$ and $s\colon B \to A$ are morphisms such that $r \circ s = 1_B$. Then $s$ is a \emph{section} or \emph{right inverse} to $r$, and $r$ is a \emph{retraction} or \emph{left inverse} to $s$. In general, we call a morphism a \emph{split epimorphism} if it has a section, and a \emph{split monomorphism} if it has a retraction.
+\end{defn}
+\begin{rem}
+  Split monomorphism $\implies$ monomorphism.
+\end{rem}
+\begin{rem}
+  Split epimorphism $\implies$ epimorphism.
+\end{rem}
+\begin{rem}
+  Isomorphism $\implies$ split monomorphism and split epimorphism $\implies$ monomorphism and epimorphism
+
+  \textbf{WARNING:} converse is false in general.
+\end{rem}
+
+\subsection*{Categories as algebraic objects}
+
+We can view categories as algebraic objects.
+
+We can regard a number of familiar mathematical objects as categories.
+\begin{understandingcheck}{example}
+  A \emph{preorder category} is a category $\Cc P$ with at most one morphism in $\Cc P(A,B) \ceq \set{f\colon A \to B}$ for any $A,B \in \Cc P$. If $\Cc P$ is a preorder category with only a $\Sf{Set}$'s worth of morphisms, and we define
+    \[
+      A \leq B \iff \exists f\colon A \to B
+    \]
+  for all $A,B \in \Cc P$, then $(\operatorname{Ob}(\Cc P), \leq)$ is a preorder. Conversely, if $(P, \leq)$ is a preorder, and we define a category $\Cc P$ by taking  $\operatorname{Ob}(\Cc P) = P$ and $\operatorname{Mor}(\Cc P) \ceq \set{(A,B) \in P \x P : A \leq B}$ and set $\Dom(A,B) = A$ and $\Cod(A,B) = B$, $\operatorname{id}_A = (A,A)$, and $(B,C) \circ (A,B) = (A,C)$, then we get a preorder category.
+
+  Preorders and preorder categories are basically the same thing.
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  A \emph{monoid category} (nonstandard terminology) is a category with a single object:
+    \[
+      \begin{tikzcd}
+        A \arrow[loop, distance=2em, in=125, out=55] \arrow[loop, distance=2em, in=35, out=325] \arrow[loop, distance=2em, in=215, out=145]
+      \end{tikzcd}
+    \]
+
+  If $\Cc M$ is a monoid category with object $A \in \Cc M$, then $(\Cc M(A,A), \circ, 1_A)$ is a monoid. Conversely, if $(M, \cdot, e)$ is a monoid, then the category $\Sf{BM}$, with single object $*$ and morphisms $\Cc M$ (all with domain/codomain $*$) is a category with $1_* = e$ and $y\circ x = y \cdot x$.
+    \[
+      \begin{tikzcd}
+        * \arrow["\boxed M"', loop, distance=2em, in=125, out=55]
+      \end{tikzcd}
+    \]
+
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  A \emph{group category} (nonstandard terminology) is a monoid category $\Cc G$ such that every morphism of $\Cc G$ is an isomorphism. The same constructions relating monoid and monoid categories restrict to constructions relating groups and group categories.
+\end{understandingcheck}
+
+These examples justify the following terminology:
+\begin{defn}
+  A \emph{groupoid} is a category in which every morphism is an isomorphism.
+    \[
+    \begin{tikzcd}
+      \bullet \arrow[r, "\cong"] \arrow[d, "\cong", bend left]   & \bullet \\
+      \bullet \arrow[u, "\cong", bend left] \arrow[ru, "\cong"'] &
+    \end{tikzcd}
+    \]
+\end{defn}
+\begin{rem}
+  Groupoid is $\approx$ ``many object group".
+\end{rem}
+
+\begin{defn}
+  The \emph{core} of a category $\Cc C$ is the subcategory with objects consisting of all objects of $\Cc C$ and morphisms consisting of all isomorphisms in $\Cc C$.
+\end{defn}
+
+\subsection*{Size consideration}
+
+\emph{Russel's Paradox:} there is not set of all sets.
+
+The collection of all sets is ``too large" to be a set. (Grothendieck universes can be used to stratify sets by their size, so we have ``small sets", ``large sets", ``even larger sets", etc.)
+
+\begin{defn}
+  Let $\Cc C$ be a category. We say that $\Cc C$ is \emph{small} if $\operatorname{Mor}(\Cc C)$ is a set (also implies that the $\operatorname{Ob}(\Cc C)$ is a set). We say that $\Cc C$ is \emph{locally small} if $\Cc C(A,B) \ceq \set{f\colon A \to B}$ is a set for all $A,B\in \Cc C$. A category $\Cc C$ is \emph{large} if it is \textbf{not} small.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  $\Sf{Set}$, $\Sf{Set}_*$, $\Sf{Mon}$, $\Sf{Grp}$, $\Sf{Preord}$, etc. are locally small, large categories.
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  The preorder category associated with a preorder, monoid category associated to a monoid, and a group category associated to a group are small categories.
+\end{understandingcheck}
+
+
+\end{document}

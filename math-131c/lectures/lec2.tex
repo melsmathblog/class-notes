@@ -1,0 +1,211 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 2---March 31, 2021}
+
+\begin{defn}
+  Let $X$ be a vector space over the reals. A \emph{norm} is a map $\| \cdot \| \colon X \to [0,\infty)$ such that for all $\lam \in \R$ and $x,y,z \in X$, then
+    \begin{enumerate}[(1)]
+      \item $\| \lam x \| = |\lam| \|x\|$
+      \item $\|x\|=0$ if and only if $x=0$
+      \item $\|x+y\| \leq \|x\|+\|y\|$.
+    \end{enumerate}
+
+  A \emph{normed vector space} is a vector space equipped with a norm.
+\end{defn}
+
+\begin{result}{lemma}
+  If $X$ is a normed vecotr space, it is a metric space with
+    \[
+      d(x,y) = \|x-y\|.
+    \]
+\end{result}
+
+\begin{understandingcheck}{example}
+  If $1 \leq p < \infty$ and $x \in \R^n$, define
+    \[
+      \|x\|_p\ceq \bigpar{\sum_{j=1}^{n} |x_j|^p}^{\frac{1}{p}}.
+    \]
+
+  If $p = \infty$ and $x \in \R^n$, define
+    \[
+      \|x\|_\infty \ceq \sup_{1 \leq j \leq n} |x_j|.
+    \]
+
+  If $p=2$, we get the Euclidean norm.
+\end{understandingcheck}
+
+\begin{result}{lemma}[Holder's Inequality]
+  Let $1 \leq p,q \leq \infty$ satisfying $\frac{1}{p}+ \frac{1}{q} = 1$ (where $\frac{1}{\infty}=0$), then if $x,y \in \R^n$
+    \[
+      \sum_{j=1}^{n} |x_j||y_j| \leq \|x\|_p \|y\|_q.
+    \]
+\end{result}
+
+\begin{result}{lemma}[Minkowski's Inequality]
+  If $1 \leq p \leq \infty$ and $x,y \in \R^n$,
+    \[
+      \|x+y\|_p \leq \|x\|_p + \|y\|_p.
+    \]
+\end{result}
+
+(Look these up in Copson's book. Learn about these inequalities and their proofs.)
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} $(\R^n, \|\cdot\|_p)$ is complete.
+
+  \textbf{Answer:} TRUE. All norms on $\R^n$ are equivalent, so it's equivalent to the Euclidean norm which is complete.
+\end{understandingcheck}
+
+\begin{defn}
+  A complete normed vector space is called a \emph{Banach space}.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  For $p=\infty$, we define $\ell^\infty$ to be the set of bounded sequences, with norm
+    \[
+      \|(x_n)\|_\infty = \sup_{n \geq 1}|x_n|.
+    \]
+
+  For $1 \leq p <\infty$, we define $\ell^p$ to be the set of sequences for which
+    \[
+      \sum_{n=1}^{\infty} |x_n|^p <\infty
+    \]
+  with norm
+    \[
+      \|(x_n)\|_p = \bigpar{\sum_{n=1}^{\infty} |x_n|^p}^{\frac{1}{p}}.
+    \]
+
+  We can prove the triangle inequality for this stuff using Holder's/Minkowski's Inequality.
+\end{understandingcheck}
+
+\begin{result}{theorem}
+  For $1 \leq p \leq \infty$, $(\ell^p, \|\cdot\|_p)$ is a Banach space.
+\end{result}
+\begin{pf}
+  Note that we will use function notation for this proof to make the proof easier to read.
+
+  Suppose $1 \leq p < \infty$. (We do not handle the $p=\infty$ case as it is very similar.) Moreover, suppose that $(f_n)$ is a Cauchy sequence in $\ell^p$. Taking $k \geq 1$, we have that
+    \[
+      |f_n(k) - f_m(k)| \leq \bigpar{\sum_{j=1}^{\infty} |f_n(j)-f_m(j)|^p}^{\frac{1}{p}} = \|f_n-f_m\|_p.
+    \]
+  Thus, since $(f_n)$ is Cauchy (so we can make $\|f_n-f_m\|$ for large enough $n$ and $m$), $(f_n(k))_{n \geq 1}$ is Cauchy for each $k \geq 1$. Now, since $\R$ is complete, $(f_n(k))$ must then converge. Call its limit $f(k)$ where, in general, $f(k) \ceq \lim_{n \to \infty} f_n(k)$.
+
+  Fix $\e > 0$. Then there exists an $N \geq 1$ such that for all $n,m \geq N$,
+    \[
+      \|f_n-f_m\|_p < \frac{\e}{10}.
+    \]
+  Then, clearly, for all $J \geq 1$,
+    \[
+      \bigpar{\sum_{j=1}^{J} |f_n(j)-f_m(j)|^p}^{\frac{1}{p}} < \frac{\e}{10}.
+    \]
+  Now taking $m \to \infty$ (which we can do since $|\cdot|$ is continuous),
+    \[
+      \bigpar{\sum_{j=1}^{J} |f_n(j)-f(j)|^p}^{\frac{1}{p}} \leq \frac{\e}{10}
+    \]
+  Since this statement above holds for all $J \geq 1$, we may take $J \to \infty$ to get
+    \[
+      \|f_n-f\|_p \leq \frac{\e}{10}.
+    \]
+  We then have by the triangle inequality that
+    \[
+      \|f\|_p \leq \|f_n-f\|_p + \|f_n\|_p < \infty
+    \]
+  (so that $f \in \ell^p$) AND $(f_n) \to f$ in $\ell^p$. 
+\end{pf}
+
+\begin{result}{theorem}
+  Let $(X,d)$ be a metric space. The space $C_b(X)$ ($b$ for bounded) of bounded continous functions from $X \to \R$ endowed with the norm
+    \[
+      \|f\| \ceq \sup_{x \in X} |f(x)|
+    \]
+  is a Banach space.
+\end{result}
+\begin{rem}
+  The supremum exists since the function is bounded.
+\end{rem}
+\begin{pf}
+  Can easily check $\|\cdot\|$ is a norm. Remains to prove completeness.
+
+  Let $(f_n)$ be a Cauchy sequence in $C_b(X)$ (with respect to our aforementioned norm). If $x \in X$,then $(f_n(x))$ is a Cauchy sequence in $\R$ (since we're basically evaluating at $x$), so it converges to some limit $f(x)$.
+
+  Given $\e > 0$, choose $N \geq 1$ such that
+    \[
+      \|f_n-f_m\| < \frac{\e}{6}
+    \]
+  for $n,m \geq N$. Then, sending $m \to \infty$,
+    \[
+      \|f_n(x) -f_m\| \leq \|f_n-f_m\| < \frac{\e}{6}
+    \]
+  so $\|f_n(x)-f(x)\|\leq \frac{\e}{6}$.
+
+  Then
+    \[
+      |f(x)| \leq \frac{\e}{6} + |f_n(x)| \leq \frac{\e}{6} + \|f_n\| < \infty
+    \]
+  uniformly for $x \in X$. So $f$ is bounded. Also,
+    \[
+      \|f_n-f\| \leq \frac{\e}{6}.
+    \]
+  So $(f_n) \to f$ uniformly on $X$. Then $f$ is continuous, so $(f_n) \to f$ in $C_b(X)$.
+\end{pf}
+
+\begin{defn}
+  A subset $K$ of a metric space $(X,d)$ is said to be \emph{compact} if every open cover of $K$ has a finite subcover.
+\end{defn}
+
+\begin{defn}
+  A subset $K$ of a metric space $(X,d)$ is said to be \emph{sequentially compact} if every sequence $(x_n)$ in $K$ has a convergent subsequence, with limit lying in $K$.
+\end{defn}
+
+\begin{result}{lemma}
+  In a metric space, $K$ is compact if and only if $K$ is sequentially compact.
+\end{result}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} In a metric space, a set is compact if and only if it is closed and bounded.
+
+  \textbf{Answer:} FALSE. Compact implies closed and bounded, yes, but the converse is not true in general, but it is true in $\R^n$: this is known as the Heine-Borel Theorem.
+\end{understandingcheck}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} If $(X,d)$ is compact, then $C(X) = C_b(X)$.
+
+  \textbf{Answer:} TRUE. Certainly, $C_b(X) \subseteq C(X)$. If $f \in C(X)$, then $f(X) \subseteq \R$ is compact, so by our previous statement it must be bounded. Thus, $f \in C_b(X)$.
+\end{understandingcheck}
+
+
+\begin{defn}
+  An \emph{algebra} is a vector space $\Cc A$ over $\R$ with an operator $\x \colon \Cc A \x \Cc A \to \Cc A$ such that for any $x,y,z \in \Cc A$ and $\lam \in \R$,
+    \begin{enumerate}[(i)]
+      \item $x \x (y \x z) = (x \x y) \x z$
+      \item $(x+y)\x z = x \x z + y \x z$
+      \item $x \x (y+z) = x \x y + x \x z$
+      \item $\lam (x \x y) = (\lam x) \x y = x \x (\lam y)$.
+    \end{enumerate}
+\end{defn}
+
+\begin{understandingcheck}{example}
+  $C(x)$ and $C_b(X)$ are algebras. (Multiplication is just pointwise multiplication.)
+\end{understandingcheck}
+
+\begin{defn}
+  A set $S \subseteq C(X)$ is said to \emph{separate the points of $X$} if for all $x \neq y$, there exists some function $f \in S$ such that $f(x)\neq f(y)$.
+\end{defn}
+
+\begin{result}{theorem}[The Stone-Weierstrass Theorem]
+  Let $(X,d)$ be a compact metric space. Let $\Cc A$ be a close subalgebra that separates the points of $x$ and contains the constant functions. Then $\Cc A = C(X)$.
+\end{result}
+
+
+
+
+
+
+
+
+
+\end{document}
