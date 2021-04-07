@@ -1,0 +1,152 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 3---April 2, 2021}
+
+\begin{result}{corollary}
+  Let $(X,d)$ be a compact metric space. Let $\Cc A \subseteq C(X)$ be a subalgebra that separates points and contains constant functions. Then $\clos{\Cc A} = C(X)$.
+\end{result}
+\begin{pf}
+  We need to show that $\clos{\Cc A}$ is a subalgebra of $C(X)$. Clearly separates points and contains constant functions as $\Cc A \subseteq \clos{\Cc A}$.
+
+  Claim (check this): $\clos{\Cc A}$ is a (vector) subspace of $C(X)$
+
+  Show it is closed under multiplication: for all $f,g \in \clos{\Cc A}$, there exists sequences $(f_n)$ and $(g_n)$ in $\Cc A$ such that $(f_n) \to f$ and $(g_n) \to g$ in $C(X)$. As $\Cc A$ is a subalgebra of $C(X)$, $(f_ng_n)$ is a sequence in $\Cc A$. For any $x \in X$,
+    \begin{align*}
+      |f_n(x)g_n(x)-f(x)g(x)| &\leq |f_n(x)g_n(x)-f(x)g_n(x)| + |f(x)g_n(x)-f(x)g(x)| \\
+        &\leq \|f_n-f\|\|g_n\| + \|f\| \|g_n-g\| \\
+        &\leq \|f_n-f\| \cdot \sup_n \|g_n\| + \|f\| \|g_n-g\| \\
+        \intertext{so} \\
+        \|f_ng_n-fg\| &\leq \|f_n-f\| \cdot \sup_n \|g_n\| + \|f\| \|g_n-g\|
+    \end{align*}
+which tends to $0$ as $n \to \infty$. Thus, $fg \in \Cc A$.
+\end{pf}
+
+\begin{result}{corollary}[The Weierstrass Theorem]
+  Let $X \subseteq \R^n$ be closed and bounded. Then the polynomials are dense in $C(X)$.
+\end{result}
+\begin{pf}
+  Let $\Cc A \ceq \set{\text{polynomials}}$. It is clearly a subalgebra of $C(X)$ containing constant functions.
+
+  The functions $p_j(\vbf x) \ceq x_j$ separate points.
+\end{pf}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} If $(X,d)$ is compact and $F_1 \supseteq F_2 \supseteq \cdots$ is a sequence of nonempty closed sets, then $\bigcap_{n=1}^{\infty} F_n \neq \es$.
+
+  \textbf{Answer:} TRUE.
+    \begin{pf}
+      Suppose towards a contradiction that $\bigcap_{n=1}^{\infty} F_n = \es$. Then, $U_n \ceq X \sm F_n$ is an open cover of $X$. So as $X$ is compact, there exists a finite subcover, sp $X = U_N$ for some $N$. But then $F_N = \es$, a contradiction.
+    \end{pf}
+\end{understandingcheck}
+
+\begin{result}{theorem}[Dini's Theorem]
+  Let $(X,d)$ be compact and $(f_n) \subseteq C(X)$ be an non-decreasing sequence. Suppose that for all $x \in X$, $(f_n(x)) \to f(x)$ for $f \in C(X)$. Then $(f_n) \to f$ in $C(X)$ (i.e., uniformly).
+\end{result}
+\begin{rem}
+  `Increasing' means at every $x \in X$, $f_1(x) \leq f_2(x) \leq f_3(x) \leq \cdots$.
+\end{rem}
+\begin{pf}
+  Let $\e > 0$ and take
+    \[
+      F_n \ceq \set{x \in X : f(x) \geq f_n(x) + \e}.
+    \]
+  As $F_n = (f-f_n)\inv([\e,\infty])$, it is closed.
+
+  As $(f_n)$ are increasing, $F_1 \supseteq F_2 \supseteq \cdots$. Suppose for a contradiction that all of the $F_n$'s are nonempty. Then there exists some $x \in \bigcap_{n=1}^{\infty} F_n$, so
+    \[
+      f(x) \geq f_n(x) + \e
+    \]
+  for all $n$. This contradicts pointwise convergence. So there exists some $N \geq 1$ so that $F_N = \es$, so $F_n = \es$ for all $n \geq N$. So for all $n \geq N$ and all $x \in X$,
+    \[
+      f_n(x) \leq f(x) < f_n(x) + \e,
+    \]
+  so
+    \[
+      |f(x)-f_n(x)| < \e.
+    \]
+  Taking the $\sup$ over $x \in X$,
+    \[
+      \|f-f_n\| \leq \e.
+    \]
+  Thus $(f_n) \to f$ uniformly.
+\end{pf}
+
+\begin{result}{lemma}
+  There exists a sequence of polynomials $(p_n) \to \sqrt x$ in $C[0,1]$, and $p_n(0) = 0$.
+\end{result}
+\begin{pf}
+  Let $p_1(x) = 0$ and
+    \[
+      p_{n+1}(x) \ceq p_n(x) + \frac{1}{2}(x-p_n(x)^2).
+    \]
+  By induction, $p_n$ is a polynomial.
+
+  As $x \in [0,1]$, if $p_n(x) \leq \sqrt x$ then,
+    \begin{align*}
+      p_{n+1}(x) &= p_n(x) + \frac{1}{2} (\sqrt x + p_n(x))(\sqrt x - p_n(x)) \\
+        &\leq p_n(x) + \sqrt x (\sqrt x - p_n(x)) \\
+        &\leq \sqrt x.
+    \end{align*}
+  By induction, $p_n(x) \leq \sqrt x$ for all $x \in [0,1]$. Further,
+    \[
+      p_{n+1}(x) \geq p_n(x)\bigbra{1-\frac{1}{2}p_n(x)} \geq \frac{1}{2} p_n(x)
+    \]
+  so by induction, $p_n(x) \geq 0$.
+
+  Then $p_n(x)^2 \leq x$ so $p_{n+1} \geq p_n(x)$ and $p_n(x)$ is non-decreasing, bounded above, so $(p_n(x)) \to p(x)$ (pointwise).
+
+  Taking $n \to \infty$ in:
+    \begin{align*}
+      p_{n+1}(x) &= p_n(x) + \frac{1}{2} (x-p_n(x)^2) \\
+      \implies p(x) = p(x) + \frac{1}{2} (x-p(x)^2)
+    \end{align*}
+  so $p(x) = \sqrt x \in C[0,1]$.
+
+  Dini's Theorem tells me that $(p_n) \to \sqrt x$ in $C[0,1]$.
+\end{pf}
+
+\begin{result}{lemma}
+  Let $(X,d)$ be a metric space (not necessarily compact). If $\Cc A$ is a closed subalgebra of $C_b(X)$ and $f,g \in \Cc A$ then
+    \[
+      (f \land g)(x) \ceq \min \set{f(x),g(x)} \in \Cc A
+    \]
+  and
+    \[
+      (f \lor g)(x) \ceq \max \set{f(x),g(x)} \in \Cc A.
+    \]
+\end{result}
+\begin{pf}
+  Observe that
+    \begin{align*}
+      f\land g &= \frac{1}{2}(f+g) - \frac{1}{2} |f-g|\\
+      f \lor g &= \frac{1}{2}(f+g) + \frac{1}{2} |f-g|,
+    \end{align*}
+  so enough to show for all $f \in \Cc A$, $|f| \in \Cc A$.
+
+  Replacing $f$ by $f/\|f\|$ (assume $f \neq 0$), can also assume that $\|f\|=1$.
+
+  Take $(p_n) \to \sqrt x$ to be the sequence from the previous lemma. As $\Cc A$ is a subalgebra, $p_n(f^2) \in A$.
+
+  Further, for any $x \in X$,
+    \[
+      \| \sqrt{f(x)^2} - p_n(f(x)^2)| \leq \|\sqrt{\bullet} - p_n\| \to 0 \text{ as } n \to \infty,
+    \]
+  so $p_n(f^2) \to |f|$ in $C_b(X)$. As $\Cc A$ closed, $|f| \in \Cc A$.
+
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

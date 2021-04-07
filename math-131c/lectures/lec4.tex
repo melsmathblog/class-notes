@@ -1,0 +1,101 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+\section{Lecture 4---April 5, 2021}
+
+\begin{result}{theorem}[Stone-Weierstrass Theorem]
+  Let $(X,d)$ be a compact metric space. Let $\Cc A$ be a closed subalgebra that separates the points of $X$ and contains the constant functions. Then, $\Cc A = C(X)$.
+\end{result}
+
+\begin{pf}
+  As $\Cc A \subseteq C(X)$, we need to show $C(X) \subseteq \Cc A$. Let $f \in C(X)$ and $\e > 0$.
+
+  For all distinct points $x$ and $y$ in $X$, choose $g \in \Cc A$ such that $g(x) \neq g(y)$. (We can do this by the separating points property.) Then, define
+    \[
+      h_{x,y}(z) = f(x) + [f(y)-f(x)] \frac{g(z)-g(x)}{g(y)-g(x)}.
+    \]
+  Observe that: $h_{x,y} \in \Cc A$ (because $g(z)$ is the only function of $z$ in the definition, so it's just a linear combination of stuff from the vector space, so it's in the vector space), $h_{x,y}(x)=f(x)$, $h_{x,y}(y) = f(y)$. Note that if $x = y$, $h_{x,y}(z) = f(x)=f(y)$ satisfies these three properties.
+
+    \begin{understandingcheck}{question}
+      When $X = [0,1]$, $\Cc A$ is the closure of the polynomials. Take $g(x) = x$. What is $h_{x,y}$?
+        \begin{enumerate}[(a)]
+          \item $f(z)$
+          \item straight line from $(x,f(x))$ to $(y,f(y))$
+          \item $z$ (identity function)
+          \item none of the above
+        \end{enumerate}
+
+      \textbf{Answer:}  (b).
+    \end{understandingcheck}
+
+  Now, fix $x \in X$ and for all $y \in X$, define
+    \[
+      G(y) = \set{z \in X : h_{x,y}(z) < f(z) + \e}
+    \]
+  As $h_{x,y}$ and $f$ are continuous, $G(y)$ is open (by $\e$-$\delta$ definition of continuity). Further, $y \in G(y)$, so $X = \bigcup_{y \in X}^{} G(y)$. Since $X$ is compact, there are $y_1,y_2,\ldots,y_n \in X$ so that
+    \[
+      X = \bigcup_{j=1}^{n} G(y_j).
+    \]
+  Now set $h_x = h_{x,y_1} \land \cdots \land h_{x,y_n} \in \Cc A$. Note, as $h_{x,y_j}(x)=f(x)$, then $h_x(x) = f(x)$. Moreover, for all $z\in G(y_j)$, $h_{x,y_j}(z) < f(z)+\e$, so since we taking the minimum of finitely many things and $X = \bigcup_{j=1}^{n} G(y_j)$, then $h_x(z) < f(z)+\e$.
+
+  \begin{figure}[ht]
+    \center
+    \resizebox{\textwidth}{!}{\figpath{lec4-pic1.pdf_tex}}
+    \caption{Drawing of what's going on with the $h$'s.}
+  \end{figure}
+
+
+  Now take
+    \[
+      H(x) \ceq \set{z \in X : h_x(z) > f(z)-\e}.
+    \]
+  Again, $H(x)$ is open, and as $h_x(x)=f(x)$, we have $x \in H(x)$ so
+    \[
+      X = \bigcup_{x \in X}^{} H(x),
+    \]
+  As $X$ is compact, find $x_1, \ldots, x_m \in X$ so that $X = \bigcup_{j=1}^{m} H(x_j)$.
+
+  Now take $h = h_{x_1} \lor \cdots \lor h_{x_m} \in \Cc A$.
+
+  \begin{figure}[ht]
+    \center
+    \resizebox{\textwidth}{!}{\figpath{lec4-pic2.pdf_tex}}
+    \caption{Another diagram of the sets and approximations used.}
+  \end{figure}
+
+
+  Recall that for every $z \in X$, $h_{x_j}(z) < f(z)+\e$, so $h(z) < f(z)+\e$ (since we are doing the max of finitely many elements). Moreover, for any $z \in H(x_j)$l, $h_{x_j}(z) > f(z)-\e$, so as $X = \bigcup_{j=1}^{m} H(x_j)$, $h(z) > f(z)-\e$ for all $z \in X$. So for all $z\in X$, $f(z)-\e < h(z) < f(z) + \e$, so $\|h-f\| \leq\e$ (by taking a $\sup$).
+
+  As $\e > 0$ is arbitrary and $\Cc A$ is closed, $f \in \Cc A$.
+\end{pf}
+
+\begin{defn}
+  Let $(X,d)$ be a metric space. A set $K \subseteq X$ is said ot be \emph{totally bounded} if for any $r > 0$, there exists a finite number of points $x_1,\ldots,x_n \in X$ so that $K \subseteq \bigcup_{j=1}^{n} B(x_j;r)$.
+\end{defn}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} A totally bounded subset of a complete metric space is compact.
+
+  \textbf{Answer:} FALSE. It is precompact, not compact: its closure is compact as complete $+$ totally bounded $\iff$ compact.
+\end{understandingcheck}
+
+\begin{defn}
+  Let $(X,d)$ be a metric space. A set of functions $\Cc F \subseteq C_b(X)$ is said to be \emph{equicontinuous} if for any $x_0 \in X$, for any $\e > 0$, there exists some $\delta > 0$ such that for all $x \in B(x_0; \delta)$ and for any $f \in \Cc F$,
+    \[
+      |f(x)-f(x_0)|< \e.
+    \]
+\end{defn}
+\begin{rem}
+  Key idea: same $\delta$ for every element of $\Cc F$.
+\end{rem}
+
+\begin{result}{theorem}[Arzela'-Ascoli]
+  Let $(X,d)$ be a compact metric space. Then a set $\Cc F \subseteq C(X)$ is totally bounded if and only if it is bounded and equicontinuous.
+\end{result}
+\begin{rem}
+  Closed, bounded, and equicontinuous $\iff$ compact in $C(X)$.
+\end{rem}
+
+\end{document}

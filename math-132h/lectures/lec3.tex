@@ -1,0 +1,188 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Lecture 3---April 2, 2021}
+
+\textbf{Quick recap of last time:}
+
+\begin{enumerate}[$\bullet$]
+  \item if a function $f=u+iv$ is complex differentiable, then $u_x = v_y$ and $u_y=-v_x$;
+  \item real differentiable DOES NOT imply complex differentiable;
+  \item
+\end{enumerate}
+
+\textbf{New stuff:}
+
+\begin{result}{theorem}
+  $f=u+iv$ is defined on an open set $\Omega \subseteq \C$. If $u,v$ are continuously differentiable and satisfy the Cauchy-Riemann (CR) Equations, then $f$ is holomorphic on $\Omega$ and
+    \[
+      f'(z) = \frac{\partial f}{\partial z}.
+    \]
+\end{result}
+\begin{pf}
+  Mean Value Theorem of Vector Calculus $implies$
+    \begin{align*}
+      u(x+h_1,y+h_2)- u(x,y) &= \frac{\partial u}{\partial x}h_1 + \frac{\partial u}{\partial y}h_2 + |h| \psi_1(h) \\
+      v(x+h_1,y+h_2)- v(x,y) &= \frac{\partial v}{\partial x}h_1 + \frac{\partial v}{\partial y}h_2 + |h| \psi_2(h) \\
+    \end{align*}
+  where $\psi_1(h),\psi_2(h) \to 0$ as $|h| \to 0$.
+    \[
+      f(z+h)-f(z) = \bigpar{\frac{\partial u}{\partial x}-i \frac{\partial u}{\partial y}}(h_1+ih_2) + \text{error}
+    \]
+  by CR Equations. Thus
+    \[
+      \lim_{h\to 0} \frac{f(z+h)-f(z)}{h} = f'(z)
+    \]
+  exists and $f'(z) = 2 \frac{\partial u}{\partial z} = \frac{\partial f}{\partial z}$.
+\end{pf}
+
+\begin{understandingcheck}{example}
+  $f(z) = \sqrt{|x||y|}$ satisfies the CR equations at $0$ but it is not complex differentiable.
+\end{understandingcheck}
+
+\subsection*{Power series}
+
+  \[
+    f(z) = \sum_{n \geq 0}^{} a_n z^n.
+  \]
+
+\begin{defn}
+  A power series
+    \[
+      \sum_{n=0 }^{\infty} a_nz^n
+    \]
+  \emph{converges absolutely} if
+    \[
+      \sum_{n=0}^{\infty} |a_n||z^n|
+    \]
+  converges.
+\end{defn}
+
+These converge in a radius.
+
+\begin{defn}[Hadamard Formula]
+
+    \[
+      \limsup_{n \to \infty} |a_n|^{\frac{1}{n}} = \frac{1}{R}
+    \]
+  where the series converges absolutely for $|z| < R$.
+\end{defn}
+
+Recall
+  \[
+    \limsup_{n \to \infty} a_n = \lim_{n\to \infty} \sup_{k \geq n} a_k
+  \]
+exists or is $\infty$ since $\sup_{k\geq n}$ is non-increasing.
+
+\begin{result}{fact}
+  ???finish
+  \begin{enumerate}[(i)]
+    \item For each $N$ and $\e > 0$ there exists $N$ such that $n \geq N$ implies that $a_n\geq L - \e$.
+    \item For each $\e > 0$, there is $N$ such that $a_n \leq L + \e$ for all $n \geq N$.
+  \end{enumerate}
+\end{result}
+
+\begin{result}{theorem}
+  [Wording changed slightly from book] Suppose $\limsup |a_n|^{1/n} = L$.
+    \begin{enumerate}[(1)]
+      \item If $L=0$, then $\sum_{n}^{} a_n z^n$ converges absolutely for all $z$.
+      \item If $L = \infty$, then $\sum_{n}^{} a_n z^n$ only converges at $z=0$.
+      \item If $0 < L <\infty$, set $R \ceq 1/L$. Then $\sum_{n}^{} a_nz^n$ converges absoutely for all $|z| < R$ and diverges for $|z|> R$.
+    \end{enumerate}
+\end{result}
+\begin{pf}
+  1) $L = 0$.For each $z \neq 0$, there is some $N$ such that $n \geq N$ implies that
+    \[
+      |a_n|^{\frac{1}{n}} \leq \frac{1}{2|z|}.
+    \]
+  But then
+    \[
+      |a_nz^n| \leq \frac{|z|^n}{2^n|z|^n} = \frac{1}{2^n}
+    \]
+  so $\sum |a_n||z|^n$ converges.
+
+  2) $L = \infty$. For any $z \neq 0$,
+    \[
+      |a_n|^{\frac{1}{n}} \geq \frac{1}{|z|}
+    \]
+  for infinitely many $n$. So ???finish diverges.
+
+  3) $0 < L < \infty$. $R = 1/L$. Assume that $|z| < R$ such that $|z| = R-2\delta$ for some $\delta > 0$. Since $\limsup |a_n|^{1/n} = 1/R$, so for large enough $n$,
+    \[
+      |a_n|^{\frac{1}{n}} \leq \frac{1}{R-\delta}.
+    \]
+  Thus
+    \[
+      |a_nz^n| \leq \abs{\frac{R-2\delta}{R-\delta}}^n
+    \]
+  so series converges.
+
+  If $|z|> 1$ let $|z| = R+\delta$ some for some $\delta > 0$. Then
+    \[
+      |a_n|^{\frac{1}{n}} \geq \frac{1}{R+\delta}
+    \]
+  for infinitely many $n$, so $|a_n|z^n$ does not tend to $0$.
+\end{pf}
+\[
+  \set{z \in \C : |z| < R} = \text{ ``disc of convergence"}.
+\]
+
+\begin{understandingcheck}{example}
+We can define exponentiation with power series:
+  \[
+    e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}
+  \]
+has $R = \infty$. Geometric series has a smaller radius:
+  \[
+    \frac{1}{1-z}= \sum_{n=0}^{\infty} z^n
+  \]
+has $R = 1$. Another thing:
+  \[
+    \sum n!z^n
+  \]
+has $R = 0$.
+\end{understandingcheck}
+
+\begin{result}{theorem}
+
+    \[
+      f(z) \ceq \sum_{n=0}^{\infty} a_nz^n
+    \]
+  defines a holomorphic function in its disc of convergence: $|z| < R$, $R \neq 0$.
+
+  Also,
+    \[
+      f'(z) = \sum_{n \geq 1}^{} n a_n z^{n-1}
+    \]
+  has the same radius of convergence.
+\end{result}
+
+First, $\limsup |a_n|^{1/n} = \limsup |(n+1)a_{n+1}|^{1/n}$
+  \[
+    \sum_{n=1}^{\infty} na_nz^{n-1} = \sum_{n=0}^{\infty} (n+1)a_{n+1} z^n
+  \]
+and that $(n+1)^{1/n} \to 1$ as $n \to \infty$.
+
+Suppose $|z_0| < r <R$ for some $r$.
+  \begin{align*}
+    f(z) &= S_N(z) + E_N(z) \\
+    S_N &= f(z) = S_N(z) + E_N(z) = \sum_{n=0}^{N} a_nz^n \\
+    E_N &= \sum_{n>N}^{} a_nz^n
+  \end{align*}
+Choose $h \in \C$ such that $|z_0+h| < r$. We have for $g(z) = \sum na_nz^{n-1}$
+  \[
+    \abs{\frac{f(z_0+h)-f(z_0)}{h} - g(z_0)} < \e \tag{*}
+  \]
+for $|h|$ small enough. Now,
+  \begin{align*}
+    \frac{f(z_0+h)-f(z_0)}{h} - g(z_0) &= \frac{S_N(z_0+h)-S_N(z_0)}{h} - S_N'(z_0) + S_N'(z_0) - g(z_0) + \frac{E_N(z_0+h)-E_N(z_0)}{h}.
+  \end{align*}
+Use $a^n-b^n = (a-b)(a^{n-1}+a^{n-2}b + \cdots + b^{n-1}) $ with $a \ceq |z_0|$ and $b\ceq |z_0+h|$ so $a,b <r$.
+  \[
+    \abs{\frac{E_N(z_0+h) - E_N(z_0)}{h}} \leq \sum_{n > N}^{} |a_n| \abs{\frac{(z_0+h)^n - z_0^n}{h}} \leq \sum_{n > N}^{} |a_n|nr^{n-1}
+  \]
+since $|(z_0+h)^n - z_0^n| \leq hnr^{n-1}$. Fix $\e > 0$. There is TO BE CONTINUED
+\end{document}

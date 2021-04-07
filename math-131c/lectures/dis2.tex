@@ -1,0 +1,104 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+
+\begin{document}
+
+\section{Discussion 2---April 6, 2021}
+
+
+\begin{understandingcheck}{example}
+  Let $f_n(x)\ceq (1+x/n)^n$, $K \subseteq \R$ compact. Prove $(f_n) \to e^x$ (``uniformly on compact sets") in $C(K)$.
+
+  Method:  $f_n \colon K \to \R$ continuous, $K$ compact, $f_n$ increasing sequence, and assume $(f_n) \to f$ pointwise and that $f$ is continuous. Then, $(f_n)$ converges uniformly to $f$. (Dini's Theorem)
+
+  Proof of $e^x$ question:
+  \begin{pf}
+    Step 1: Show $(f_n(x)) \to e^x$ pointwise.
+      \begin{align*}
+        f_n(x) &= \bigpar{1+\frac{x}{n}}^n \\
+        &= \sum_{k=0}^{n} {n \choose k} \bigpar{\frac{x}{n}}^k \\
+        &= \sum_{k=0}^{n} \frac{n(n-1)(n-2)\cdots(n-k+1)}{k!} \bigpar{\frac{x}{n}}^k \\
+        &= \sum_{k=0}^{n} \frac{x^k}{k!} \frac{n(n-1)(n-2)\cdots(n-k+1)}{n^k} \\
+        &= \sum_{k=0}^{n} \frac{x^k}{k} 1 \cdot (1-1/n)(1-2/n)\cdots(1-\frac{k-1}{n})
+      \end{align*}
+    (Fix $x$.)
+      \[
+        1 \cdot (1-1/n)(1-2/n)\cdots(1-\frac{k-1}{n}) \leq (1-1/n)^{k-1}.
+      \]
+    Let $E_n = 1 \cdot (1-1/n)(1-2/n)\cdots(1-\frac{k-1}{n})$.  By Taylor series centered at large $n$ (when $1/n=0$),
+      \[
+        E_n \leq [1-\frac{k-1}{n}+ \Cc O(1/n^2)]-1.
+      \]
+    Similarly for the lower bound. This implies that for all $x$ for all $\e > 0$, if $n$ is sufficiently large,$|E_n| \leq \e$.
+      \begin{align*}
+        f_n(x)-e^x &= \sum_{k=0}^{n} \frac{x^k}{k!}
+      \end{align*}
+
+    Step 2: Show $(f_n(x))_{n \geq 1}$ is non-decreasing. (Only has to be true for $n \geq N$ where $N$ does not depend on $x$.) Recall $\log$ is increasing.
+      \[
+        \log f_n(x) = n \log (1+x/n).
+      \]
+    Note can take $n$ large enough so $1+x/n > 0$ for all $x \in K$.
+      \begin{align*}
+        \frac{\mathrm d}{\mathrm d n} \log f_n(x) &= \log(1+x/n)+ n \frac{-x/n^2}{1+x/n} \\
+        &= \log(1+x/n)-\frac{x}{n} \frac{1}{1+x/n} \\
+        \intertext{Assuming $x/n \approx 0$, it follows from Taylor's Theorem that } \\
+        &= [x/1 + 1/2 x^2/n^2 + \Cc O (x/n)^3] - x/n [1-x/n + \Cc O(x^2/n)] \\
+        &= 3/2 x^2/n^2 + \Cc O(x/n)^3.
+      \end{align*}
+    The first term is increasing (as a function of $n$) for large $n$, so increasing in $n$. Thus $f_n \to e^x$ pointwise ($e^x$ continuous). And $(f_n)$ is increasing in $n$. $K$ compact. So by Dini's Theorem, $(f_n) \to e^x$ uniformly in $C(K)$.
+  \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}
+  Inductively define $f_0(x) = 0$, $f_{n+1}(x) = f_n(x) + \frac{1}{2}(x^2-f_n(x)^2)$, $n \geq 0$. Show $(f_n) \to |x|$ in $C([-1,1])$.
+
+  \begin{pf}
+    Want $f_{n+1}(x) \geq f_n(x) \iff x^2 \geq f_n(x)^2 \iff |f_n(x)| \leq |x|$.
+
+    Show by induction: $0 \leq f_n(x) \leq |x|$.
+
+    Trivial for $n=0$.
+      \begin{align*}
+        |f_n(x)| \leq |x| &\implies x^2-f_n(x)\geq 0 \\
+        &\implies f_{n+1}(x) \geq f_n(x) \geq 0 \\
+        \intertext{Show $f_{n+1}(x) \leq |x|$} \\
+        |x|-f_{n+1}(x) &= |x| -f_n(x)- \frac{1}{2}(x^2-f_n(x)^2) \\
+        &= (|x|-f_n(x))(1-\frac{1}{2}(|x|+f_n(x))) \\
+        &\geq 0 \\
+        &\implies f_{n+1}(x) \leq |x|.
+      \end{align*}
+    This proves $f_{n+1}(x) \leq |x|$. Thus $f_n\leq f_{n+1}$.
+
+    Next step: $(f_n(x)) \to |x|$ pointwise. Fix $x \in [-1,1]$. By above, $f_n(x)\in [0,|x|]$. Moreover, $(f_n(x))_{n \geq 1}$ is an increasing sequence. Thus, by Monotone Convergence Theorem, $(f_n(x))$ converges to $f(x)$. Now take the definition of $f_{n+1}$ and take $n \to \infty$ since each thing we're taking the limit of is continuous. Thus we have
+      \[
+        f(x) = f(x) + \frac{1}{2}(x^2-f(x)^2) \implies x^2=f(x)^2 \implies |f(x)|=|x|.
+      \]
+    Since $0 \leq f_n(x) \leq |x| \implies 0 \leq f(x) \leq |x| \implies f(x) = |x|$. This is continuous. $f_0$ continuous, $f_{n+1}$ continuous since the function defining it is continuous, so $f_n$ is continuous. $[-1,1]$ is compact. So by Dini's Theorem, $(f_n) \to f$ uniformly. i.e., in $C([-1,1])$.
+  \end{pf}
+\end{understandingcheck}
+
+\begin{understandingcheck}{example}[Basic exam S'05]
+  Define
+    \[
+      K \ceq \set{f\colon [0,1] \to \R: |f(x)-f(y)| \leq |x-y|, \int_{0}^{1} f(x) \, \mathrm{d}x  = 1}.
+    \]
+  Prove $K$ is compact in $C([0,1])$.
+
+  \begin{pf}
+    Recall Arzela-Ascoli: A subset of $C(K)$ is totally bounded if and only if the family of functions is bounded and equicontinuous. Also recall that compact is equivalent to totally bounded and complete.
+
+    Step 1: Show this is a bounded family, i.e., there exists an $M$ such that $f(x) \leq M$ for all $x \in [0,1]$ and $f \in K$. Suppose that $f(x) > 10$. By $|f(x)-f(y)| \leq |x-y|$, if $|x-y| \leq 1$, then $|f(x)-f(y)| \leq 1$. By triangle inequality we have that $f(y) > 9$ when $|x-y| \leq 1$. $\set{y : |x-y| \leq 1} \cap [0,1] = [0,1]$, so $f > 9$ on $[0,1]$. So $\int_{0}^{1} f(x) \, \mathrm{d}x \geq 9$ which is a contradiction. Thus $f(x) \leq 10$ for all $x \in [0,1]$. Thus $K$ is a bounded family.
+
+    Step 2: Equicontinuity. Fix $\e > 0$. Let $\delta = \e$. Then for all $f \in K$, $x,y \in [0,1]$, then $|x-y| < \delta \implies |f(x)-f(y)| \leq |x-y| < \delta = \e$. So by Arzela-Ascoli, $K$ is totally bounded. What remains to be shown is completeness.
+
+    Step 3: Completeness. Say $(f_n)$ is Cauchy in $K$. Since $C([0,1])$ is complete, $(f_n) \to f$ in $C([0,1])$ for some $f$. Claim: $f \in K$. Need to show
+      \[
+        |f_n(x)- f_n(y) | \leq |x-y| \implies |f(x)-f(y)| \leq |x-y|.
+      \]
+    Then we need to show $\int_{0}^{1} f_n(x) \, \mathrm{d}x = 1 \implies \int_{0}^{1} f(x) \, \mathrm{d}x =1$. These are straight forward $\e$-$\delta$ proofs.
+  \end{pf}
+\end{understandingcheck}
+
+\end{document}
