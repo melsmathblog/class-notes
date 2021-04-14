@@ -1,9 +1,121 @@
 \documentclass[class=article, crop=false]{standalone}
 \input{prepath}
 \input{\prepath}
+\renewcommand{\d}{\delta}
+\renewcommand{\a}{\alpha}
+\renewcommand{\b}{\beta}
+% \renewcommand{\g}{\gamma}
 
 \begin{document}
 \section{Lecture 5---April 7, 2021}
 
-testinbambaoh medas s shjkdhaskj sg
+\begin{pf}[Proof of Arzela-Ascoli]
+  ($\Rightarrow$) If $\mcal F \subseteq C(X)$ is totally bounded, then it is clearly bounded. Remains to show that $\mcal F$ is equicontinuous.
+
+  Let $x_0 \in X$ and $\e > 0$. [Want to find a $\delta$ that works for every $f \in \mcal F$.] Find $f_1,\ldots,f_n \in \mcal F$ such that
+    \[
+      \mcal F \subseteq \bigcup_{j=1}^{n} B(f_j;\e/3).
+    \]
+  [This is true since $\mcal F$ is totally bounded.] Choose $\delta > 0$ such that for all $x \in B(x_0 ; \delta)$ for all $j=1,\ldots,n$, we have that:
+    \[
+      |f_j(x)-f_j(x_0)| < \e/3.
+    \]
+  [This can be done since we can choose a $\delta_j$ for each $j$, then define $\delta$ to be the minimum of all the $\delta_1, \ldots, \delta_n$. Since we're doing a minimum of finitely-many elements, everything works out okay. :D] Now, for any $f \in \mcal F$, choose an $J \in \set{1,\ldots,n}$ so that
+    \[
+      \|f-f_J\| < \e/3.
+    \]
+  [Since $\mcal F$ is totally bounded and we have that $\mcal F \subseteq \bigcup_{j=1}^{n} B(f_j;\e/3)$, for each $f \in \mcal F$, there exists an $f_J$ with $J \in \set{1,\ldots,n}$ such that $\|f-f_J\| < \e/3$. If this weren't the case, $\mcal F$ wouldn't be totally bounded which is crazy.] Then for all $x \in B(x_0;\delta)$,
+    \begin{align*}
+      |f(x)-f(x_0)| &= |(f(x)-f_J(x))+(f_J(x)-f_J(x_0))+(f_J(x_0)-f(x_0))| \\
+      &\leq |f(x)-f_J(x)| + |f_J(x)-f_J(x_0)| + |f_J(x_0)-f(x_0)|\\
+      &\leq \|f-f_j\| + |f_J(x)-f_J(x_0)| + \|f_J-f\| \\
+      < \e/3 + \e/3 + \e/3 \\
+      = \e.
+    \end{align*}
+  [We use the `three-term estimate' here.] Thus $\mcal F$ is equicontinous and this direction is complete.
+
+  ($\Leftarrow$) Let $\mcal F\subseteq C(X)$ be bounded and equicontinuous. [WTS $\mcal F$ is totally bounded.] WLOG (divide everything in $\mcal F$ by a constant) we can assume that for every $f \in \mcal F$, we have that $\|f\| \leq 1$. [How do we know we're not dividing by $0$? Well, if $0$ was the biggest value of the sup-norm, then our whole set $\mcal F$ is just $0$ which is clearly totally bounded since it's literally one element. So, we can divide everything by the largest $f$ and then we're in for a slightly better time with this proof.] Let $\e > 0$. For all $x \in X$, choose $\d_x > 0$ such that for all $y \in B(x;\d_x)$, for all $f \in \mcal F$ we have:
+    \[
+      |f(y)-f(x)| < \e/6. \tag{1}
+    \]
+  (Here is where we are using equicontinuity.) Then as $x \in B(x;\d_x)$,$\set{B(x;\d_x) : x \in X}$ is an open cover of $X$. Since $X$ is compact, there exists $x_1, \ldots, x_n$ such that
+    \[
+      X \subseteq \bigcup_{j=1}^{n} B(x_j;\d_j).
+    \]
+  Next, choose $\a_1,\ldots,\a_m \in [-1,1]$ so that:
+    \[
+      [-1,1] \subseteq \bigcup_{j=1}^{m} (-\a_j-\e/6, \a_j+\e/6).
+    \]
+  [Such a cover exists since we could just take an $\e/6$ ball at every point, then use compactness to extract a finite subcover that we would call $\a_1,\ldots,\a_m$.] Given $f \in \mcal F$,for each $j=1,\ldots,n$, there exists some $\b_j \in \set{\a_1,\ldots,\a_m}$ such that
+    \[
+      |f(x_j)-\b_j| < \e/6
+    \]
+  [This exists since $[-1,1] \subseteq \bigcup_{j=1}^{m} (-\a_j-\e/6, \a_j+\e/6)$.] Let $B$ be the set of all $n$-tuples $(\b_1,\ldots,\b_n)$ where each $\b_j \in \set{\a_1,\ldots,\a_m}$ and there is a function $f \in \mcal F$ such that for all $j=1,\ldots,n$,
+    \[
+      |f(x_j)-\b_j| < \e/6. \tag{2}
+    \]
+  For each $b \in B$, choose $f_b \in \mcal F$ so that if $b = (\b_1,\ldots,\b_n)$ then
+    \[
+      |f_b(x_j)-\b_j| < \e/6. \tag{3}
+    \]
+  Then, $\set{f_b \in \mcal F: b \in B}$ is a non-empty, finite set. [Nonempty because $B$ was defined to be the $n$-tuples such that there was a function that satisfied its stated property and finite since $B$ is a finite set.] Now, for any $f \in \mcal F$, there is an associated $b \in B$. Then, for any $x \in X$, choose $J \in \set{1,\ldots,n}$ so that
+    \[
+      x \in B(x_j;\d_{x_j}).
+    \]
+  [Exists since we have those same balls as a cover of $X$.] Then:
+    \begin{align*}
+      |f(x)-f_b(x)| &\leq |f(x)-f(x_j)| + |f(x_j) - \b_j| + |\b_j - f_b(x_j)| + |f_b(x_j)-f_b(x)| \\
+      &< \e/6 + \e/6 + \e/6 + \e/6 \\
+      &= 2\e/3
+    \end{align*}
+  [From first to last: $|f(x)-f(x_j)| < \e/6$ by how we choose our $\d_{x_j}$/(1); $|f(x_j) - \b_j| < \e/6$ since our $f$ satisfies (2); $|\b_j - f_b(x_j)| < \e/6$ by (3); and $|f_b(x_j)-f_b(x)|< \e/6$ by equicontinuity.] Taking the supremum over all $x \in X$, we end up with:
+    \[
+      \|f-f_b\| \leq 2\e/3 < \e.
+    \]
+  So $\mcal F \subseteq \bigcup_{b \in B}^{} B(f_b; \e)$.
+\end{pf}
+
+[picture from lecture]
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} Let $(f_n) \subseteq C([0,1])$ be bounded and equicontinuous. Arzela-Ascoli tells us that there exists some subsequence which converges to some $f\in C(X)$. Does every convergent subsequence converge to this limit?
+
+  \textbf{FALSE!} $f_n(x) = (-1)^n$
+\end{understandingcheck}
+
+\begin{defn}
+  We will say a set $D \subseteq \R^n$ is a \emph{domain} if it is nonempty, open, and connected.
+\end{defn}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} Every domain $D \subseteq \R$ is an interval $D= (a,b)$ for $-\infty \leq  a < b \leq \infty$.
+
+  \textbf{TRUE!} Connected subsets of $\R$ are intervals.
+\end{understandingcheck}
+
+\begin{understandingcheck}{question}
+  \textbf{TRUE OR FALSE?} A domain $D\subseteq \R^n$ is path-connected.
+
+  \textbf{TRUE!} Open subsets $D \subseteq \R^n$ are connected if and only if they are path-connected.
+\end{understandingcheck}
+
+\begin{defn}
+  Let $D \subseteq \R^n$ be a domain and $k \geq 0$ be an integer. We say that $f \in C^k(D)$ if all partial derivatives up to and including order $k$ exist and are continuous at every $x \in D$.
+\end{defn}
+
+\begin{defn}
+  We say $I \subseteq \R$ be an interval. We say $f \in C^k(I)$ if there exists $(a,b) \supseteq I$ and $g \in C^k(a,b)$ so that $f=g|_I$.
+\end{defn}
+
+\begin{understandingcheck}{example}
+  If $-\infty < a < b < \infty$, define a norm on $C^k[a,b]$ by
+    \[
+      \|f\|_{C^k} \ceq \sup_{x \in [a,b]} \sum_{j=0}^{k} |f^{(j)}(x)|
+    \]
+  where $f^{(j)} \ceq \frac{\mathrm d^j f}{\mathrm d x^j}$.
+
+  Claim: $C^k[a,b]$ is a Banach space.
+\end{understandingcheck}
+
+
 \end{document}

@@ -1,0 +1,152 @@
+\documentclass[class=article, crop=false]{standalone}
+\input{prepath}
+\input{\prepath}
+\renewcommand{\d}{\delta}
+\renewcommand{\a}{\alpha}
+\renewcommand{\b}{\beta}
+% \newcommand{\g}{\gamma}
+\newcommand{\vph}{\varphi}
+
+
+\begin{document}
+\section{Lecture 6---April 9, 2021}
+
+\begin{enumerate}[$\bullet$]
+  \item INTRODUCTION TO ODEs
+\end{enumerate}
+
+\textbf{PROBLEM:} Let $D \subseteq \R^2$ be a domain. Let $f \in C(D)$. Can we find an interval $I \subseteq \R$ and a function $\varphi \in C'(I)$ so that:
+\begin{enumerate}[(i)]
+  \item for all $t \in I$, $(t,\varphi(t)) \in D$;
+  \item for all $t \in I$, we have $\varphi'(t) = f(t,\varphi(t))$.
+\end{enumerate}
+
+\begin{nota}
+  We denote this problem by
+    \[
+      x' = f(t,x) \tag{ODE}
+    \]
+  and call $\varphi$ a solution of (ODE) on this interval $I$.
+\end{nota}
+
+\begin{understandingcheck}{question}
+  What is the solution of the ODE $x'=1$?
+  \begin{enumerate}[(a)]
+    \item $x(t)=t$
+    \item $x(t)=1$
+    \item $x(t)=0$
+    \item This question is ill-posed.
+  \end{enumerate}
+
+  \textbf{(d)!} As $x(t) = t+C$ is a solution for any constant $C$.
+\end{understandingcheck}
+
+\textbf{PROBLEM:} Let $D \subseteq \R^2$ be a domain and $f \in C(D)$. Further, let $(\tau, \xi) \in D$. Can we find an interval $I$ with $\tau \in I$ and a solution $\varphi \in C'(I)$ of (ODE) on $I$ satisfying $\varphi(\tau) = \xi$?
+
+\begin{nota}
+  We denote this problem by:
+    \[
+      \begin{cases}
+        x'&=f(t,x), \\
+        x(\tau) &= \xi.
+      \end{cases}
+      \tag{IVP}
+    \]
+\end{nota}
+
+\begin{result}{lemma}
+  Let $D\subseteq \R^2$ be a domain, $f \in C(D)$, $(\tau, \xi) \in D$ and $\tau \in I \subseteq \R$ be an interval. Then a function $\varphi \in C'(I)$ is a solution of (IVP) if and only if for every $t \in I$ we have $(t,\varphi(t)) \in D$ and
+    \[
+      \varphi(t) = \xi + \int_{\tau}^{t} f(s,\varphi(s)) \, \mathrm{d}s.
+    \]
+\end{result}
+\begin{pf}
+  Fundamental theorem of calculus.
+\end{pf}
+
+\begin{defn}
+  Let $D \subseteq \R^2$ be a domain, $f \in C(D)$, and $\e > 0$. An $\e$-approximate solution of (ODE) on a compact interval $[a,b]$ is a function $\varphi \in C[a,b]$ that is differentiable on $[a,b]$ except at points $a = t_0 < t_1 < \cdots < t_n = b$ and:
+  \begin{enumerate}[(i)]
+    \item for all $t \in [a,b]$, we have $(t,\varphi(t)) \in D$;
+    \item for $j=1,\ldots,n$, we have $\varphi \in C^1[t_{j-1},t_j]$;
+    \item for $t \in [a,b] \sm \set{t_0,\ldots,t_n}$ we have
+      \[
+        |\varphi'(t)-f(t,\varphi(t))| \leq \e.
+      \]
+  \end{enumerate}
+\end{defn}
+
+\begin{understandingcheck}{example}
+  Piecewise linear approximations:
+  [picture]
+\end{understandingcheck}
+
+\begin{result}{theorem}[Euler's Method]
+  Let $a,b > 0$, $(\tau, \xi) \in \R^2$ and define $R \ceq [\tau, \tau+a] \x [\xi-b, \xi+b] \subseteq \R^2$. Let $D \supseteq R$ be a domain and $f \in C(D)$ be not identically $0$. Then, take $M \ceq \sup_{(t,x) \in R} |f(t,x)| > 0$ and let $I \ceq [\tau, \tau+\a]$ where $\a = \min \set{a, b/M}$. Then, for any $\e > 0$,there exists an $\e$-approximate solution of (IVP) on $I$. Further, for any $t,s \in I$,
+    \[
+      |\varphi(t)-\varphi(s)| \leq M|t-s|.
+    \]
+\end{result}
+[picture]
+\begin{pf}
+  As $R$ is compact, $f$ is uniformly continuous on $R$ [since continuous on compact set]. So there exists some $\d > 0$ such that for all $(t,x), (s,y) \in R$ satisfying
+    \[
+      |t-s| \leq \d \text{ and } |x-y| \leq \d
+    \]
+  we have $|f(t,x)-f(s,y)| \leq \e$. Now take $n \ceq \ceil{\max \set{a/\d,b/\d}}$ and choose $\tau = t_0 < t_1 \cdots < t_n = \tau + \a$ where $|t_j-t_{j-1}| \leq \a/n$. Now run Euler's Method: define $\varphi\colon [\tau, \tau+\a] \to \R$ by $\varphi(\tau) = \xi$ and
+    \[
+      \varphi(t) = \varphi(t_{j-1}) + f(t_{j-1}, \varphi(t_{j-1})) \cdot (t-t_{j-1})
+    \]
+   for $t \in (t_{j-1},t_j]$.  Clearly, $\varphi \in C[\tau,\tau+\a]$ and for all $j=1,\ldots,n$, $\varphi \in C^1[t_{j-1}, t_j]$.
+
+   If $t \in (t_{j-1},t_j]$ then
+     \[
+       |\varphi(t)-\varphi(t_{j-1})|  = |f(t_{j-1}, \varphi(t_{j-1}))| |t-t_{j-1}|.
+     \]
+   Provided $(t_{j-1}, \varphi(t_{j-1})) \in R$ then
+     \[
+       |\varphi(t) - \varphi(t_{j-1})| \leq M \cdot \a/n \leq b/n
+     \]
+   so by induction,
+     \[
+      |\varphi(t)-\xi| = |\vph(t) - \vph(\tau)| \leq |\varphi(t)- \varphi(t_{j-1})| + \sum_{i=1}^{j-1} |\varphi(t_i) - \varphi(t_{i-1})| \leq j \cdot b/n \leq b
+     \]
+   so $(t, \varphi(t)) \in R$.
+
+   Similarly, if $t \in (t_{j-1},t_j)$, we have
+     \[
+       |\varphi '(t)- f(t,\varphi(t))| = |f(t_{j-1}, \varphi(t_{j-1}))|.
+     \]
+   As above, $|\vph(t_{j-1}) - \vph(t)| \leq b/n \leq \d$ and $|t_{j-1}-t| \leq \a/n \leq a/n \leq \d$, so
+     \[
+       |f(t_{j-1},\varphi(t_{j-1})| \leq \e,
+     \]
+   so $|\varphi'(t)-f(t,\varphi(t))| \leq \e$.
+
+   Exercise: Prove Lipschitz bound.
+\end{pf}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
